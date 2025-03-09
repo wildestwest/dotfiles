@@ -4,8 +4,11 @@ theme = "my_theme"
 line-number = "relative"
 cursorline = true
 bufferline = "multiple"
+scrolloff = 15
+color-modes = true
+clipboard-provider = "termcode"
 # these are the engram kb layout homerow keys
-jump-label-alphabet = "sitehancrkmj"
+jump-label-alphabet = "sitehancrkmjludowyvbfxpg"
 
 [editor.cursor-shape]
 insert = "bar"
@@ -13,17 +16,28 @@ insert = "bar"
 [editor.indent-guides]
 render = true
 
+[editor.soft-wrap]
+enable = true
+
 [keys.normal]
-n = "goto_word"
 H = ":buffer-previous"
 L = ":buffer-next"
 C-h = "jump_view_left"
 C-l = "jump_view_right"
 C-k = "jump_view_up"
 C-j = "jump_view_down"
+tab = "move_parent_node_end"
+S-tab = "move_parent_node_start"
 
 [keys.insert]
 C-h = "jump_view_left"
 C-l = "jump_view_right"
 C-k = "jump_view_up"
 C-j = "jump_view_down"
+S-tab = "move_parent_node_start"
+
+[keys.normal.space]
+space = "file_picker"
+tab = "extend_parent_node_end"
+S-tab = "extend_parent_node_start"
+f = "goto_word"
