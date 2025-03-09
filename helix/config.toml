@@ -1,1 +1,29 @@
 theme = "my_theme"
+
+[editor]
+line-number = "relative"
+cursorline = true
+bufferline = "multiple"
+# these are the engram kb layout homerow keys
+jump-label-alphabet = "sitehancrkmj"
+
+[editor.cursor-shape]
+insert = "bar"
+
+[editor.indent-guides]
+render = true
+
+[keys.normal]
+n = "goto_word"
+H = ":buffer-previous"
+L = ":buffer-next"
+C-h = "jump_view_left"
+C-l = "jump_view_right"
+C-k = "jump_view_up"
+C-j = "jump_view_down"
+
+[keys.insert]
+C-h = "jump_view_left"
+C-l = "jump_view_right"
+C-k = "jump_view_up"
+C-j = "jump_view_down"
