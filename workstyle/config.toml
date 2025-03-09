@@ -10,6 +10,7 @@
 # precedence is given in order of apparition in this file.
 
 "foot" = "$"
+"jellyfin" = ""
 "rust" = ""
 "firefox" = ""
 "floorp" = ""
@@ -22,7 +23,7 @@
 "discord"=""
 "teams"="🗨"
 "mattermost"="🗯"
-"Solanum"="⏲"
+"solanum"="⏲"
 "hx" = ""
 "lazygit" = ""
 "nvim" = ""
