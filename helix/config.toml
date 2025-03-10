@@ -4,14 +4,14 @@ theme = "my_theme"
 line-number = "relative"
 cursorline = true
 bufferline = "multiple"
-scrolloff = 15
+scrolloff = 8
 color-modes = true
 clipboard-provider = "termcode"
 # these are the engram kb layout homerow keys
 jump-label-alphabet = "sitehancrkmjludowyvbfxpg"
 
 [editor.cursor-shape]
-insert = "bar"
+# insert = "bar"
 
 [editor.indent-guides]
 render = true
