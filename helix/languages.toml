@@ -1,4 +1,5 @@
-# install
+# You have to install the LSPs yourself, just google them, they are all pretty easy.
+# Helix will automagically detect and configure these LSPs for the langauges I use at least, they just have to be on your path, see https://docs.helix-editor.com/lang-support.html for more:
 # pylsp
 # taplo
 # ansible-language-server
@@ -11,7 +12,7 @@
 # simple-completion-language-server
 
 
-# introduce new language server
+# introduce new language server, this is just here to hack in snippet support for now while a builtin solution is getting worked by the helix devs.
 [language-server.scls]
 command = "simple-completion-language-server"
 
@@ -49,6 +50,7 @@ roots = []
 auto-format = false
 language-servers = [ "scls" ]
 
+# set formater for me, have to inject ruff and black with pipx!
 [language-server.pylsp.config.pylsp]
 plugins.ruff.enabled = true
 plugins.black.enabled = true
