@@ -9,6 +9,7 @@ color-modes = true
 clipboard-provider = "termcode"
 # these are the engram kb layout homerow keys
 jump-label-alphabet = "sitehancrkmjludowyvbfxpg"
+end-of-line-diagnostics = "hint"
 
 [editor.cursor-shape]
 # insert = "bar"
@@ -43,3 +44,6 @@ S-tab = "extend_parent_node_start"
 f = "goto_word"
 w = ":wa"
 x = ":qa"
+
+[editor.inline-diagnostics]
+cursor-line = "warning" # show warnings and errors on the cursorline inline
