@@ -29,6 +29,7 @@ C-k = "jump_view_up"
 C-j = "jump_view_down"
 tab = "move_parent_node_end"
 S-tab = "move_parent_node_start"
+"-" = "goto_word"
 
 [keys.insert]
 C-h = "jump_view_left"
@@ -41,9 +42,11 @@ S-tab = "move_parent_node_start"
 space = "file_picker"
 tab = "extend_parent_node_end"
 S-tab = "extend_parent_node_start"
-f = "goto_word"
+f = ":format"
 w = ":wa"
+W = ":wqa"
 x = ":qa"
+x = ":wqa!"
 
 [editor.inline-diagnostics]
 cursor-line = "warning" # show warnings and errors on the cursorline inline
