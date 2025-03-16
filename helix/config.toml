@@ -6,13 +6,11 @@ cursorline = true
 bufferline = "multiple"
 scrolloff = 8
 color-modes = true
-clipboard-provider = "termcode"
+# uncomment this for clipboard syncing over ssh
+# clipboard-provider = "termcode"
 # these are the engram kb layout homerow keys
 jump-label-alphabet = "sitehancrkmjludowyvbfxpg"
 end-of-line-diagnostics = "hint"
-
-[editor.cursor-shape]
-# insert = "bar"
 
 [editor.indent-guides]
 render = true
@@ -29,7 +27,7 @@ C-k = "jump_view_up"
 C-j = "jump_view_down"
 tab = "move_parent_node_end"
 S-tab = "move_parent_node_start"
-"-" = "goto_word"
+A-f = "goto_word"
 
 [keys.insert]
 C-h = "jump_view_left"
@@ -37,16 +35,20 @@ C-l = "jump_view_right"
 C-k = "jump_view_up"
 C-j = "jump_view_down"
 S-tab = "move_parent_node_start"
+A-f = "goto_word"
+
+[keys.select]
+tab = "extend_parent_node_end"
+S-tab = "extend_parent_node_start"
+A-f = "extend_to_word"
 
 [keys.normal.space]
 space = "file_picker"
-tab = "extend_parent_node_end"
-S-tab = "extend_parent_node_start"
 f = ":format"
-w = ":wa"
-W = ":wqa"
-x = ":qa"
-X = ":wqa!"
+w = ":w"
+W = ":wa"
+x = ":q"
+X = ":qa"
 
 [editor.inline-diagnostics]
 cursor-line = "warning" # show warnings and errors on the cursorline inline
