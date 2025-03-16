@@ -8,7 +8,7 @@ scrolloff = 8
 color-modes = true
 # uncomment this for clipboard syncing over ssh
 # clipboard-provider = "termcode"
-# these are the engram kb layout homerow keys
+# these are the engram kb layout homerow keys, which I use
 jump-label-alphabet = "sitehancrkmjludowyvbfxpg"
 end-of-line-diagnostics = "hint"
 
@@ -30,10 +30,10 @@ S-tab = "move_parent_node_start"
 A-f = "goto_word"
 
 [keys.insert]
-C-h = "jump_view_left"
-C-l = "jump_view_right"
-C-k = "jump_view_up"
-C-j = "jump_view_down"
+C-h = ["jump_view_left", "insert_mode"]
+C-l = ["jump_view_right", "insert_mode"]
+C-k = ["jump_view_up", "insert_mode"]
+C-j = ["jump_view_down", "insert_mode"]
 S-tab = "move_parent_node_start"
 A-f = "goto_word"
 
