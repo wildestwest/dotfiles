@@ -3,7 +3,7 @@ if status is-interactive
 end
 
 export AWS_USERNAME='CWP\Hullander.Weston.161'
-set EDITOR /usr/bin/vi
+set EDITOR /usr/bin/hx
 set fish_greeting
 set TERM xterm-256color
 set TMUX_TMPDIR /var/tmp
