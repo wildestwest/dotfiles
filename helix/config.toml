@@ -6,8 +6,7 @@ cursorline = true
 bufferline = "multiple"
 scrolloff = 8
 color-modes = true
-# uncomment this for clipboard syncing over ssh
-# clipboard-provider = "termcode"
+true-color = true
 # these are the engram kb layout homerow keys, which I use
 jump-label-alphabet = "sitehancrkmjludowyvbfxpg"
 end-of-line-diagnostics = "hint"

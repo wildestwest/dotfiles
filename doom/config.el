@@ -47,7 +47,9 @@
       "/usr/bin/fish") (setq-default explicit-shell-file-name
       "/usr/bin/fish")
 (setq avy-keys '(?a ?h ?e ?t ?i ?s ?c ?n ?r ?k ?l ?u))
-(global-set-key (kbd "TAB") 'avy-goto-word-1)
+(map! :map 'evil-normal-state-map "M-f" #'avy-goto-word-1)
+(map! :map 'evil-normal-state-map "L" #'+tabs:next-or-goto)
+(map! :map 'evil-normal-state-map "H" #'+tabs:previous-or-goto)
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
