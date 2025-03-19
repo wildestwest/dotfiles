@@ -3,6 +3,7 @@ if status is-interactive
 end
 
 export AWS_USERNAME='CWP\Hullander.Weston.161'
+alias em 'emacsclient -nw -a ""'
 set EDITOR /usr/bin/hx
 set fish_greeting
 set TERM xterm-256color
