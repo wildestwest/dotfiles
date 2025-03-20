@@ -7,9 +7,25 @@ bufferline = "multiple"
 scrolloff = 8
 color-modes = true
 true-color = true
+undercurl = true
 # these are the engram kb layout homerow keys, which I use
 jump-label-alphabet = "sitehancrkmjludowyvbfxpg"
 end-of-line-diagnostics = "hint"
+rulers = [80, 120]
+
+[editor.statusline]
+left = ["mode", "spinner", "read-only-indicator", "file-modification-indicator"]
+center = ["file-name", "version-control"]
+right = ["diagnostics", "selections", "position", "file-encoding", "file-line-ending", "file-type"]
+separator = "│"
+mode.normal = "NORMAL"
+mode.insert = "INSERT"
+mode.select = "SELECT"
+
+[editor.lsp]
+goto-reference-include-declaration = false
+display-inlay-hints = true
+display-progress-messages = true
 
 [editor.indent-guides]
 render = true
@@ -20,13 +36,14 @@ enable = true
 [keys.normal]
 H = ":buffer-previous"
 L = ":buffer-next"
+X = "select_line_above"
 C-h = "jump_view_left"
 C-l = "jump_view_right"
 C-k = "jump_view_up"
 C-j = "jump_view_down"
 tab = "move_parent_node_end"
 S-tab = "move_parent_node_start"
-A-f = "goto_word"
+ret = "goto_word"
 
 [keys.insert]
 C-h = ["jump_view_left", "insert_mode"]
@@ -34,20 +51,27 @@ C-l = ["jump_view_right", "insert_mode"]
 C-k = ["jump_view_up", "insert_mode"]
 C-j = ["jump_view_down", "insert_mode"]
 S-tab = "move_parent_node_start"
-A-f = "goto_word"
+A-ret = "goto_word"
 
 [keys.select]
 tab = "extend_parent_node_end"
 S-tab = "extend_parent_node_start"
-A-f = "extend_to_word"
+ret = "extend_to_word"
+X = "select_line_above"
 
 [keys.normal.space]
 space = "file_picker"
+w = ":wa"
+
+[keys.normal.backspace]
+backspace = "suspend"
+c = ":buffer-close"
+y = ":yank-diagnostic"
+w = "wclose"
+s = "vsplit_new"
 f = ":format"
-w = ":w"
-W = ":wa"
-x = ":q"
-X = ":qa"
+x = ":qa"
+R = ":config-reload"
 
 [editor.inline-diagnostics]
 cursor-line = "warning" # show warnings and errors on the cursorline inline

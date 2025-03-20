@@ -33,7 +33,7 @@ LOG_FILE = "/tmp/completion.log"
 
 [[language]]
 name = "python"
-language-servers = ["basedpyright"]
+language-servers = ["scls", "basedpyright", "ruff"]
 
 # append language server to existed languages
 [[language]]
@@ -50,17 +50,17 @@ roots = []
 auto-format = false
 language-servers = [ "scls" ]
 
-# [language-server.basedpyright]
-# command = "basedpyright-langserver"
-# args = ["--stdio"]
-# except-features = ["format", "code-action"]
+[language-server.basedpyright]
+command = "basedpyright-langserver"
+args = ["--stdio"]
+except-features = ["format", "code-action"]
 
-# [language-server.basedpyright.config.basedpyright.analysis]
-# autoSearchPaths = true
-# typeCheckingMode = "basic"
-# diagnosticMode = "openFilesOnly"
+[language-server.basedpyright.config.basedpyright.analysis]
+autoSearchPaths = true
+typeCheckingMode = "basic"
+diagnosticMode = "openFilesOnly"
 
-# [language-server.ruff]
-# command = "ruff"
-# args = ["server", "--preview"]
+[language-server.ruff]
+command = "ruff"
+args = ["server", "--preview"]
 
