@@ -41,15 +41,18 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
+
+;; My stuffs
 (setq shell-file-name (executable-find
       "bash"))
 (setq-default vterm-shell
       "/usr/bin/fish") (setq-default explicit-shell-file-name
       "/usr/bin/fish")
-(setq avy-keys '(?a ?h ?e ?t ?i ?s ?c ?n ?r ?k ?l ?u))
-(map! :map 'evil-normal-state-map "M-f" #'avy-goto-word-1)
+(setq evil-snipe-scope 'whole-buffer)
+
 (map! :map 'evil-normal-state-map "L" #'+tabs:next-or-goto)
 (map! :map 'evil-normal-state-map "H" #'+tabs:previous-or-goto)
+
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
