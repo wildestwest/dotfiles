@@ -29,6 +29,7 @@
 "lazygit" = ""
 "nvim" = ""
 "ghostty" = ""
+"steam" = ""
 
 [other]
 fallback_icon = "🤨"

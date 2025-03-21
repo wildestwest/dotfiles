@@ -192,6 +192,7 @@ input "20547:23623:Ploopy_Corporation_Ploopy_Adept_Trackball_Mouse" scroll_facto
     # assign [app_id="one.ablaze.floorp"] workspace number 10
     assign [instance="discord"] workspace number 9
     assign [instance="spotify"] workspace number 8
+    assign [instance="steamwebhelper"] workspace number 5
 #
 # Layout stuff:
 #
