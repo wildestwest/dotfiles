@@ -90,6 +90,9 @@ input "20547:23623:Ploopy_Corporation_Ploopy_Adept_Trackball_Mouse" scroll_facto
     bindsym $mod+q kill
     bindsym $mod+c kill
 
+    # Open keymap helper
+    bindsym $mod+m exec imv -W 2000 -H 800 /home/whulland/Pictures/sym.png
+
     # Start your launcher
     bindsym $mod+Space exec $menu
 
@@ -111,6 +114,7 @@ input "20547:23623:Ploopy_Corporation_Ploopy_Adept_Trackball_Mouse" scroll_facto
     for_window [app_id="thunar"] floating enable
     for_window [app_id="org.gnome.Solanum"] floating enable
     for_window [app_id="foot"] floating enable
+    for_window [app_id="imv"] floating enable
 
     # Reload the configuration file
     bindsym $mod+Shift+c reload
