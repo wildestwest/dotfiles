@@ -78,6 +78,11 @@ output "LG Electronics LG Ultra HD 0x00017DAC" pos 5760,0
 # Read `man 5 sway-input` for more information about this section.
 # input "20547:21570:PloopyCo_Trackball_Mouse" scroll_factor .2
 input "20547:23623:Ploopy_Corporation_Ploopy_Adept_Trackball_Mouse" scroll_factor .07
+# Disable mouse acceleration for all pointer devices
+input "type:pointer" {
+    accel_profile flat
+    pointer_accel 0
+}
 ### Key bindings
 #
 # Basics:
