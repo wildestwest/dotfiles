@@ -19,7 +19,6 @@ gaps inner 10
 # Recommends: foot
 set $term ghostty
 set $term_box ghostty -e distrobox-enter dev
-set $browser firefox
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
@@ -42,7 +41,7 @@ exec_always --no-startup-id workstyle &> /tmp/workstyle.log
 output * bg /home/whulland/murky_peaks.jpg fill
 output eDP-1 pos 0,0
 output "LG Electronics LG ULTRAGEAR+ 207NTSUDZ886" pos 1920,0
-output "LG Electronics LG Ultra HD 0x00017DAC" pos 5760,0
+output "LG Electronics LG Ultra HD 0x00017DAC" pos 5760,-720 transform 90
 #
 # Example configuration:
 #
@@ -100,9 +99,6 @@ input "type:pointer" {
 
     # Start your launcher
     bindsym $mod+Space exec $menu
-
-    # Launch Browser
-    bindsym $mod+b exec $browser
 
     # Pull stuff from scratchpad
     bindsym $mod+t [app_id=org.gnome.Solanum] scratchpad show
@@ -190,13 +186,19 @@ input "type:pointer" {
     workspace 8 output 'LG Electronics LG Ultra HD 0x00017DAC'
     workspace 9 output 'LG Electronics LG Ultra HD 0x00017DAC'
     workspace 10 output 'LG Electronics LG Ultra HD 0x00017DAC'
+    # Make splits vertical on the vertical monitor
+    for_window [workspace="6"] split vertical
+    for_window [workspace="7"] split vertical
+    for_window [workspace="8"] split vertical
+    for_window [workspace="9"] split vertical
+    for_window [workspace="10"] split vertical
 
-    assign [app_id="mattermost"] workspace number 1
-    assign [app_id="com.github.IsmaelMartinez.teams_for_linux"] workspace number 2
-    assign [app_id="com.github.iwalton3.jellyfin-media-player"] workspace number 10
+    assign [app_id="mattermost"] workspace number 10
+    assign [app_id="com.github.IsmaelMartinez.teams_for_linux"] workspace number 10
+    assign [app_id="com.github.iwalton3.jellyfin-media-player"] workspace number 1
     # assign [app_id="one.ablaze.floorp"] workspace number 10
-    assign [instance="discord"] workspace number 9
-    assign [instance="spotify"] workspace number 8
+    assign [instance="discord"] workspace number 2
+    assign [instance="spotify"] workspace number 1
     assign [instance="steamwebhelper"] workspace number 5
 #
 # Layout stuff:
@@ -204,8 +206,8 @@ input "type:pointer" {
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
-    # bindsym $mod+b splith
-    # bindsym $mod+v splitv
+    bindsym $mod+b exec "swaymsg 'layout splith'"
+    bindsym $mod+v exec "swaymsg 'layout splitv'"
 
     # Switch the current container between different layout styles
     # bindsym $mod+s layout stacking
