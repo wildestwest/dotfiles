@@ -42,8 +42,8 @@
 # # Just for example:
 # resize-overlay-duration = 4s 200ms
 
-font-size = 24
-background-opacity = .90
+font-size = 14
+background-opacity = .93
 # clipboard-read = "allow"
 theme = "tokyonight_night"
 clipboard-write = "allow"
