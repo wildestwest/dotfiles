@@ -101,6 +101,16 @@ automatically-unhide-macos-hidden-apps = false
         activate
     end tell'
     '''
+    alt-enter = '''exec-and-forget osascript -e '
+    tell application "Ghostty"
+    	if it is running then
+    		activate
+    		tell application "System Events" to keystroke "n" using {command down}
+    	else
+    		activate
+    	end if
+    end tell'
+    '''
     alt-q = 'close --quit-if-last-window'    
     alt-f = 'fullscreen --no-outer-gaps'
 
