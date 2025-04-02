@@ -97,22 +97,8 @@ outer.right = 8
 # You can uncomment the following lines to open up terminal with alt + enter shortcut
 # (like in i3)
 # alt-enter = 'exec-and-forget open -a Ghostty'
-alt-b = '''exec-and-forget osascript -e '
-    tell application "Safari"
-        make new document at end of documents
-        activate
-    end tell'
-    '''
-alt-enter = '''exec-and-forget osascript -e '
-    tell application "Ghostty"
-    	if it is running then
-    		activate
-    		tell application "System Events" to keystroke "n" using {command down}
-    	else
-    		activate
-    	end if
-    end tell'
-    '''
+
+# close and fullscreen keys
 alt-q = 'close --quit-if-last-window'
 alt-f = 'fullscreen --no-outer-gaps'
 
@@ -137,6 +123,7 @@ alt-minus = 'resize smart -50'
 alt-equal = 'resize smart +50'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
+alt-1 = 'workspace 1'
 alt-2 = 'workspace 2'
 alt-3 = 'workspace 3'
 alt-4 = 'workspace 4'
@@ -145,8 +132,10 @@ alt-6 = 'workspace 6'
 alt-7 = 'workspace 7'
 alt-8 = 'workspace 8'
 alt-9 = 'workspace 9'
+alt-0 = 'workspace 10'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
+alt-shift-1 = 'move-node-to-workspace 1'
 alt-shift-2 = 'move-node-to-workspace 2'
 alt-shift-3 = 'move-node-to-workspace 3'
 alt-shift-4 = 'move-node-to-workspace 4'
@@ -155,6 +144,7 @@ alt-shift-6 = 'move-node-to-workspace 6'
 alt-shift-7 = 'move-node-to-workspace 7'
 alt-shift-8 = 'move-node-to-workspace 8'
 alt-shift-9 = 'move-node-to-workspace 9'
+alt-shift-0 = 'move-node-to-workspace 10'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
@@ -186,20 +176,3 @@ alt-shift-l = ['join-with right', 'mode main']
 down = 'volume down'
 up = 'volume up'
 shift-down = ['volume set 0', 'mode main']
-
-[workspace-to-monitor-force-assignment]
-2 = 'main'
-3 = 'main'
-4 = 'main'
-5 = 'main'
-6 = 'secondary'
-7 = 'secondary'
-8 = 'secondary'
-9 = 'secondary'
-a = 'main'
-e = 'main'
-i = 'main'
-c = 'main'
-t = 'secondary'
-s = 'secondary'
-n = 'secondary'
