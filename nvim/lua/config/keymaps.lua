@@ -16,6 +16,11 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 -- Cursor in middle when searching
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
+
+vim.keymap.set("n", "<BS>x", ":q<CR>")
+vim.keymap.set("n", "<BS>w", ":w<CR>")
+vim.keymap.set("n", "<BS>q", ":qa<CR>")
+
 -- Map <Esc> to exit terminal mode
 vim.api.nvim_set_keymap("t", "<esc><esc>", [[<C-\><C-n>]], { noremap = true })
 

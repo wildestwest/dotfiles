@@ -43,7 +43,7 @@ C-k = "jump_view_up"
 C-j = "jump_view_down"
 tab = "move_parent_node_end"
 S-tab = "move_parent_node_start"
-ret = "goto_word"
+f = "goto_word"
 
 [keys.insert]
 C-h = ["jump_view_left", "insert_mode"]
@@ -51,12 +51,12 @@ C-l = ["jump_view_right", "insert_mode"]
 C-k = ["jump_view_up", "insert_mode"]
 C-j = ["jump_view_down", "insert_mode"]
 S-tab = "move_parent_node_start"
-A-ret = "goto_word"
+C-f = "goto_word"
 
 [keys.select]
 tab = "extend_parent_node_end"
 S-tab = "extend_parent_node_start"
-ret = "extend_to_word"
+f = "extend_to_word"
 X = "select_line_above"
 
 [keys.normal.space]
