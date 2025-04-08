@@ -44,6 +44,7 @@ C-j = "jump_view_down"
 tab = "move_parent_node_end"
 S-tab = "move_parent_node_start"
 f = "goto_word"
+G = "goto_file_end"
 
 [keys.insert]
 C-h = ["jump_view_left", "insert_mode"]
@@ -58,20 +59,17 @@ tab = "extend_parent_node_end"
 S-tab = "extend_parent_node_start"
 f = "extend_to_word"
 X = "select_line_above"
+G = "goto_file_end"
 
 [keys.normal.space]
 space = "file_picker"
-w = ":wa"
 
 [keys.normal.backspace]
 backspace = "suspend"
-c = ":buffer-close"
-y = ":yank-diagnostic"
+b = ":buffer-close"
 w = "wclose"
 s = "vsplit_new"
 f = ":format"
-x = ":qa"
-R = ":config-reload"
 
 [editor.inline-diagnostics]
 cursor-line = "warning" # show warnings and errors on the cursorline inline

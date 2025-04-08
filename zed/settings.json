@@ -112,6 +112,11 @@
     "toggle_relative_line_numbers": true,
     "highlight_on_yank_duration": 300
   },
+  "auto_install_extensions": {
+    "helm" : true,
+    "Dockerfile" : true,
+    "TOML" : true
+  },
   "ui_font_size": 14,
   "buffer_font_size": 14,
   "wrap_guides": [80, 120],

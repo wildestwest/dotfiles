@@ -43,7 +43,9 @@
       "alt-h": "vim::Left",
       "alt-l": "vim::Right",
       "alt-j": "vim::Down",
-      "alt-k": "vim::Up"
+      "alt-k": "vim::Up",
+      "s": "vim::PushSneak",
+      "shift-s": "vim::PushSneakBackward"
     }
   },
   {
