@@ -1,15 +1,17 @@
 # You have to install the LSPs yourself, just google them, they are all pretty easy.
 # Helix will automagically detect and configure these LSPs for the langauges I use at least, they just have to be on your path, see https://docs.helix-editor.com/lang-support.html for more:
-# pylsp
-# taplo
-# ansible-language-server
-# rust-analyzer
-# vscode-json-languageservice
-# helm_ls
-# gopls
-# dockerfile-laguage-server
-# bash-langauge-server
-# simple-completion-language-server
+# pip install -U jedi-language-server
+# cargo install taplo-cli --locked
+# npm install -g @ansible/ansible-language-server
+# rustup component add rust-analyzer OR brew install rust-analyzer
+# npm install --save vscode-json-languageservice
+# brew install helm-ls
+# npm install --global yaml-language-server
+# go install golang.org/x/tools/gopls@latest
+# brew install golangci-lint
+# npm install -g dockerfile-language-server-nodejs
+# npm i -g bash-language-server
+# $ cargo install --git https://github.com/estin/simple-completion-language-server.git
 
 
 # introduce new language server, this is just here to hack in snippet support for now while a builtin solution is getting worked by the helix devs.
@@ -20,7 +22,7 @@ command = "simple-completion-language-server"
 max_completion_items = 100           # set max completion results len for each group: words, snippets, unicode-input
 feature_words = true                 # enable completion by word
 feature_snippets = true              # enable snippets
-# snippets_first = true                # completions will return before snippets by default
+snippets_first = true                # completions will return before snippets by default
 snippets_inline_by_word_tail = false # suggest snippets by WORD tail, for example text `xsq|` become `x^2|` when snippet `sq` has body `^2`
 feature_unicode_input = false        # enable "unicode input"
 feature_paths = false                # enable path completion
@@ -33,7 +35,7 @@ LOG_FILE = "/tmp/completion.log"
 
 [[language]]
 name = "python"
-language-servers = ["scls", "basedpyright", "ruff"]
+language-servers = ["scls", "jedi"]
 
 # append language server to existed languages
 [[language]]
@@ -49,18 +51,3 @@ shebangs = []
 roots = []
 auto-format = false
 language-servers = [ "scls" ]
-
-[language-server.basedpyright]
-command = "basedpyright-langserver"
-args = ["--stdio"]
-except-features = ["format", "code-action"]
-
-[language-server.basedpyright.config.basedpyright.analysis]
-autoSearchPaths = true
-typeCheckingMode = "basic"
-diagnosticMode = "openFilesOnly"
-
-[language-server.ruff]
-command = "ruff"
-args = ["server", "--preview"]
-
