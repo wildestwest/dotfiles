@@ -68,8 +68,6 @@ space = "file_picker"
 backspace = "suspend"
 b = ":buffer-close"
 w = "wclose"
-s = "vsplit_new"
-f = ":format"
 
 [editor.inline-diagnostics]
 cursor-line = "warning" # show warnings and errors on the cursorline inline
