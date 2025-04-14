@@ -36,8 +36,6 @@ $env.config = {
   ]
 }
 
-alias nu-open = open
-alias open = ^open
 alias y = yazi
 alias l = ls
 alias la = ls -la

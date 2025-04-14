@@ -165,3 +165,9 @@ nu
 exit
 ls
 c dot
+lazygit 
+c dot
+keybindings list 
+keybindings list | where name =~ "move"
+keybindings list | where name =~ "Move"
+hx
