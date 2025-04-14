@@ -101,6 +101,10 @@ outer.right = 8
 # close and fullscreen keys
 alt-q = 'close --quit-if-last-window'
 alt-f = 'fullscreen --no-outer-gaps'
+alt-t = 'exec-and-forget open -n -a ghostty --args -e nu'
+alt-e = 'exec-and-forget open -n -a ghostty --args -e yazi'
+alt-b = 'exec-and-forget open -n -a firefox --args -P'
+alt-x = 'exec-and-forget open -a keepassxc'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
 alt-slash = 'layout tiles horizontal vertical'
@@ -176,3 +180,19 @@ alt-shift-l = ['join-with right', 'mode main']
 down = 'volume down'
 up = 'volume up'
 shift-down = ['volume set 0', 'mode main']
+
+[[on-window-detected]]
+  if.app-name-regex-substring = 'ImprovingMail'
+  run = 'move-node-to-workspace 9'
+
+[[on-window-detected]]
+  if.app-name-regex-substring = 'MilMail'
+  run = 'move-node-to-workspace 9'
+
+[[on-window-detected]]
+  if.app-name-regex-substring = 'Mattermost'
+  run = 'move-node-to-workspace 10'
+  
+[[on-window-detected]]
+  if.app-name-regex-substring = 'Spotify'
+  run = 'move-node-to-workspace 8'

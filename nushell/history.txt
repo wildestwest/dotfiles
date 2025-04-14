@@ -1,0 +1,167 @@
+exit
+c
+cd
+config nu
+exit
+nu
+exit
+$nu.env-path
+hx `/Users/whulland/Library/Application Support/nushell/env.nu`
+$nu.config-path
+hx `/Users/whulland/Library/Application Support/nushell/config.nu`
+c test
+hx `/Users/whulland/Library/Application Support/nushell/config.nu`
+hx `/Users/whulland/Library/Application Support/nushell/env.nu`
+c ewa
+c
+nu config
+config nu
+hx `/Users/whulland/Library/Application Support/nushell/config.nu`
+l
+la
+ls
+ls -la
+config nu
+yazi
+config nu
+y
+config nu
+y
+config nu
+y
+config nu
+y
+config nu
+y
+yazi
+config nu
+pwd
+ll
+ls
+ls -la
+config nu
+la
+l
+jkl
+l
+c dot
+hx gh
+whereis nu
+hx
+nu
+ghostty -e fish --with --custom --args
+whereis ghostty
+open -n -a ghostty --args -e nu
+shell
+c dot
+exit
+/app
+c
+/Applications/Ghostty.app/Contents/MacOS/ghostty -e nu
+/Applications/Ghostty.app/Contents/MacOS/ghostty
+open -n /Applications/Ghostty.app/Contents/MacOS/ghostty --args -e nu
+brew ls
+brew uninstall ghostty
+exit
+c dot
+hx
+c con
+hx
+whereis nu
+hx
+c dot
+config nu
+wezterm -e nu
+wezterm start --nu
+wezterm start -- nu
+whereis wezterm
+wezterm start -- nu
+y
+exit
+config nu
+c `Library/Application Support/`
+c nushell
+hx
+wget https://github.com/nushell/nu_scripts/raw/refs/heads/main/custom-completions/git/git-completions.nu
+http help
+http -help
+http --help
+http get --help
+http get https://github.com/nushell/nu_scripts/raw/refs/heads/main/custom-completions/git/git-completions.nu
+http get --help
+http get https://github.com/nushell/nu_scripts/raw/refs/heads/main/custom-completions/git/git-completions.nu -r
+curl -o https://github.com/nushell/nu_scripts/raw/refs/heads/main/custom-completions/git/git-completions.nu
+curl https://github.com/nushell/nu_scripts/raw/refs/heads/main/custom-completions/git/git-completions.nu
+curl https://github.com/nushell/nu_scripts/raw/refs/heads/main/custom-completions/git/git-completions.nu -o
+curl https://github.com/nushell/nu_scripts/raw/refs/heads/main/custom-completions/git/git-completions.nu -o git-completions.nu
+l
+cat git-completions.nu
+rm git-completions.nu
+http get https://github.com/nushell/nu_scripts/raw/refs/heads/main/custom-completions/git/git-completions.nu -r | save git-completions.nu
+l
+hx
+http get https://github.com/nushell/nu_scripts/raw/refs/heads/main/custom-completions/rustup/rustup-completions.nu | save rustup-completions.nu
+http get https://github.com/nushell/nu_scripts/raw/refs/heads/main/custom-completions/pytest/pytest-completions.nu | save pytest-completions.nu
+http get https://github.com/nushell/nu_scripts/raw/refs/heads/main/custom-completions/docker/docker-completions.nu | save docker-completions.nu
+http get https://github.com/nushell/nu_scripts/raw/refs/heads/main/custom-completions/aws/aws-completions.nu | save aws-completions.nu
+l
+hx
+cp ~/.zoxide.nu .
+ll
+l
+cp ~/.zoxide.nu la
+la
+rm la
+la
+mv .zoxide.nu zoxide.nu
+hx
+c
+hx
+c nushell
+hx
+starship preset tokyo-night -o ~/.config/starship.toml
+starship preset nerd-font-symbols -o ~/.config/starship.toml
+c nushell
+hx
+c nushell
+hx
+keybindings list 
+c dot
+hx
+exit
+sket
+sketchybar --reload
+tmux new -s vpn
+c dot
+top
+ps
+ps | where name --help
+ps | where --help
+ps | where name =~ "fire"
+ps | where name =~ "aer"
+ps
+ps | where name =~ "gho"
+sudo openconnect --protocol=gp --user=${AWS_USERNAME} --usergroup=gateway globalprotect.ops.afweather.mil
+cat dotfiles/fish/config.fish
+sudo openconnect --protocol=gp --user=CWP\Hullander.Weston.161 --usergroup=gateway globalprotect.ops.afweather.mil
+sudo openconnect --protocol=gp --user='CWP\Hullander.Weston.161' --usergroup=gateway globalprotect.ops.afweather.mil
+brew upgrade
+tmux attach
+c dot 
+open -n -a firefox --args -P "default-release"
+aerospace --help
+aerospace tree
+aerospace list-apps
+c dot
+c nushell
+cp `/Library/Application Support/nushell` ~/dotfiles/nushell
+pwd
+cp `~/Library/Application Support/nushell` ~/dotfiles/nushell
+cp -r`~/Library/Application Support/nushell` ~/dotfiles/nushell
+exit
+fish
+exit
+nu
+exit
+ls
+c dot
