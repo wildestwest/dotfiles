@@ -171,3 +171,79 @@ keybindings list
 keybindings list | where name =~ "move"
 keybindings list | where name =~ "Move"
 hx
+ls
+ls \
+ls 
+ls <\n>|where type = file
+ls <\n>|where type = 'file'
+ls <\n>| where type = 'file'
+ls | where type = file
+ls <\n>| where type == 'file'
+ls<\n>| where type == file
+tmux attach
+tmux kill-session
+tmux new -s vpn
+c dot
+hx
+ssh coder.wes
+ssh coder.wes nu
+ssh coder.wes
+sketchybar --reload
+tmux new -s vpn
+ssh coder.wes
+c ewa
+fish
+hx ~/dotfiles/
+virtualenv .venv
+source .venv/bin/activate.nu
+exit
+nu
+exit
+sketchybar --reload
+aerospace list-apps
+brew upgrade
+tmux new -s vpn
+curl https://spire.staging.afweather.mil/AFW_WMS/?REQUEST=GetGTile&Layer=LAND&SERVICE=WMS&VERSION=1.3.0&CRS=EPSG:900913&FORMAT=image/png&TILECOL=2&TILEROW=2&TILEZOOM=3
+c conf
+la
+rm -rf nvim
+git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+nvim
+git clone https://github.com/nvim-lua/kickstart.nvim.git ~/.config/nvim
+nvim
+la
+c
+c .config/nv
+git clone https://github.com/nvim-lua/kickstart.nvim.git ~/.config/nvim
+whereis nvim
+git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+bash
+c .co
+la
+c nvim
+nvim
+nvim .
+c
+nvim test.py
+c ewa
+vim .
+nvim .
+c nvim
+la
+nvim .
+l lua/
+rm -rf lua
+rm -rf doc
+rm -rf README.md
+rm -rf LICENSE.md
+rm -rf .stylua.toml
+rm -rf .git
+rm -rf .github/
+rm -rf .gitignore
+la
+nvim .
+c dot
+ll
+l
+rm -rf nvim
+cp -r ~/.config/nvim ~/dotfiles/nvim
