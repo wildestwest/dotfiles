@@ -5,7 +5,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -16,13 +16,16 @@ vim.g.have_nerd_font = false
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = "a"
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
+
+-- Ruler
+vim.opt.colorcolumn = "90"
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
@@ -365,7 +368,7 @@ require("lazy").setup({
 				desc = "[S]earch [K]eymaps",
 			},
 			{
-				"<leader>sf",
+				"<leader><leader>",
 				function()
 					Snacks.picker.smart()
 				end,
@@ -387,7 +390,7 @@ require("lazy").setup({
 				mode = { "n", "x" },
 			},
 			{
-				"<leader>sg",
+				"<leader>/",
 				function()
 					Snacks.picker.grep()
 				end,
@@ -414,20 +417,20 @@ require("lazy").setup({
 				end,
 				desc = '[S]earch Recent Files ("." for repeat)',
 			},
-			{
-				"<leader><leader>",
-				function()
-					Snacks.picker.buffers()
-				end,
-				desc = "[ ] Find existing buffers",
-			},
-			{
-				"<leader>/",
-				function()
-					Snacks.picker.lines({})
-				end,
-				desc = "[/] Fuzzily search in current buffer",
-			},
+			-- {
+			-- 	"<leader><leader>",
+			-- 	function()
+			-- 		Snacks.picker.buffers()
+			-- 	end,
+			-- 	desc = "[ ] Find existing buffers",
+			-- },
+			-- {
+			-- 	"<leader>/",
+			-- 	function()
+			-- 		Snacks.picker.lines({})
+			-- 	end,
+			-- 	desc = "[/] Fuzzily search in current buffer",
+			-- },
 			{
 				"<leader>s/",
 				function()
@@ -1188,6 +1191,48 @@ require("lazy").setup({
 				vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "Undo Tree" })
 			end,
 		},
+	},
+	{
+		"mikavilpas/yazi.nvim",
+		event = "VeryLazy",
+		dependencies = {
+			-- check the installation instructions at
+			-- https://github.com/folke/snacks.nvim
+			"folke/snacks.nvim",
+		},
+		keys = {
+			-- 👇 in this section, choose your own keymappings!
+			{
+				"<leader>-",
+				mode = { "n", "v" },
+				"<cmd>Yazi<cr>",
+				desc = "Open yazi at the current file",
+			},
+			{
+				-- Open in the current working directory
+				"<leader>cw",
+				"<cmd>Yazi cwd<cr>",
+				desc = "Open the file manager in nvim's working directory",
+			},
+			{
+				"<c-up>",
+				"<cmd>Yazi toggle<cr>",
+				desc = "Resume the last yazi session",
+			},
+		},
+		opts = {
+			-- if you want to open yazi instead of netrw, see below for more info
+			open_for_directories = true,
+			keymaps = {
+				show_help = "<f1>",
+			},
+		},
+		-- 👇 if you use `open_for_directories=true`, this is recommended
+		init = function()
+			-- More details: https://github.com/mikavilpas/yazi.nvim/issues/802
+			-- vim.g.loaded_netrw = 1
+			vim.g.loaded_netrwPlugin = 1
+		end,
 	},
 
 	-- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
