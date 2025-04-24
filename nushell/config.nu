@@ -18,6 +18,7 @@
 # them for future reference.
 
 $env.path ++= ["~/.local/bin"]
+$env.path ++= ["~/.cargo/bin"]
 $env.path ++= ["/Applications/WezTerm.app/Contents/MacOS"]
 $env.EDITOR = "/opt/homebrew/bin/hx"
 $env.config.buffer_editor = "hx"

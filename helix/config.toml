@@ -6,7 +6,7 @@ cursorline = true
 bufferline = "multiple"
 scrolloff = 8
 color-modes = true
-true-color = true
+true-color = true  
 undercurl = true
 # these are the engram kb layout homerow keys, which I use
 jump-label-alphabet = "hatesincludorkmjfxwypgvb"
@@ -67,7 +67,8 @@ space = "file_picker"
 [keys.normal.backspace]
 backspace = "suspend"
 b = ":buffer-close"
-w = "wclose"
+x = ":qa"
+w = ":wa"
 
 [editor.inline-diagnostics]
 cursor-line = "warning" # show warnings and errors on the cursorline inline
