@@ -48,4 +48,4 @@ background-opacity = .93
 theme = "tokyonight_night"
 clipboard-write = "allow"
 confirm-close-surface = false
-
+window-decoration = "none"

@@ -19,9 +19,8 @@
 
 $env.path ++= ["~/.local/bin"]
 $env.path ++= ["~/.cargo/bin"]
-$env.path ++= ["/Applications/WezTerm.app/Contents/MacOS"]
-$env.EDITOR = "/opt/homebrew/bin/hx"
-$env.config.buffer_editor = "hx"
+$env.EDITOR = "~/.cargo/bin/hx"
+$env.config.buffer_editor = "~/.cargo/bin/hx"
 $env.config.show_banner = false
 $env.config.edit_mode = 'vi'
 
@@ -40,6 +39,8 @@ $env.config = {
 alias y = yazi
 alias l = ls
 alias la = ls -la
+alias z = zellij
+alias lg = lazygit
 
 mkdir ($nu.data-dir | path join "vendor/autoload")
 starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")
