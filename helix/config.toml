@@ -46,6 +46,22 @@ S-tab = "move_parent_node_start"
 f = "goto_word"
 G = "goto_file_end"
 
+[keys.normal.m.n]
+"(" = "@s\\(<ret>nmim"
+"{" = "@s\\{<ret>nmim"
+"[" = "@s\\[<ret>nmim"
+'"' = '@s\"<ret>nmim'
+"'" = "@s\\'<ret>nmim"
+"<" = "@s<lt><ret>nmim"
+
+[keys.normal.m.p]
+"(" = "@s\\)<ret>Nmmmim"
+"{" = "@s\\}<ret>Nmmmim"
+"[" = "@s\\]<ret>Nmmmim"
+'"' = '@s\"<ret>Nmmmim'
+"'" = "@s\\'<ret>Nmmmim"
+"<" = "@s<gt><ret>Nmmmim"
+
 [keys.insert]
 C-h = ["jump_view_left", "insert_mode"]
 C-l = ["jump_view_right", "insert_mode"]
@@ -59,7 +75,7 @@ tab = "extend_parent_node_end"
 S-tab = "extend_parent_node_start"
 f = "extend_to_word"
 X = "select_line_above"
-G = "goto_file_end"
+G = "extend_to_file_end"
 
 [keys.normal.space]
 space = "file_picker"
