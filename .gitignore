@@ -1,3 +1,5 @@
 helix/external-snippets/github.com/rafamadriz/friendly-snippets.git
 nushell/history.txt
 helix/runtime
+zed/prompts/prompts-library-db.0.mdb/data.mdb
+zed/prompts/prompts-library-db.0.mdb/lock.mdb
