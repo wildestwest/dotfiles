@@ -9,7 +9,7 @@
 {
   "ssh_connections": [
     {
-      "host": "coder.wes",
+      "host": "coder.ewa",
       "projects": [
         {
           "paths": [
@@ -106,20 +106,29 @@
   ],
   "vim_mode": true,
   "vim": {
-    "use_system_clipboard": "never",
+    "use_system_clipboard": "on_yank",
     "use_multiline_find": true,
     "use_smartcase_find": true,
     "toggle_relative_line_numbers": true,
     "highlight_on_yank_duration": 300
   },
   "auto_install_extensions": {
-    "helm" : true,
-    "Dockerfile" : true,
-    "TOML" : true
+    "html": true,
+    "dockerfile": true,
+    "docker-compose": true,
+    "tokyo-night": true,
+    "helm": true,
+    "graphql": true,
+    "ansible": true,
+    "lua": true,
+    "zig": true
   },
   "ui_font_size": 14,
   "buffer_font_size": 14,
-  "wrap_guides": [80, 120],
+  "wrap_guides": [
+    80,
+    120
+  ],
   // Disable cursor blink
   "cursor_blink": false,
   // Use relative line numbers
@@ -127,7 +136,7 @@
   // Prevent the buffer from scrolling beyond the last line
   "scroll_beyond_last_line": "off",
   // Allow the cursor to reach the edges of the screen
-  "vertical_scroll_margin": 8,
+  "vertical_scroll_margin": 12,
   "theme": {
     "mode": "system",
     "light": "One Light",
@@ -236,7 +245,7 @@
     "quick_actions": false,
     "selections_menu": false
   },
-  "assistant": {
+  "agent": {
     "version": "2",
     "enabled": false
   },
@@ -258,7 +267,7 @@
   "line_indicator_format": "short",
   "terminal": {
     "shell": {
-      "program": "fish"
+      "program": "nu"
     },
     "detect_venv": {
       "on": {
@@ -272,7 +281,7 @@
           "venv"
         ],
         // Can also be `csh`, `fish`, and `nushell`
-        "activate_script": "fish"
+        "activate_script": "nushell"
       }
     },
     "dock": "right",
@@ -288,7 +297,7 @@
       "title": false,
       "breadcrumbs": false
     }
- },
+  },
   "lsp": {
     "pyright": {
       "settings": {

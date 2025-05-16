@@ -41,6 +41,7 @@ alias l = ls
 alias la = ls -la
 alias z = zellij
 alias lg = lazygit
+alias v = nvim
 
 mkdir ($nu.data-dir | path join "vendor/autoload")
 starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")

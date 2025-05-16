@@ -6,6 +6,7 @@ vim.g.maplocalleader = " "
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -27,13 +28,25 @@ vim.o.showmode = false
 -- Ruler
 vim.o.colorcolumn = "90"
 
--- Sync clipboard between OS and Neovim.
---  Schedule the setting after `UiEnter` because it can increase startup-time.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
-vim.schedule(function()
-	vim.o.clipboard = "unnamedplus"
-end)
+local function paste()
+	return {
+		vim.fn.split(vim.fn.getreg(""), "\n"),
+		vim.fn.getregtype(""),
+	}
+end
+if vim.env.SSH_TTY then --only do this hack for ssh sessions
+	vim.g.clipboard = {
+		name = "OSC 52",
+		copy = {
+			["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+			["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+		},
+		paste = {
+			["+"] = paste,
+			["*"] = paste,
+		},
+	}
+end
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -683,7 +696,6 @@ require("lazy").setup({
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
 				-- clangd = {},
-				gopls = {},
 				basedpyright = {
 					settings = {
 						basedpyright = {
@@ -695,6 +707,11 @@ require("lazy").setup({
 				},
 				flake8 = {},
 				ruff = {},
+				ansiblels = {},
+				dockerls = {},
+				docker_compose_language_service = {},
+				helm_ls = {},
+				marksman = {},
 				rust_analyzer = { enabled = false },
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
 				--
@@ -789,6 +806,7 @@ require("lazy").setup({
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
+				python = { "flake8" },
 				-- Conform can also run multiple formatters sequentially
 				-- python = { "isort", "black" },
 				--
@@ -963,6 +981,7 @@ require("lazy").setup({
 				return "%2l:%-2v"
 			end
 
+			require("mini.pairs").setup()
 			-- ... and there is more!
 			--  Check out: https://github.com/echasnovski/mini.nvim
 		end,
@@ -993,6 +1012,9 @@ require("lazy").setup({
 				"ron",
 				"ninja",
 				"rst",
+				"nu",
+				"dockerfile",
+				"helm",
 			},
 			-- Autoinstall languages that are not installed
 			auto_install = true,
@@ -1011,33 +1033,6 @@ require("lazy").setup({
 		--    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
 		--    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
 		--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
-	},
-	{
-		"windwp/nvim-autopairs",
-		event = "InsertEnter",
-		opts = {},
-	},
-	{
-		"linux-cultist/venv-selector.nvim",
-		dependencies = {
-			"neovim/nvim-lspconfig",
-			"mfussenegger/nvim-dap",
-			"mfussenegger/nvim-dap-python", --optional
-			{ "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } },
-		},
-		branch = "regexp", -- This is the regexp branch, use this for the new version
-		opts = {
-			-- Your options go here
-			-- name = "venv",
-			-- auto_refresh = false
-		},
-		event = "VeryLazy", -- Optional: needed only if you want to type `:VenvSelect` without a keymapping
-		keys = {
-			-- Keymap to open VenvSelector to pick a venv.
-			{ "<leader>cv", "<cmd>VenvSelect<cr>" },
-			-- Keymap to retrieve the venv from a cache (the one previously used for the same project directory).
-			{ "<leader>cc", "<cmd>VenvSelectCached<cr>" },
-		},
 	},
 	{
 		{ -- Add indentation guides even on blank lines
@@ -1220,7 +1215,7 @@ require("lazy").setup({
 		dependencies = {
 			-- check the installation instructions at
 			-- https://github.com/folke/snacks.nvim
-			"folke/snacks.nvim",
+			-- "folke/snacks.nvim",
 		},
 		keys = {
 			-- 👇 in this section, choose your own keymappings!

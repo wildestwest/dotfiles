@@ -39,11 +39,11 @@ L = ":buffer-next"
 X = "select_line_above"
 C-h = "jump_view_left"
 C-l = "jump_view_right"
-C-k = "jump_view_up"
-C-j = "jump_view_down"
+C-k = "page_cursor_half_up"
+C-j = "page_cursor_half_down"
 tab = "move_parent_node_end"
 S-tab = "move_parent_node_start"
-f = "goto_word"
+ret = "goto_word"
 G = "goto_file_end"
 
 [keys.normal.m.n]
@@ -65,26 +65,51 @@ G = "goto_file_end"
 [keys.insert]
 C-h = ["jump_view_left", "insert_mode"]
 C-l = ["jump_view_right", "insert_mode"]
-C-k = ["jump_view_up", "insert_mode"]
-C-j = ["jump_view_down", "insert_mode"]
+C-k = "page_cursor_half_up"
+C-j = "page_cursor_half_down"
 S-tab = "move_parent_node_start"
-C-f = "goto_word"
 
 [keys.select]
 tab = "extend_parent_node_end"
 S-tab = "extend_parent_node_start"
-f = "extend_to_word"
+ret = "extend_to_word"
 X = "select_line_above"
-G = "extend_to_file_end"
+G = "goto_file_end"
 
 [keys.normal.space]
 space = "file_picker"
 
 [keys.normal.backspace]
 backspace = "suspend"
-b = ":buffer-close"
-x = ":qa"
-w = ":wa"
+e = [
+  ':sh rm -f /tmp/unique-file',
+  ':insert-output yazi %{buffer_name} --chooser-file=/tmp/unique-file',
+  ':insert-output echo "\x1b[?1049h\x1b[?2004h" > /dev/tty',
+  ':open %sh{cat /tmp/unique-file}',
+  ':redraw',
+  ':set mouse false',
+  ':set mouse true',
+]
+g = [
+    ":write-all", 
+    ":new", 
+    ":insert-output lazygit", 
+    ":set mouse false",
+    ":set mouse true",
+    ":buffer-close!", 
+    ":redraw", 
+    ":reload-all"
+]
+k = [
+    ":write-all", 
+    ":new", 
+    ":insert-output k9s", 
+    ":set mouse false",
+    ":set mouse true",
+    ":buffer-close!", 
+    ":redraw", 
+    ":reload-all"
+]
 
 [editor.inline-diagnostics]
 cursor-line = "warning" # show warnings and errors on the cursorline inline
