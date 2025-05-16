@@ -91,24 +91,20 @@ e = [
   ':set mouse true',
 ]
 g = [
-    ":write-all", 
-    ":new", 
-    ":insert-output lazygit", 
-    ":set mouse false",
-    ":set mouse true",
-    ":buffer-close!", 
-    ":redraw", 
-    ":reload-all"
+  ":write-all",
+  ":insert-output lazygit >/dev/tty",
+  ":redraw",
+  ":set mouse false",
+  ":set mouse true",
+  ":reload-all"
 ]
 k = [
-    ":write-all", 
-    ":new", 
-    ":insert-output k9s", 
-    ":set mouse false",
-    ":set mouse true",
-    ":buffer-close!", 
-    ":redraw", 
-    ":reload-all"
+  ":write-all",
+  ":insert-output k9s >/dev/tty",
+  ":redraw",
+  ":set mouse false",
+  ":set mouse true",
+  ":reload-all"
 ]
 
 [editor.inline-diagnostics]
