@@ -46,6 +46,7 @@ S-tab = "move_parent_node_start"
 ret = "goto_word"
 G = "goto_file_end"
 
+# match next/prev
 [keys.normal.m.n]
 "(" = "@s\\(<ret>nmim"
 "{" = "@s\\{<ret>nmim"

@@ -110,10 +110,10 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
 -- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+vim.keymap.set("n", "<left>", '<cmd>echo "Use h to move!!"<CR>')
+vim.keymap.set("n", "<right>", '<cmd>echo "Use l to move!!"<CR>')
+vim.keymap.set("n", "<up>", '<cmd>echo "Use k to move!!"<CR>')
+vim.keymap.set("n", "<down>", '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -157,21 +157,7 @@ vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { desc = "run format on cur
 -- quik fix nav
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz", { desc = "quik fix next" })
 vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz", { desc = "quik fix prev" })
--- vim.keymap.set('n', '<leader>k', '<cmd>lnext<CR>zz', { desc = 'quik fix lnext' })
--- vim.keymap.set('n', '<leader>j', '<cmd>lprev<CR>zz', { desc = 'quik fix lnext' })
 
--- easier stuff
-vim.keymap.set("n", "<BS>b", "<cmd>bc<CR>", { desc = "close buffer" })
-vim.keymap.set("n", "<BS>x", "<cmd>qa<CR>", { desc = "quit all" })
-vim.keymap.set("n", "<BS>w", "<cmd>wa<CR>", { desc = "write all" })
-
--- replace word cursor was on
-vim.keymap.set(
-	"n",
-	"<leader>r",
-	[[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
-	{ desc = "replace word cursor is on" }
-)
 function _G.set_terminal_keymaps()
 	-- Exit terminal mode
 	vim.keymap.set("t", "<esc><esc>", [[<C-\><C-n>]], { buffer = 0 })
@@ -183,11 +169,65 @@ function _G.set_terminal_keymaps()
 end
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 
--- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
--- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
--- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
--- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
--- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+local state = {
+	floating = {
+		buf = -1,
+		win = -1,
+	},
+}
+
+local function create_floating_window(opts)
+	opts = opts or {}
+	local width = opts.width or math.floor(vim.o.columns * 0.8)
+	local height = opts.height or math.floor(vim.o.lines * 0.8)
+
+	-- Calculate the position to center the window
+	local col = math.floor((vim.o.columns - width) / 2)
+	local row = math.floor((vim.o.lines - height) / 2)
+
+	-- Create a buffer
+	local buf = nil
+	if vim.api.nvim_buf_is_valid(opts.buf) then
+		buf = opts.buf
+	else
+		buf = vim.api.nvim_create_buf(false, true) -- No file, scratch buffer
+	end
+
+	-- Define window configuration
+	local win_config = {
+		relative = "editor",
+		width = width,
+		height = height,
+		col = col,
+		row = row,
+		style = "minimal", -- No borders or extra UI elements
+		border = "rounded",
+	}
+
+	-- Create the floating window
+	local win = vim.api.nvim_open_win(buf, true, win_config)
+
+	return { buf = buf, win = win }
+end
+
+local toggle_kube = function()
+	if not vim.api.nvim_win_is_valid(state.floating.win) then
+		state.floating = create_floating_window({ buf = state.floating.buf })
+		if vim.bo[state.floating.buf].buftype ~= "terminal" then
+			vim.cmd.terminal()
+			vim.fn.chansend(vim.bo.channel, "k9s\n")
+		end
+
+		vim.cmd("startinsert")
+	else
+		vim.api.nvim_win_hide(state.floating.win)
+	end
+end
+
+-- Example usage:
+-- Create a floating window with default dimensions
+vim.api.nvim_create_user_command("Floakube", toggle_kube, {})
+vim.keymap.set({ "t", "n" }, "<leader>k", "<cmd>Floakube<CR>")
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -471,6 +511,13 @@ require("lazy").setup({
 					Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
 				end,
 				desc = "[S]earch [N]eovim files",
+			},
+			{
+				"<leader>z",
+				function()
+					Snacks.picker.zoxide()
+				end,
+				desc = "Search zoxide index for projects",
 			},
 		},
 	},
@@ -1110,10 +1157,6 @@ require("lazy").setup({
   -- stylua: ignore
   keys = {
     { "<enter>", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-    -- { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-    -- { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-    -- { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-    -- { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
   },
 	},
 	{
@@ -1176,7 +1219,7 @@ require("lazy").setup({
 			-- setting the keybinding for LazyGit with 'keys' is recommended in
 			-- order to load the plugin when the command is run for the first time
 			keys = {
-				{ "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+				{ "<leader>g", "<cmd>LazyGit<cr>", desc = "LazyGit" },
 			},
 		},
 	},
@@ -1192,7 +1235,7 @@ require("lazy").setup({
 					return vim.o.columns * 0.35
 				end
 			end,
-			open_mapping = [[<c-t>]],
+			open_mapping = [[<c-/>]],
 			direction = "vertical",
 			autochdir = true,
 			shell = "nu",
@@ -1246,7 +1289,77 @@ require("lazy").setup({
 		end,
 	},
 	"vuciv/golf",
+	-- lazy.nvim:
+	{
+		"jake-stewart/multicursor.nvim",
+		branch = "1.0",
+		config = function()
+			local mc = require("multicursor-nvim")
+			mc.setup()
 
+			local set = vim.keymap.set
+
+			-- Add or skip cursor above/below the main cursor.
+			set({ "n", "x" }, "<leader>ck", function()
+				mc.lineAddCursor(-1)
+			end)
+			set({ "n", "x" }, "<leader>cj", function()
+				mc.lineAddCursor(1)
+			end)
+			set({ "n", "x" }, "<leader>cK", function()
+				mc.lineSkipCursor(-1)
+			end)
+			set({ "n", "x" }, "<leader>cJ", function()
+				mc.lineSkipCursor(1)
+			end)
+
+			-- Add or skip adding a new cursor by matching word/selection
+			set({ "n", "x" }, "<leader>cn", function()
+				mc.matchAddCursor(1)
+			end)
+			set({ "n", "x" }, "<leader>cN", function()
+				mc.matchSkipCursor(1)
+			end)
+
+			-- Add and remove cursors with control + left click.
+			set("n", "<c-leftmouse>", mc.handleMouse)
+			set("n", "<c-leftdrag>", mc.handleMouseDrag)
+			set("n", "<c-leftrelease>", mc.handleMouseRelease)
+
+			-- Disable and enable cursors.
+			set({ "n", "x" }, "<c-q>", mc.toggleCursor)
+
+			-- Mappings defined in a keymap layer only apply when there are
+			-- multiple cursors. This lets you have overlapping mappings.
+			mc.addKeymapLayer(function(layerSet)
+				-- Select a different cursor as the main one.
+				layerSet({ "n", "x" }, "N", mc.prevCursor)
+				layerSet({ "n", "x" }, "n", mc.nextCursor)
+
+				-- Delete the main cursor.
+				layerSet({ "n", "x" }, "<leader>cx", mc.deleteCursor)
+
+				-- Enable and clear cursors using escape.
+				layerSet("n", "<esc>", function()
+					if not mc.cursorsEnabled() then
+						mc.enableCursors()
+					else
+						mc.clearCursors()
+					end
+				end)
+			end)
+
+			-- Customize how cursors look.
+			local hl = vim.api.nvim_set_hl
+			hl(0, "MultiCursorCursor", { reverse = true })
+			hl(0, "MultiCursorVisual", { link = "Visual" })
+			hl(0, "MultiCursorSign", { link = "SignColumn" })
+			hl(0, "MultiCursorMatchPreview", { link = "Search" })
+			hl(0, "MultiCursorDisabledCursor", { reverse = true })
+			hl(0, "MultiCursorDisabledVisual", { link = "Visual" })
+			hl(0, "MultiCursorDisabledSign", { link = "SignColumn" })
+		end,
+	},
 	-- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
 	-- init.lua. If you want these files, they are in the repository, so you can just download them and
 	-- place them in the correct locations.
