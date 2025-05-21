@@ -154,10 +154,6 @@ vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete to void buff
 -- format file
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { desc = "run format on current buffer" })
 
--- quik fix nav
-vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz", { desc = "quik fix next" })
-vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz", { desc = "quik fix prev" })
-
 function _G.set_terminal_keymaps()
 	-- Exit terminal mode
 	vim.keymap.set("t", "<esc><esc>", [[<C-\><C-n>]], { buffer = 0 })
@@ -169,6 +165,7 @@ function _G.set_terminal_keymaps()
 end
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 
+-- K9s floating window
 local state = {
 	floating = {
 		buf = -1,
@@ -331,6 +328,7 @@ require("lazy").setup({
 		"folke/which-key.nvim",
 		event = "VimEnter", -- Sets the loading event to 'VimEnter'
 		opts = {
+			preset = "helix",
 			-- delay between pressing a key and opening which-key (milliseconds)
 			-- this setting is independent of vim.o.timeoutlen
 			delay = 0,
@@ -456,7 +454,7 @@ require("lazy").setup({
 				mode = { "n", "x" },
 			},
 			{
-				"<leader>/",
+				"<leader>s/",
 				function()
 					Snacks.picker.grep()
 				end,
@@ -483,26 +481,19 @@ require("lazy").setup({
 				end,
 				desc = '[S]earch Recent Files ("." for repeat)',
 			},
-			-- {
-			-- 	"<leader><leader>",
-			-- 	function()
-			-- 		Snacks.picker.buffers()
-			-- 	end,
-			-- 	desc = "[ ] Find existing buffers",
-			-- },
-			-- {
-			-- 	"<leader>/",
-			-- 	function()
-			-- 		Snacks.picker.lines({})
-			-- 	end,
-			-- 	desc = "[/] Fuzzily search in current buffer",
-			-- },
 			{
-				"<leader>s/",
+				"<leader>sb",
 				function()
-					Snacks.picker.grep_buffers()
+					Snacks.picker.buffers()
 				end,
-				desc = "[S]earch [/] in Open Files",
+				desc = "[ ] Find existing buffers",
+			},
+			{
+				"<leader>/",
+				function()
+					Snacks.picker.lines({})
+				end,
+				desc = "[/] Fuzzily search in current buffer",
 			},
 			-- Shortcut for searching your Neovim configuration files
 			{
@@ -513,7 +504,28 @@ require("lazy").setup({
 				desc = "[S]earch [N]eovim files",
 			},
 			{
-				"<leader>z",
+				"<leader>sd",
+				function()
+					Snacks.picker.git_status()
+				end,
+				desc = "Search git diff",
+			},
+			{
+				"<leader>su",
+				function()
+					Snacks.picker.undo()
+				end,
+				desc = "Search undo history",
+			},
+			{
+				"<leader>sg",
+				function()
+					Snacks.picker.git_status()
+				end,
+				desc = "Search git changed files",
+			},
+			{
+				"<leader>sp",
 				function()
 					Snacks.picker.zoxide()
 				end,
@@ -873,12 +885,6 @@ require("lazy").setup({
 				"L3MON4D3/LuaSnip",
 				version = "2.*",
 				build = (function()
-					-- Build Step is needed for regex support in snippets.
-					-- This step is not supported in many windows environments.
-					-- Remove the below condition to re-enable on windows.
-					if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
-						return
-					end
 					return "make install_jsregexp"
 				end)(),
 				dependencies = {
@@ -955,7 +961,7 @@ require("lazy").setup({
 			-- the rust implementation via `'prefer_rust_with_warning'`
 			--
 			-- See :h blink-cmp-config-fuzzy for more information
-			fuzzy = { implementation = "lua" },
+			fuzzy = { implementation = "prefer_rust_with_warning" },
 
 			-- Shows a signature help window while you type arguments for a function
 			signature = { enabled = true },
@@ -986,15 +992,6 @@ require("lazy").setup({
 			vim.cmd.colorscheme("tokyonight-night")
 		end,
 	},
-
-	-- Highlight todo, notes, etc in comments
-	{
-		"folke/todo-comments.nvim",
-		event = "VimEnter",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		opts = { signs = false },
-	},
-
 	{ -- Collection of various small independent plugins/modules
 		"echasnovski/mini.nvim",
 		config = function()
@@ -1062,6 +1059,7 @@ require("lazy").setup({
 				"nu",
 				"dockerfile",
 				"helm",
+				"regex",
 			},
 			-- Autoinstall languages that are not installed
 			auto_install = true,
@@ -1090,66 +1088,66 @@ require("lazy").setup({
 			opts = {},
 		},
 	},
-	{
-
-		{ -- Linting
-			"mfussenegger/nvim-lint",
-			event = { "BufReadPre", "BufNewFile" },
-			config = function()
-				local lint = require("lint")
-				lint.linters_by_ft = {
-					-- markdown = { "markdownlint" },
-				}
-
-				-- To allow other plugins to add linters to require('lint').linters_by_ft,
-				-- instead set linters_by_ft like this:
-				-- lint.linters_by_ft = lint.linters_by_ft or {}
-				-- lint.linters_by_ft['markdown'] = { 'markdownlint' }
-				--
-				-- However, note that this will enable a set of default linters,
-				-- which will cause errors unless these tools are available:
-				-- {
-				--   clojure = { "clj-kondo" },
-				--   dockerfile = { "hadolint" },
-				--   inko = { "inko" },
-				--   janet = { "janet" },
-				--   json = { "jsonlint" },
-				--   markdown = { "vale" },
-				--   rst = { "vale" },
-				--   ruby = { "ruby" },
-				--   terraform = { "tflint" },
-				--   text = { "vale" }
-				-- }
-				--
-				-- You can disable the default linters by setting their filetypes to nil:
-				-- lint.linters_by_ft['clojure'] = nil
-				-- lint.linters_by_ft['dockerfile'] = nil
-				-- lint.linters_by_ft['inko'] = nil
-				-- lint.linters_by_ft['janet'] = nil
-				-- lint.linters_by_ft['json'] = nil
-				-- lint.linters_by_ft['markdown'] = nil
-				-- lint.linters_by_ft['rst'] = nil
-				-- lint.linters_by_ft['ruby'] = nil
-				-- lint.linters_by_ft['terraform'] = nil
-				-- lint.linters_by_ft['text'] = nil
-
-				-- Create autocommand which carries out the actual linting
-				-- on the specified events.
-				local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
-				vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
-					group = lint_augroup,
-					callback = function()
-						-- Only run the linter in buffers that you can modify in order to
-						-- avoid superfluous noise, notably within the handy LSP pop-ups that
-						-- describe the hovered symbol using Markdown.
-						if vim.opt_local.modifiable:get() then
-							lint.try_lint()
-						end
-					end,
-				})
-			end,
-		},
-	},
+	-- {
+	--
+	-- 	{ -- Linting
+	-- 		"mfussenegger/nvim-lint",
+	-- 		event = { "BufReadPre", "BufNewFile" },
+	-- 		config = function()
+	-- 			local lint = require("lint")
+	-- 			lint.linters_by_ft = {
+	-- 				-- markdown = { "markdownlint" },
+	-- 			}
+	--
+	-- 			-- To allow other plugins to add linters to require('lint').linters_by_ft,
+	-- 			-- instead set linters_by_ft like this:
+	-- 			-- lint.linters_by_ft = lint.linters_by_ft or {}
+	-- 			-- lint.linters_by_ft['markdown'] = { 'markdownlint' }
+	-- 			--
+	-- 			-- However, note that this will enable a set of default linters,
+	-- 			-- which will cause errors unless these tools are available:
+	-- 			-- {
+	-- 			--   clojure = { "clj-kondo" },
+	-- 			--   dockerfile = { "hadolint" },
+	-- 			--   inko = { "inko" },
+	-- 			--   janet = { "janet" },
+	-- 			--   json = { "jsonlint" },
+	-- 			--   markdown = { "vale" },
+	-- 			--   rst = { "vale" },
+	-- 			--   ruby = { "ruby" },
+	-- 			--   terraform = { "tflint" },
+	-- 			--   text = { "vale" }
+	-- 			-- }
+	-- 			--
+	-- 			-- You can disable the default linters by setting their filetypes to nil:
+	-- 			-- lint.linters_by_ft['clojure'] = nil
+	-- 			-- lint.linters_by_ft['dockerfile'] = nil
+	-- 			-- lint.linters_by_ft['inko'] = nil
+	-- 			-- lint.linters_by_ft['janet'] = nil
+	-- 			-- lint.linters_by_ft['json'] = nil
+	-- 			-- lint.linters_by_ft['markdown'] = nil
+	-- 			-- lint.linters_by_ft['rst'] = nil
+	-- 			-- lint.linters_by_ft['ruby'] = nil
+	-- 			-- lint.linters_by_ft['terraform'] = nil
+	-- 			-- lint.linters_by_ft['text'] = nil
+	--
+	-- 			-- Create autocommand which carries out the actual linting
+	-- 			-- on the specified events.
+	-- 			local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+	-- 			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+	-- 				group = lint_augroup,
+	-- 				callback = function()
+	-- 					-- Only run the linter in buffers that you can modify in order to
+	-- 					-- avoid superfluous noise, notably within the handy LSP pop-ups that
+	-- 					-- describe the hovered symbol using Markdown.
+	-- 					if vim.opt_local.modifiable:get() then
+	-- 						lint.try_lint()
+	-- 					end
+	-- 				end,
+	-- 			})
+	-- 		end,
+	-- 	},
+	-- },
 	-- {
 	-- 	"folke/flash.nvim",
 	-- 	event = "VeryLazy",
@@ -1242,17 +1240,6 @@ require("lazy").setup({
 		},
 	},
 	{
-		{
-			"mbbill/undotree",
-
-			enabled = true,
-
-			config = function()
-				vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "Undo Tree" })
-			end,
-		},
-	},
-	{
 		"mikavilpas/yazi.nvim",
 		event = "VeryLazy",
 		dependencies = {
@@ -1296,38 +1283,6 @@ require("lazy").setup({
 		dependencies = { "MunifTanjim/nui.nvim" },
 		opts = {},
 	},
-
-	{
-		"tris203/precognition.nvim",
-		--event = "VeryLazy",
-		opts = {
-			-- startVisible = true,
-			-- showBlankVirtLine = true,
-			-- highlightColor = { link = "Comment" },
-			-- hints = {
-			--      Caret = { text = "^", prio = 2 },
-			--      Dollar = { text = "$", prio = 1 },
-			--      MatchingPair = { text = "%", prio = 5 },
-			--      Zero = { text = "0", prio = 1 },
-			--      w = { text = "w", prio = 10 },
-			--      b = { text = "b", prio = 9 },
-			--      e = { text = "e", prio = 8 },
-			--      W = { text = "W", prio = 7 },
-			--      B = { text = "B", prio = 6 },
-			--      E = { text = "E", prio = 5 },
-			-- },
-			-- gutterHints = {
-			--     G = { text = "G", prio = 10 },
-			--     gg = { text = "gg", prio = 9 },
-			--     PrevParagraph = { text = "{", prio = 8 },
-			--     NextParagraph = { text = "}", prio = 8 },
-			-- },
-			-- disabled_fts = {
-			--     "startify",
-			-- },
-		},
-	},
-	-- lazy.nvim:
 	{
 		"jake-stewart/multicursor.nvim",
 		branch = "1.0",
