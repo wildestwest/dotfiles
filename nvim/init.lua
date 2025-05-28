@@ -725,6 +725,7 @@ require("lazy").setup({
 				} or {},
 				virtual_text = {
 					source = "if_many",
+					severity = vim.diagnostic.severity.ERROR,
 					spacing = 2,
 					format = function(diagnostic)
 						local diagnostic_message = {
@@ -1148,15 +1149,15 @@ require("lazy").setup({
 	-- 		end,
 	-- 	},
 	-- },
-	-- {
-	-- 	"folke/flash.nvim",
-	-- 	event = "VeryLazy",
-	-- 	opts = {},
-	--  -- stylua: ignore
-	--  keys = {
-	--    { "<enter>", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-	--  },
-	-- },
+	{
+		"folke/flash.nvim",
+		event = "VeryLazy",
+		opts = {},
+	 -- stylua: ignore
+	 keys = {
+	   -- { "<enter>", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+	 },
+	},
 	{
 		{
 			"ThePrimeagen/harpoon",
