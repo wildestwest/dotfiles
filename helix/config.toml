@@ -43,6 +43,7 @@ C-k = "page_cursor_half_up"
 C-j = "page_cursor_half_down"
 ret = "goto_word"
 
+# Match in next instance of pair
 [keys.normal.m.n]
 "(" = "@s\\(<ret>nmim"
 "{" = "@s\\{<ret>nmim"
@@ -51,6 +52,7 @@ ret = "goto_word"
 "'" = "@s\\'<ret>nmim"
 "<" = "@s<lt><ret>nmim"
 
+# Match in previous instance of pair
 [keys.normal.m.p]
 "(" = "@s\\)<ret>Nmmmim"
 "{" = "@s\\}<ret>Nmmmim"
@@ -72,6 +74,7 @@ space = "file_picker"
 
 [keys.normal.backspace]
 backspace = "suspend"
+# Yazi
 e = [
   ':sh rm -f /tmp/unique-file',
   ':insert-output yazi %{buffer_name} --chooser-file=/tmp/unique-file',
@@ -81,6 +84,7 @@ e = [
   ':set mouse false',
   ':set mouse true',
 ]
+# Lazygit
 g = [
   ":write-all",
   ":insert-output lazygit >/dev/tty",
@@ -89,6 +93,7 @@ g = [
   ":set mouse true",
   ":reload-all"
 ]
+# k9s
 k = [
   ":write-all",
   ":insert-output k9s >/dev/tty",
