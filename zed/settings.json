@@ -200,7 +200,7 @@
   "features": {
     "edit_prediction_provider": "none"
   },
-  "soft_wrap": "bounded",
+  // "soft_wrap": "bounded",
   "edit_predictions": {
     "disabled_globs": []
   },

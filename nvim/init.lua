@@ -834,47 +834,47 @@ require("lazy").setup({
 		end,
 	},
 
-	{ -- Autoformat
-		"stevearc/conform.nvim",
-		event = { "BufWritePre" },
-		cmd = { "ConformInfo" },
-		keys = {
-			{
-				"<leader>f",
-				function()
-					require("conform").format({ async = true, lsp_format = "fallback" })
-				end,
-				mode = "",
-				desc = "[F]ormat buffer",
-			},
-		},
-		opts = {
-			notify_on_error = false,
-			format_on_save = function(bufnr)
-				-- Disable "format_on_save lsp_fallback" for languages that don't
-				-- have a well standardized coding style. You can add additional
-				-- languages here or re-enable it for the disabled ones.
-				local disable_filetypes = { c = true, cpp = true }
-				if disable_filetypes[vim.bo[bufnr].filetype] then
-					return nil
-				else
-					return {
-						timeout_ms = 500,
-						lsp_format = "fallback",
-					}
-				end
-			end,
-			formatters_by_ft = {
-				lua = { "stylua" },
-				python = { "flake8" },
-				-- Conform can also run multiple formatters sequentially
-				-- python = { "isort", "black" },
-				--
-				-- You can use 'stop_after_first' to run the first available formatter from the list
-				-- javascript = { "prettierd", "prettier", stop_after_first = true },
-			},
-		},
-	},
+	-- { -- Autoformat
+	-- 	"stevearc/conform.nvim",
+	-- 	event = { "BufWritePre" },
+	-- 	cmd = { "ConformInfo" },
+	-- 	keys = {
+	-- 		{
+	-- 			"<leader>f",
+	-- 			function()
+	-- 				require("conform").format({ async = true, lsp_format = "fallback" })
+	-- 			end,
+	-- 			mode = "",
+	-- 			desc = "[F]ormat buffer",
+	-- 		},
+	-- 	},
+	-- 	opts = {
+	-- 		notify_on_error = false,
+	-- 		format_on_save = function(bufnr)
+	-- 			-- Disable "format_on_save lsp_fallback" for languages that don't
+	-- 			-- have a well standardized coding style. You can add additional
+	-- 			-- languages here or re-enable it for the disabled ones.
+	-- 			local disable_filetypes = { c = true, cpp = true }
+	-- 			if disable_filetypes[vim.bo[bufnr].filetype] then
+	-- 				return nil
+	-- 			else
+	-- 				return {
+	-- 					timeout_ms = 500,
+	-- 					lsp_format = "fallback",
+	-- 				}
+	-- 			end
+	-- 		end,
+	-- 		formatters_by_ft = {
+	-- 			lua = { "stylua" },
+	-- 			python = { "flake8" },
+	-- 			-- Conform can also run multiple formatters sequentially
+	-- 			-- python = { "isort", "black" },
+	-- 			--
+	-- 			-- You can use 'stop_after_first' to run the first available formatter from the list
+	-- 			-- javascript = { "prettierd", "prettier", stop_after_first = true },
+	-- 		},
+	-- 	},
+	-- },
 
 	{ -- Autocompletion
 		"saghen/blink.cmp",
@@ -1155,7 +1155,7 @@ require("lazy").setup({
 		opts = {},
 	 -- stylua: ignore
 	 keys = {
-	   -- { "<enter>", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+	   { "<enter>", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
 	 },
 	},
 	{
@@ -1274,84 +1274,6 @@ require("lazy").setup({
 			-- More details: https://github.com/mikavilpas/yazi.nvim/issues/802
 			-- vim.g.loaded_netrw = 1
 			vim.g.loaded_netrwPlugin = 1
-		end,
-	},
-	"vuciv/golf",
-	"ThePrimeagen/vim-be-good",
-	{
-		"m4xshen/hardtime.nvim",
-		lazy = false,
-		dependencies = { "MunifTanjim/nui.nvim" },
-		opts = {},
-	},
-	{
-		"jake-stewart/multicursor.nvim",
-		branch = "1.0",
-		config = function()
-			local mc = require("multicursor-nvim")
-			mc.setup()
-
-			local set = vim.keymap.set
-
-			-- Add or skip cursor above/below the main cursor.
-			set({ "n", "x" }, "<leader>ck", function()
-				mc.lineAddCursor(-1)
-			end)
-			set({ "n", "x" }, "<leader>cj", function()
-				mc.lineAddCursor(1)
-			end)
-			set({ "n", "x" }, "<leader>cK", function()
-				mc.lineSkipCursor(-1)
-			end)
-			set({ "n", "x" }, "<leader>cJ", function()
-				mc.lineSkipCursor(1)
-			end)
-
-			-- Add or skip adding a new cursor by matching word/selection
-			set({ "n", "x" }, "<leader>cn", function()
-				mc.matchAddCursor(1)
-			end)
-			set({ "n", "x" }, "<leader>cN", function()
-				mc.matchSkipCursor(1)
-			end)
-
-			-- Add and remove cursors with control + left click.
-			set("n", "<c-leftmouse>", mc.handleMouse)
-			set("n", "<c-leftdrag>", mc.handleMouseDrag)
-			set("n", "<c-leftrelease>", mc.handleMouseRelease)
-
-			-- Disable and enable cursors.
-			set({ "n", "x" }, "<c-q>", mc.toggleCursor)
-
-			-- Mappings defined in a keymap layer only apply when there are
-			-- multiple cursors. This lets you have overlapping mappings.
-			mc.addKeymapLayer(function(layerSet)
-				-- Select a different cursor as the main one.
-				layerSet({ "n", "x" }, "N", mc.prevCursor)
-				layerSet({ "n", "x" }, "n", mc.nextCursor)
-
-				-- Delete the main cursor.
-				layerSet({ "n", "x" }, "<leader>cx", mc.deleteCursor)
-
-				-- Enable and clear cursors using escape.
-				layerSet("n", "<esc>", function()
-					if not mc.cursorsEnabled() then
-						mc.enableCursors()
-					else
-						mc.clearCursors()
-					end
-				end)
-			end)
-
-			-- Customize how cursors look.
-			local hl = vim.api.nvim_set_hl
-			hl(0, "MultiCursorCursor", { reverse = true })
-			hl(0, "MultiCursorVisual", { link = "Visual" })
-			hl(0, "MultiCursorSign", { link = "SignColumn" })
-			hl(0, "MultiCursorMatchPreview", { link = "Search" })
-			hl(0, "MultiCursorDisabledCursor", { reverse = true })
-			hl(0, "MultiCursorDisabledVisual", { link = "Visual" })
-			hl(0, "MultiCursorDisabledSign", { link = "SignColumn" })
 		end,
 	},
 	-- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
