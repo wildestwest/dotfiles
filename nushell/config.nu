@@ -18,6 +18,7 @@
 # them for future reference.
 
 $env.path ++= ["~/.local/bin"]
+$env.path ++= ["~/.local/scripts"]
 $env.path ++= ["~/.cargo/bin"]
 $env.EDITOR = "~/.cargo/bin/hx"
 $env.config.buffer_editor = "~/.cargo/bin/hx"
@@ -26,6 +27,15 @@ $env.config.edit_mode = 'vi'
 
 $env.config = {
   keybindings: [
+    {
+      name: tmux_sessionizer
+      modifier: control
+      keycode: char_f
+      mode: vi_insert
+      event: [
+		{ send: executehostcommand cmd: 'bash tmux-sessionizer' }
+		]
+    },
     {
       name: completion_menu
       modifier: control
@@ -46,10 +56,8 @@ alias v = nvim
 mkdir ($nu.data-dir | path join "vendor/autoload")
 starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")
 
-source git-completions.nu
 source aws-completions.nu
 source pytest-completions.nu
-source docker-completions.nu
 source rustup-completions.nu
 source zoxide.nu
 
