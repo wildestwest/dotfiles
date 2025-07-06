@@ -275,7 +275,7 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require("lazy").setup({
 	-- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-	"NMAC427/guess-indent.nvim", -- Detect tabstop and shiftwidth automatically
+	-- "NMAC427/guess-indent.nvim", -- Detect tabstop and shiftwidth automatically
 
 	-- NOTE: Plugins can also be added by using a table,
 	-- with the first argument being the link and the following
@@ -1066,15 +1066,15 @@ require("lazy").setup({
 		--    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
 		--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 	},
-	{
-		{ -- Add indentation guides even on blank lines
-			"lukas-reineke/indent-blankline.nvim",
-			-- Enable `lukas-reineke/indent-blankline.nvim`
-			-- See `:help ibl`
-			main = "ibl",
-			opts = {},
-		},
-	},
+	-- {
+	-- 	{ -- Add indentation guides even on blank lines
+	-- 		"lukas-reineke/indent-blankline.nvim",
+	-- 		-- Enable `lukas-reineke/indent-blankline.nvim`
+	-- 		-- See `:help ibl`
+	-- 		main = "ibl",
+	-- 		opts = {},
+	-- 	},
+	-- },
 	-- {
 	--
 	-- 	{ -- Linting
@@ -1138,10 +1138,12 @@ require("lazy").setup({
 	{
 		"folke/flash.nvim",
 		event = "VeryLazy",
-		opts = {},
+		opts = {
+			labels = "hatesincrklumjdofxwypgvbzq",
+		},
 	 -- stylua: ignore
 	 keys = {
-	   -- { "<enter>", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+	   { "<enter>", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
 	 },
 	},
 	{
