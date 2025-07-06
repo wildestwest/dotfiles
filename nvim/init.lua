@@ -420,6 +420,13 @@ require("lazy").setup({
 		-- See `:help snacks-pickers-sources`
 		keys = {
 			{
+				"<leader>lg",
+				function()
+					Snacks.lazygit()
+				end,
+				desc = "[L]azy [G]it",
+			},
+			{
 				"<leader>sh",
 				function()
 					Snacks.picker.help()
