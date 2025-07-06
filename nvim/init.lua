@@ -441,11 +441,11 @@ require("lazy").setup({
 				desc = "[S]earch [F]iles",
 			},
 			{
-				"<leader>ss",
+				"<leader>sp",
 				function()
 					Snacks.picker.pickers()
 				end,
-				desc = "[S]earch [S]elect Snacks",
+				desc = "[S]earch [Pickers]",
 			},
 			{
 				"<leader>sw",
@@ -488,7 +488,7 @@ require("lazy").setup({
 				function()
 					Snacks.picker.buffers()
 				end,
-				desc = "[ ] Find existing buffers",
+				desc = "[S]earch [B]uffers",
 			},
 			{
 				"<leader>/",
@@ -506,32 +506,25 @@ require("lazy").setup({
 				desc = "[S]earch [N]eovim files",
 			},
 			{
-				"<leader>sd",
+				"<leader>ss",
 				function()
-					Snacks.picker.git_status()
+					Snacks.picker.lsp_symbols()
 				end,
-				desc = "Search git diff",
+				desc = "[S]earch [S]ymblos in current buffer",
+			},
+			{
+				"<leader>sw",
+				function()
+					Snacks.picker.lsp_workspace_symbols()
+				end,
+				desc = "[S]earch [W]orkspace symbols",
 			},
 			{
 				"<leader>su",
 				function()
 					Snacks.picker.undo()
 				end,
-				desc = "Search undo history",
-			},
-			{
-				"<leader>sg",
-				function()
-					Snacks.picker.git_status()
-				end,
-				desc = "Search git changed files",
-			},
-			{
-				"<leader>sp",
-				function()
-					Snacks.picker.zoxide()
-				end,
-				desc = "Search zoxide index for projects",
+				desc = "Search [U]ndo history",
 			},
 		},
 	},
@@ -612,39 +605,31 @@ require("lazy").setup({
 
 					-- Rename the variable under your cursor.
 					--  Most Language Servers support renaming across files, etc.
-					map("grn", vim.lsp.buf.rename, "[R]e[n]ame")
+					map("gn", vim.lsp.buf.rename, "[R]e[n]ame")
 
 					-- Execute a code action, usually your cursor needs to be on top of an error
 					-- or a suggestion from your LSP for this to activate.
-					map("gra", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
+					map("ga", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
 
 					-- Find references for the word under your cursor.
-					map("grr", require("snacks").picker.lsp_references, "[G]oto [R]eferences")
+					map("gr", require("snacks").picker.lsp_references, "[G]oto [R]eferences")
 					-- Jump to the implementation of the word under your cursor.
 					--  Useful when your language has ways of declaring types without an actual implementation.
-					map("gri", require("snacks").picker.lsp_implementations, "[G]oto [I]mplementation")
+					map("gi", require("snacks").picker.lsp_implementations, "[G]oto [I]mplementation")
 
 					-- Jump to the definition of the word under your cursor.
 					--  This is where a variable was first declared, or where a function is defined, etc.
 					--  To jump back, press <C-t>.
-					map("grd", require("snacks").picker.lsp_definitions, "[G]oto [D]efinition")
+					map("gd", require("snacks").picker.lsp_definitions, "[G]oto [D]efinition")
 
 					-- WARN: This is not Goto Definition, this is Goto Declaration.
 					--  For example, in C this would take you to the header.
-					map("grD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-
-					-- Fuzzy find all the symbols in your current document.
-					--  Symbols are things like variables, functions, types, etc.
-					map("gO", require("snacks").picker.lsp_symbols, "Open Document Symbols")
-
-					-- Fuzzy find all the symbols in your current workspace.
-					--  Similar to document symbols, except searches over your entire project.
-					map("gW", require("snacks").picker.lsp_workspace_symbols, "Open Workspace Symbols")
+					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
 					-- Jump to the type of the word under your cursor.
 					--  Useful when you're not sure what type a variable is and you want to see
 					--  the definition of its *type*, not where it was *defined*.
-					map("grt", require("snacks").picker.lsp_type_definitions, "[G]oto [T]ype Definition")
+					map("gt", require("snacks").picker.lsp_type_definitions, "[G]oto [T]ype Definition")
 
 					-- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
 					---@param client vim.lsp.Client
@@ -758,15 +743,7 @@ require("lazy").setup({
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
 				-- clangd = {},
-				basedpyright = {
-					settings = {
-						basedpyright = {
-							analysis = {
-								typeCheckingMode = "standard",
-							},
-						},
-					},
-				},
+				basedpyright = {},
 				flake8 = {},
 				ruff = {},
 				ansiblels = {},
@@ -1157,7 +1134,7 @@ require("lazy").setup({
 		opts = {},
 	 -- stylua: ignore
 	 keys = {
-	   { "<enter>", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+	   -- { "<enter>", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
 	 },
 	},
 	{
@@ -1204,52 +1181,6 @@ require("lazy").setup({
 		},
 	},
 	{
-		{
-			"kdheepak/lazygit.nvim",
-			cmd = {
-				"LazyGit",
-				"LazyGitConfig",
-				"LazyGitCurrentFile",
-				"LazyGitFilter",
-				"LazyGitFilterCurrentFile",
-			},
-			-- optional for floating window border decoration
-			dependencies = {
-				"nvim-lua/plenary.nvim",
-			},
-			-- setting the keybinding for LazyGit with 'keys' is recommended in
-			-- order to load the plugin when the command is run for the first time
-			keys = {
-				{ "<leader>g", "<cmd>LazyGit<cr>", desc = "LazyGit" },
-			},
-		},
-	},
-	{
-		"akinsho/toggleterm.nvim",
-		version = "*",
-		opts = {
-			-- More detailed configuration
-			size = function(term)
-				if term.direction == "horizontal" then
-					return 15
-				elseif term.direction == "vertical" then
-					return vim.o.columns * 0.35
-				end
-			end,
-			open_mapping = [[<c-/>]],
-			direction = "vertical",
-			autochdir = true,
-			shell = "nu",
-			on_create = function(term)
-				if vim.fn.isdirectory(".venv") == 1 then
-					os.execute("sleep " .. tonumber(0.1))
-					term:send("echo 'Activating venv'")
-					term:send("overlay use .venv/bin/activate.nu")
-				end
-			end,
-		},
-	},
-	{
 		"mikavilpas/yazi.nvim",
 		event = "VeryLazy",
 		dependencies = {
@@ -1273,7 +1204,7 @@ require("lazy").setup({
 		},
 		opts = {
 			-- if you want to open yazi instead of netrw, see below for more info
-			open_for_directories = false,
+			open_for_directories = true,
 			keymaps = {
 				show_help = "<f1>",
 			},

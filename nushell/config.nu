@@ -31,7 +31,7 @@ $env.config = {
       name: tmux_sessionizer
       modifier: control
       keycode: char_f
-      mode: vi_insert
+      mode: [vi_insert vi_normal]
       event: [
 		{ send: executehostcommand cmd: 'bash tmux-sessionizer' }
 		]
