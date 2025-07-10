@@ -21,7 +21,15 @@
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
-      "ctrl-j": "workspace::ActivatePaneDown"
+      "ctrl-j": "workspace::ActivatePaneDown",
+      "space space": [
+        "task::Spawn",
+        { "task_name": "File Finder", "reveal_target": "center" }
+      ],
+      "space /": [
+        "task::Spawn",
+        { "task_name": "Find in Files", "reveal_target": "center" }
+      ]
     }
   },
   {
@@ -40,7 +48,7 @@
       "space g": "git_panel::ToggleFocus",
       "ctrl-/": "terminal_panel::ToggleFocus",
       "space p": "editor::Format",
-      "space space": "file_finder::Toggle",
+      // "space space": "file_finder::Toggle",
       "shift-l": "pane::ActivateNextItem",
       "shift-h": "pane::ActivatePreviousItem",
       "space v": "pane::SplitRight",
