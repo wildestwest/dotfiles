@@ -40,7 +40,7 @@ $env.config = {
       name: completion_menu
       modifier: control
       keycode: char_t
-      mode: vi_insert
+      mode: [vi_insert vi_normal]
       event: { send: menu name: completion_menu }
     }
   ]

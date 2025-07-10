@@ -30,26 +30,6 @@ vim.o.colorcolumn = "90"
 -- Auto-reload files changed on disk
 vim.o.autoread = true
 
-local function paste()
-	return {
-		vim.fn.split(vim.fn.getreg(""), "\n"),
-		vim.fn.getregtype(""),
-	}
-end
-if vim.env.SSH_TTY then --only do this hack for ssh sessions
-	vim.g.clipboard = {
-		name = "OSC 52",
-		copy = {
-			["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-			["*"] = require("vim.ui.clipboard.osc52").copy("*"),
-		},
-		paste = {
-			["+"] = paste,
-			["*"] = paste,
-		},
-	}
-end
-
 -- Enable break indent
 vim.o.breakindent = true
 
@@ -248,6 +228,20 @@ vim.api.nvim_create_autocmd("VimEnter", {
 			require("snacks.picker").smart()
 		end
 	end,
+})
+
+vim.filetype.add({
+	pattern = {
+		[".*/templates/.*%.tpl"] = "helm",
+		[".*/templates/.*%.ya?ml"] = "helm",
+		[".*/templates/.*%.txt"] = "helm",
+		["helmfile.*%.ya?ml"] = "helm",
+		["helmfile.*%.ya?ml.gotmpl"] = "helm",
+		["values.*%.yaml"] = "yaml.helm-values",
+	},
+	filename = {
+		-- ["Chart.yaml"] = "yaml.helm-chartfile",
+	},
 })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
@@ -819,49 +813,6 @@ require("lazy").setup({
 			})
 		end,
 	},
-
-	{ -- Autoformat
-		"stevearc/conform.nvim",
-		event = { "BufWritePre" },
-		cmd = { "ConformInfo" },
-		keys = {
-			{
-				"<leader>f",
-				function()
-					require("conform").format({ async = true, lsp_format = "fallback" })
-				end,
-				mode = "",
-				desc = "[F]ormat buffer",
-			},
-		},
-		opts = {
-			notify_on_error = false,
-			format_on_save = function(bufnr)
-				-- Disable "format_on_save lsp_fallback" for languages that don't
-				-- have a well standardized coding style. You can add additional
-				-- languages here or re-enable it for the disabled ones.
-				local disable_filetypes = { c = true, cpp = true }
-				if disable_filetypes[vim.bo[bufnr].filetype] then
-					return nil
-				else
-					return {
-						timeout_ms = 500,
-						lsp_format = "fallback",
-					}
-				end
-			end,
-			formatters_by_ft = {
-				lua = { "stylua" },
-				python = { "flake8" },
-				-- Conform can also run multiple formatters sequentially
-				-- python = { "isort", "black" },
-				--
-				-- You can use 'stop_after_first' to run the first available formatter from the list
-				-- javascript = { "prettierd", "prettier", stop_after_first = true },
-			},
-		},
-	},
-
 	{ -- Autocompletion
 		"saghen/blink.cmp",
 		event = "VimEnter",
