@@ -107,7 +107,6 @@
   "vim_mode": true,
   "vim": {
     "use_system_clipboard": "on_yank",
-    "use_multiline_find": true,
     "use_smartcase_find": true,
     "toggle_relative_line_numbers": true,
     "highlight_on_yank_duration": 300
@@ -123,6 +122,7 @@
     "lua": true,
     "zig": true
   },
+  "disable_ai": true,
   "ui_font_size": 14,
   "buffer_font_size": 14,
   "wrap_guides": [
@@ -142,25 +142,10 @@
     "light": "One Light",
     "dark": "Tokyo Night"
   },
-  "tabs": {
-    "file_icons": true,
-    "git_status": true
-  },
   "indent_guides": {
     "enabled": true,
     "coloring": "indent_aware"
   },
-  "file_scan_exclusions": [
-    "**/.git",
-    "**/.svn",
-    "**/.hg",
-    "**/.jj",
-    "**/CVS",
-    "**/.DS_Store",
-    "**/Thumbs.db",
-    "**/.classpath",
-    "**/.settings"
-  ],
   "file_types": {
     "Helm": [
       "**/templates/*.yaml",
@@ -170,101 +155,10 @@
   "hard_tabs": false,
   "formatter": "language_server",
   "format_on_save": "off",
-  "project_panel": {
-    "indent_size": 30,
-    "default_width": 300,
-    "entry_spacing": "standard",
-    "file_icons": true,
-    "folder_icons": false,
-    "auto_fold_dirs": true,
-    "auto_reveal_entries": true,
-    "button": true,
-    "dock": "left",
-    "git_status": true,
-    "indent_guides": {
-      "show": "never"
-    }
-  },
-  "tab_bar": {
-    "show_tab_bar_buttons": false,
-    "show": true,
-    "show_nav_history_buttons": false
-  },
-  "centered_layout": {
-    "left_padding": 0.15,
-    "right_padding": 0.15
-  },
-  "inlay_hints": {
-    "enabled": true
-  },
-  "features": {
-    "edit_prediction_provider": "none"
-  },
-  // "soft_wrap": "bounded",
-  "edit_predictions": {
-    "disabled_globs": []
-  },
-  "scrollbar": {
-    "git_diff": false,
-    "search_results": true,
-    "selected_symbol": false,
-    "diagnostics": "error"
-  },
   "telemetry": {
     "diagnostics": false,
     "metrics": false
   },
-  "diagnostics": {
-    "inline": {
-      "enabled": true,
-      "update_debounce_ms": 150,
-      "padding": 4,
-      "min_column": 0,
-      "max_severity": null
-    },
-    "include_warnings": false
-  },
-  "gutter": {
-    "line_numbers": true,
-    "code_actions": false,
-    "runnables": false,
-    "folds": true
-  },
-  "preview_tabs": {
-    "enabled": true,
-    "enable_preview_from__file_finder": true,
-    "enable_preview_from_code_navigation": false
-  },
-  "git": {
-    "inline_blame": {
-      "enabled": false
-    }
-  },
-  "toolbar": {
-    "breadcrumbs": false,
-    "quick_actions": false,
-    "selections_menu": false
-  },
-  "agent": {
-    "version": "2",
-    "enabled": false
-  },
-  "outline_panel": {
-    "button": false
-  },
-  "collaboration_panel": {
-    "button": false
-  },
-  "chat_panel": {
-    "button": "never"
-  },
-  "notification_panel": {
-    "button": false
-  },
-  "task": {
-    "show_status_indicator": false
-  },
-  "line_indicator_format": "short",
   "terminal": {
     "shell": {
       "program": "nu"
@@ -294,17 +188,7 @@
     "button": true,
     "line_height": "comfortable",
     "toolbar": {
-      "title": false,
       "breadcrumbs": false
-    }
-  },
-  "lsp": {
-    "pyright": {
-      "settings": {
-        "python": {
-          "pythonPath": ".venv/bin/python"
-        }
-      }
     }
   }
 }

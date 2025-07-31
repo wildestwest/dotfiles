@@ -7,31 +7,20 @@
 // from the command palette.
 [
   {
-    "context": "VimControl && !menu",
-    "bindings": {
-      "left": "vim::WrappingLeft",
-      "right": "vim::WrappingRight",
-      "h": "vim::WrappingLeft",
-      "l": "vim::WrappingRight"
-    }
-  },
-  {
-    "context": "Editor",
-    "bindings": {
-      "ctrl-h": "workspace::ActivatePaneLeft",
-      "ctrl-l": "workspace::ActivatePaneRight",
-      "ctrl-k": "workspace::ActivatePaneUp",
-      "ctrl-j": "workspace::ActivatePaneDown",
-      "space space": [
-        "task::Spawn",
-        { "task_name": "File Finder", "reveal_target": "center" }
-      ],
-      "space /": [
-        "task::Spawn",
-        { "task_name": "Find in Files", "reveal_target": "center" }
-      ]
-    }
-  },
+      "context": "ProjectPanel || CollabPanel || OutlinePanel || ChatPanel || VimControl || EmptyPane || SharedScreen || MarkdownPreview || KeyContextView || ProjectSearchBar || Editor || Terminal",
+      "bindings": {
+        "ctrl-w": "pane::CloseActiveItem",
+        "ctrl-shift-w": "pane::CloseOtherItems",
+
+        "ctrl-h": "workspace::ActivatePaneLeft",
+        "ctrl-l": "workspace::ActivatePaneRight",
+        "ctrl-k": "workspace::ActivatePaneUp",
+        "ctrl-j": "workspace::ActivatePaneDown",
+
+        "ctrl-space": "workspace::ToggleLeftDock",
+        "ctrl-/": "workspace::ToggleRightDock"
+      }
+    },
   {
     "context": "Editor && vim_mode == normal",
     "bindings": {
@@ -44,20 +33,26 @@
       "ctrl-e": ["workspace::SendKeystrokes", "` shift-e"],
       "ctrl-i": ["workspace::SendKeystrokes", "` shift-i"],
       "ctrl-c": ["workspace::SendKeystrokes", "` shift-c"],
-      "space e": "project_panel::ToggleFocus",
-      "space g": "git_panel::ToggleFocus",
-      "ctrl-/": "terminal_panel::ToggleFocus",
+
+      // lazygit
+      "space l g": [
+        "task::Spawn",
+        { "task_name": "lazygit", "reveal_target": "center" }
+      ],
+
       "space p": "editor::Format",
-      // "space space": "file_finder::Toggle",
       "shift-l": "pane::ActivateNextItem",
       "shift-h": "pane::ActivatePreviousItem",
       "space v": "pane::SplitRight",
-      "space c": "pane::CloseActiveItem",
       "space w": "workspace::SaveAll",
-      // Open recent project
+
+      // Find/search
+      "space space": "file_finder::Toggle",
       "space f p": "projects::OpenRecent",
-      // Search word under cursor
-      "space s w": "pane::DeploySearch",
+      "space f r": "projects::OpenRemote",
+      "space /": "pane::DeploySearch",
+      "space s s": "project_symbols::Toggle",
+
       "s": "vim::PushSneak",
       "shift-s": "vim::PushSneakBackward"
     }
@@ -67,7 +62,6 @@
     "bindings": {
       "shift-j": "editor::MoveLineDown",
       "shift-k": "editor::MoveLineUp",
-      "shift-s": ["vim::PushAddSurrounds", {}],
       "shift-x": "vim::Exchange"
     }
   },
@@ -77,33 +71,6 @@
       // mini.ai plugin behavior
       "q": "vim::MiniQuotes",
       "b": "vim::MiniBrackets"
-    }
-  },
-  {
-    "context": "ProjectPanel",
-    "bindings": {
-      "space e": "workspace::ToggleLeftDock"
-    }
-  },
-  {
-    "context": "GitPanel",
-    "bindings": {
-      "space g": "workspace::ToggleLeftDock"
-    }
-  },
-  {
-    "context": "Terminal",
-    "bindings": {
-      "ctrl-/": "workspace::ToggleRightDock"
-    }
-  },
-  {
-    "context": "Dock",
-    "bindings": {
-      "ctrl-h": "workspace::ActivatePaneLeft",
-      "ctrl-l": "workspace::ActivatePaneRight",
-      "ctrl-k": "workspace::ActivatePaneUp",
-      "ctrl-j": "workspace::ActivatePaneDown"
     }
   }
 ]
