@@ -148,6 +148,8 @@ cmd-shift-0 = 'move-node-to-workspace 10'
 
 cmd-shift-r = ['reload-config', 'mode main']
 
+cmd-p = 'exec-and-forget screencapture -i -c'
+
 [[on-window-detected]]
   if.app-name-regex-substring = 'Mattermost'
   run = 'move-node-to-workspace 10'

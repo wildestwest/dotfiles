@@ -13,6 +13,16 @@
       "projects": [
         {
           "paths": [
+            "/home/coder/repos/automation"
+          ]
+        },
+        {
+          "paths": [
+            "~/.config"
+          ]
+        },
+        {
+          "paths": [
             "~/repos/afw_ewa"
           ]
         },
@@ -28,26 +38,6 @@
         },
         {
           "paths": [
-            "~/repos/wip_api"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/tc_tap_api"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/incident-archive-api"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/dev-base-image"
-          ]
-        },
-        {
-          "paths": [
             "~/repos/data-ingest-mission-management"
           ]
         },
@@ -58,7 +48,17 @@
         },
         {
           "paths": [
+            "~/repos/dev-base-image"
+          ]
+        },
+        {
+          "paths": [
             "~/repos/ewa-scripts"
+          ]
+        },
+        {
+          "paths": [
+            "~/repos/incident-archive-api"
           ]
         },
         {
@@ -98,7 +98,55 @@
         },
         {
           "paths": [
-            "~/.config"
+            "~/repos/tc_tap_api"
+          ]
+        },
+        {
+          "paths": [
+            "~/repos/wip_api"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "coder.ewaold",
+      "username": "coder",
+      "projects": [
+        {
+          "paths": [
+            "/home/coder"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "coder.ewaold",
+      "username": "coder",
+      "projects": [
+        {
+          "paths": [
+            "/home/coder"
+          ]
+        },
+        {
+          "paths": [
+            "/home/coder/repos"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "coder.ewatest",
+      "username": "coder",
+      "projects": [
+        {
+          "paths": [
+            "/home/coder"
+          ]
+        },
+        {
+          "paths": [
+            "/home/coder/repos"
           ]
         }
       ]

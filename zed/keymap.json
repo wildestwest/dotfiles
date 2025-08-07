@@ -7,7 +7,7 @@
 // from the command palette.
 [
   {
-      "context": "ProjectPanel || CollabPanel || OutlinePanel || ChatPanel || VimControl || EmptyPane || SharedScreen || MarkdownPreview || KeyContextView || ProjectSearchBar || Editor || Terminal",
+      "context": "EmptyPane || ProjectPanel || CollabPanel || OutlinePanel || ChatPanel || VimControl || EmptyPane || SharedScreen || MarkdownPreview || KeyContextView || ProjectSearchBar || Editor || Terminal",
       "bindings": {
         "ctrl-w": "pane::CloseActiveItem",
         "ctrl-shift-w": "pane::CloseOtherItems",
