@@ -134,6 +134,21 @@ vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete to void buff
 -- format file
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { desc = "run format on current buffer" })
 
+-- Create functions that handle the jumplist navigation
+local function jump_older()
+  local count = vim.v.count1
+  vim.cmd('normal! ' .. count .. '\15')
+end
+
+local function jump_newer()
+  local count = vim.v.count1
+  vim.cmd('normal! ' .. count .. '\9')
+end
+
+-- Bind to H and L
+vim.keymap.set('n', 'H', jump_older, { desc = 'Jump to older position (back in jumplist)' })
+vim.keymap.set('n', 'L', jump_newer, { desc = 'Jump to newer position (forward in jumplist)' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
