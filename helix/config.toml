@@ -10,8 +10,11 @@ true-color = true
 undercurl = true
 # these are the engram kb layout homerow keys, which I use
 jump-label-alphabet = "hatesincludorkmjfxwypgvb"
-end-of-line-diagnostics = "hint"
+end-of-line-diagnostics = "error"
 rulers = [80, 120]
+completion-replace = true
+popup-border = "all"
+rainbow-brackets = true
 
 [editor.statusline]
 left = ["mode", "spinner", "read-only-indicator", "file-modification-indicator"]
@@ -33,6 +36,12 @@ render = true
 [editor.soft-wrap]
 enable = true
 
+[editor.smart-tab]
+supersede-menu = true
+
+[editor.inline-diagnostics]
+cursor-line = "warning" # show warnings and errors on the cursorline inline
+
 [keys.normal]
 H = ":buffer-previous"
 L = ":buffer-next"
@@ -42,38 +51,23 @@ C-l = "jump_view_right"
 C-k = "page_cursor_half_up"
 C-j = "page_cursor_half_down"
 ret = "goto_word"
-
-# Match in next instance of pair
-[keys.normal.m.n]
-"(" = "@s\\(<ret>nmim"
-"{" = "@s\\{<ret>nmim"
-"[" = "@s\\[<ret>nmim"
-'"' = '@s\"<ret>nmim'
-"'" = "@s\\'<ret>nmim"
-"<" = "@s<lt><ret>nmim"
-
-# Match in previous instance of pair
-[keys.normal.m.p]
-"(" = "@s\\)<ret>Nmmmim"
-"{" = "@s\\}<ret>Nmmmim"
-"[" = "@s\\]<ret>Nmmmim"
-'"' = '@s\"<ret>Nmmmim'
-"'" = "@s\\'<ret>Nmmmim"
-"<" = "@s<gt><ret>Nmmmim"
+tab = "move_parent_node_end"
+S-tab = "move_parent_node_start"
 
 [keys.insert]
 C-h = ["jump_view_left", "insert_mode"]
 C-l = ["jump_view_right", "insert_mode"]
+S-tab = "move_parent_node_start"
 
 [keys.select]
 ret = "extend_to_word"
 X = "select_line_above"
-
-[keys.normal.space]
-space = "file_picker"
+tab = "extend_parent_node_end"
+S-tab = "extend_parent_node_start"
 
 [keys.normal.backspace]
-backspace = "suspend"
+w = ":write-all"
+r = [":reload-all", ":config-reload"]
 # Yazi
 e = [
   ':sh rm -f /tmp/unique-file',
@@ -103,5 +97,3 @@ k = [
   ":reload-all"
 ]
 
-[editor.inline-diagnostics]
-cursor-line = "warning" # show warnings and errors on the cursorline inline
