@@ -7,20 +7,30 @@
 // from the command palette.
 [
   {
-      "context": "EmptyPane || ProjectPanel || CollabPanel || OutlinePanel || ChatPanel || VimControl || EmptyPane || SharedScreen || MarkdownPreview || KeyContextView || ProjectSearchBar || Editor || Terminal",
-      "bindings": {
-        "ctrl-w": "pane::CloseActiveItem",
-        "ctrl-shift-w": "pane::CloseOtherItems",
+    "context": "(EmptyPane || SharedScreen || (Editor && vim_mode == normal) || ProjectPanel)",
+    "bindings": {
+      "space space": "file_finder::Toggle",
+      "space p": "projects::OpenRecent",
+      "space /": "pane::DeploySearch"
+    }
+  },
+  {
+    "context": "(Editor || Workspace)",
+    "bindings": {
+      "ctrl-shift-w": "pane::CloseActiveItem",
 
-        "ctrl-h": "workspace::ActivatePaneLeft",
-        "ctrl-l": "workspace::ActivatePaneRight",
-        "ctrl-k": "workspace::ActivatePaneUp",
-        "ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown",
 
-        "ctrl-space": "workspace::ToggleLeftDock",
-        "ctrl-/": "workspace::ToggleRightDock"
-      }
-    },
+      "ctrl-space": "project_panel::ToggleFocus",
+      "ctrl-g": "git_panel::ToggleFocus",
+      "ctrl-/": "workspace::ToggleRightDock",
+      "ctrl-]": "pane::ActivateNextItem",
+      "ctrl-[": "pane::ActivatePreviousItem"
+    }
+  },
   {
     "context": "Editor && vim_mode == normal",
     "bindings": {
@@ -33,25 +43,6 @@
       "ctrl-e": ["workspace::SendKeystrokes", "` shift-e"],
       "ctrl-i": ["workspace::SendKeystrokes", "` shift-i"],
       "ctrl-c": ["workspace::SendKeystrokes", "` shift-c"],
-
-      // lazygit
-      "space l g": [
-        "task::Spawn",
-        { "task_name": "lazygit", "reveal_target": "center" }
-      ],
-
-      "space p": "editor::Format",
-      "shift-l": "pane::ActivateNextItem",
-      "shift-h": "pane::ActivatePreviousItem",
-      "space v": "pane::SplitRight",
-      "space w": "workspace::SaveAll",
-
-      // Find/search
-      "space space": "file_finder::Toggle",
-      "space f p": "projects::OpenRecent",
-      "space f r": "projects::OpenRemote",
-      "space /": "pane::DeploySearch",
-      "space s s": "project_symbols::Toggle",
 
       "s": "vim::PushSneak",
       "shift-s": "vim::PushSneakBackward"
@@ -71,6 +62,26 @@
       // mini.ai plugin behavior
       "q": "vim::MiniQuotes",
       "b": "vim::MiniBrackets"
+    }
+  },
+  {
+    "context": "GitPanel",
+    "bindings": {
+      "ctrl-g": "workspace::ToggleLeftDock"
+    }
+  },
+  {
+    "context": "ProjectPanel",
+    "bindings": {
+      "ctrl-space": "workspace::ToggleLeftDock"
+    }
+  },
+  {
+    "context": "multibuffer",
+    "bindings": {
+      // why is this not a default???
+      "n": "search::SelectNextMatch",
+      "shift-n": "search::SelectPreviousMatch"
     }
   }
 ]

@@ -7,6 +7,9 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "git_panel": {
+    "dock": "left"
+  },
   "ssh_connections": [
     {
       "host": "coder.ewa",
@@ -109,18 +112,7 @@
       ]
     },
     {
-      "host": "coder.ewaold",
-      "username": "coder",
-      "projects": [
-        {
-          "paths": [
-            "/home/coder"
-          ]
-        }
-      ]
-    },
-    {
-      "host": "coder.ewaold",
+      "host": "coder.ewa",
       "username": "coder",
       "projects": [
         {
@@ -130,26 +122,15 @@
         },
         {
           "paths": [
-            "/home/coder/repos"
+            "/home/coder/repos/base-dev-image"
           ]
         }
       ]
     },
     {
-      "host": "coder.ewatest",
+      "host": "coder.ewa",
       "username": "coder",
-      "projects": [
-        {
-          "paths": [
-            "/home/coder"
-          ]
-        },
-        {
-          "paths": [
-            "/home/coder/repos"
-          ]
-        }
-      ]
+      "projects": []
     }
   ],
   "vim_mode": true,
@@ -160,81 +141,39 @@
     "highlight_on_yank_duration": 300
   },
   "auto_install_extensions": {
-    "html": true,
     "dockerfile": true,
     "docker-compose": true,
-    "tokyo-night": true,
     "helm": true,
     "graphql": true,
     "ansible": true,
-    "lua": true,
-    "zig": true
+    "python-snippets": true
   },
   "disable_ai": true,
   "ui_font_size": 14,
   "buffer_font_size": 14,
-  "wrap_guides": [
-    80,
-    120
-  ],
-  // Disable cursor blink
+  "wrap_guides": [80, 120],
   "cursor_blink": false,
-  // Use relative line numbers
-  "relative_line_numbers": true,
-  // Prevent the buffer from scrolling beyond the last line
-  "scroll_beyond_last_line": "off",
-  // Allow the cursor to reach the edges of the screen
-  "vertical_scroll_margin": 12,
+  "vertical_scroll_margin": 8,
   "theme": {
     "mode": "system",
     "light": "One Light",
-    "dark": "Tokyo Night"
+    "dark": "Ayu Dark"
   },
   "indent_guides": {
-    "enabled": true,
     "coloring": "indent_aware"
   },
   "file_types": {
-    "Helm": [
-      "**/templates/*.yaml",
-      "**/templates/*.yml"
-    ]
+    "Helm": ["**/templates/*.yaml", "**/templates/*.yml", "**/values*.yaml"]
   },
-  "hard_tabs": false,
-  "formatter": "language_server",
   "format_on_save": "off",
   "telemetry": {
     "diagnostics": false,
     "metrics": false
   },
   "terminal": {
-    "shell": {
-      "program": "nu"
-    },
-    "detect_venv": {
-      "on": {
-        // Default directories to search for virtual environments, relative
-        // to the current working directory. We recommend overriding this
-        // in your project's settings, rather than globally.
-        "directories": [
-          ".env",
-          "env",
-          ".venv",
-          "venv"
-        ],
-        // Can also be `csh`, `fish`, and `nushell`
-        "activate_script": "nushell"
-      }
-    },
     "dock": "right",
-    "working_directory": "current_project_directory",
-    "blinking": "terminal_controlled",
-    "cursor_shape": null,
-    "alternate_scroll": "off",
-    "option_as_meta": false,
+    "cursor_shape": "block",
     "copy_on_select": true,
-    "button": true,
-    "line_height": "comfortable",
     "toolbar": {
       "breadcrumbs": false
     }

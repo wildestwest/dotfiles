@@ -3,23 +3,6 @@
 // Example:
 [
   {
-    "label": "lazygit",
-    "command": "lazygit",
-    "hide": "on_success",
-    "use_new_terminal": true,
-    "shell": {
-          "program": "/bin/bash"
-        }
-  },
-  {
-      "label": "nushell",
-      "command": "nu",
-      "hide": "on_success",
-      "shell": {
-            "program": "/bin/bash"
-          }
-    },
-  {
     "label": "Example task",
     "command": "for i in {1..5}; do echo \"Hello $i/5\"; sleep 1; done",
     //"args": [],
