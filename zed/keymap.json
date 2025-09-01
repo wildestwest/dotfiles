@@ -17,32 +17,33 @@
   {
     "context": "(Editor || Workspace)",
     "bindings": {
-      "ctrl-shift-w": "pane::CloseActiveItem",
+      "alt-w": "pane::CloseActiveItem",
 
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
       "ctrl-j": "workspace::ActivatePaneDown",
 
-      "ctrl-space": "project_panel::ToggleFocus",
-      "ctrl-g": "git_panel::ToggleFocus",
-      "ctrl-/": "workspace::ToggleRightDock",
-      "ctrl-]": "pane::ActivateNextItem",
-      "ctrl-[": "pane::ActivatePreviousItem"
+      "alt-e": "project_panel::ToggleFocus",
+      "alt-g": "git_panel::ToggleFocus",
+      "alt-l": "workspace::ToggleRightDock",
+      "alt-h": "workspace::ToggleLeftDock",
+      "alt-]": "pane::ActivateNextItem",
+      "alt-[": "pane::ActivatePreviousItem"
     }
   },
   {
     "context": "Editor && vim_mode == normal",
     "bindings": {
       // Harpoon style mark jumping
-      "space m a": ["workspace::SendKeystrokes", "m shift-a"],
-      "space m e": ["workspace::SendKeystrokes", "m shift-e"],
-      "space m i": ["workspace::SendKeystrokes", "m shift-i"],
-      "space m c": ["workspace::SendKeystrokes", "m shift-c"],
-      "ctrl-a": ["workspace::SendKeystrokes", "` shift-a"],
-      "ctrl-e": ["workspace::SendKeystrokes", "` shift-e"],
-      "ctrl-i": ["workspace::SendKeystrokes", "` shift-i"],
-      "ctrl-c": ["workspace::SendKeystrokes", "` shift-c"],
+      "alt-shift-a": ["workspace::SendKeystrokes", "m shift-a"],
+      "alt-shift-e": ["workspace::SendKeystrokes", "m shift-e"],
+      "alt-shift-i": ["workspace::SendKeystrokes", "m shift-i"],
+      "alt-shift-c": ["workspace::SendKeystrokes", "m shift-c"],
+      "alt-a": ["workspace::SendKeystrokes", "` shift-a"],
+      "alt-e": ["workspace::SendKeystrokes", "` shift-e"],
+      "alt-i": ["workspace::SendKeystrokes", "` shift-i"],
+      "alt-c": ["workspace::SendKeystrokes", "` shift-c"],
 
       "s": "vim::PushSneak",
       "shift-s": "vim::PushSneakBackward"
@@ -62,18 +63,6 @@
       // mini.ai plugin behavior
       "q": "vim::MiniQuotes",
       "b": "vim::MiniBrackets"
-    }
-  },
-  {
-    "context": "GitPanel",
-    "bindings": {
-      "ctrl-g": "workspace::ToggleLeftDock"
-    }
-  },
-  {
-    "context": "ProjectPanel",
-    "bindings": {
-      "ctrl-space": "workspace::ToggleLeftDock"
     }
   },
   {

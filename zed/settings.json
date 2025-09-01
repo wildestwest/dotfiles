@@ -16,7 +16,17 @@
       "projects": [
         {
           "paths": [
+            "/home/coder"
+          ]
+        },
+        {
+          "paths": [
             "/home/coder/repos/automation"
+          ]
+        },
+        {
+          "paths": [
+            "/home/coder/repos/localstack-ewa"
           ]
         },
         {
@@ -110,27 +120,6 @@
           ]
         }
       ]
-    },
-    {
-      "host": "coder.ewa",
-      "username": "coder",
-      "projects": [
-        {
-          "paths": [
-            "/home/coder"
-          ]
-        },
-        {
-          "paths": [
-            "/home/coder/repos/base-dev-image"
-          ]
-        }
-      ]
-    },
-    {
-      "host": "coder.ewa",
-      "username": "coder",
-      "projects": []
     }
   ],
   "vim_mode": true,
