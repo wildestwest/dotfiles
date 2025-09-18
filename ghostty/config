@@ -43,9 +43,9 @@
 # resize-overlay-duration = 4s 200ms
 
 font-size = 14
-background-opacity = .93
+background-opacity = .97
 # clipboard-read = "allow"
-theme = "tokyonight_night"
+theme = "Ayu"
 clipboard-write = "allow"
 confirm-close-surface = false
 window-decoration = "none"

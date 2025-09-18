@@ -7,9 +7,6 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "git_panel": {
-    "dock": "left"
-  },
   "ssh_connections": [
     {
       "host": "coder.ewa",
@@ -120,6 +117,27 @@
           ]
         }
       ]
+    },
+    {
+      "host": "coder.mcap",
+      "username": "coder",
+      "projects": [
+        {
+          "paths": [
+            "/home/coder"
+          ]
+        },
+        {
+          "paths": [
+            "/home/coder/repos/afw_ewa"
+          ]
+        },
+        {
+          "paths": [
+            "/home/coder/repos/data-ingest-mission-management"
+          ]
+        }
+      ]
     }
   ],
   "vim_mode": true,
@@ -127,15 +145,14 @@
     "use_system_clipboard": "on_yank",
     "use_smartcase_find": true,
     "toggle_relative_line_numbers": true,
-    "highlight_on_yank_duration": 300
+    "highlight_on_yank_duration": 400
   },
   "auto_install_extensions": {
     "dockerfile": true,
     "docker-compose": true,
     "helm": true,
     "graphql": true,
-    "ansible": true,
-    "python-snippets": true
+    "ansible": true
   },
   "disable_ai": true,
   "ui_font_size": 14,
@@ -143,6 +160,15 @@
   "wrap_guides": [80, 120],
   "cursor_blink": false,
   "vertical_scroll_margin": 8,
+  "show_signature_help_after_edits": true,
+  "active_pane_modifiers": {
+    "inactive_opacity": 0.8
+  },
+  "file_finder": {
+    "modal_max_width": "medium"
+  },
+  "restore_on_startup": "last_workspace",
+  "use_smartcase_search": true,
   "theme": {
     "mode": "system",
     "light": "One Light",
@@ -152,7 +178,12 @@
     "coloring": "indent_aware"
   },
   "file_types": {
-    "Helm": ["**/templates/*.yaml", "**/templates/*.yml", "**/values*.yaml"]
+    "Helm": [
+      "**/templates/*.yaml",
+      "**/templates/*.yml",
+      "**/*values*.yaml",
+      "**/chart.yaml"
+    ]
   },
   "format_on_save": "off",
   "telemetry": {
@@ -165,15 +196,6 @@
     "copy_on_select": true,
     "toolbar": {
       "breadcrumbs": false
-    }
-  },
-  "lsp": {
-    "pyright": {
-      "settings": {
-        "python": {
-          "pythonPath": ".venv/bin/python"
-        }
-      }
     }
   }
 }

@@ -7,43 +7,48 @@
 // from the command palette.
 [
   {
-    "context": "(EmptyPane || SharedScreen || (Editor && vim_mode == normal) || ProjectPanel)",
+    "context": "(EmptyPane || SharedScreen || (Editor && vim_mode == normal) || ProjectPanel )",
     "bindings": {
       "space space": "file_finder::Toggle",
       "space p": "projects::OpenRecent",
-      "space /": "pane::DeploySearch"
+      "space r": "projects::OpenRemote",
+      "space /": "pane::DeploySearch",
+      "space t": "task::Spawn",
+      "space e": "toolchain::Select",
+      "space l g": [
+        "task::Spawn",
+        { "task_name": "lazygit", "reveal_target": "center" }
+      ]
     }
   },
   {
+      "context": "(Terminal || EmptyPane || SharedScreen || (Editor && vim_mode == normal) || ProjectPanel )",
+      "bindings": {
+        // No leader key bindings in the terminal cuz it makes typing laggy
+        "ctrl-'": "workspace::ToggleLeftDock"
+      }
+    },
+  {
     "context": "(Editor || Workspace)",
     "bindings": {
-      "alt-w": "pane::CloseActiveItem",
-
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
-      "ctrl-j": "workspace::ActivatePaneDown",
-
-      "alt-e": "project_panel::ToggleFocus",
-      "alt-g": "git_panel::ToggleFocus",
-      "alt-l": "workspace::ToggleRightDock",
-      "alt-h": "workspace::ToggleLeftDock",
-      "alt-]": "pane::ActivateNextItem",
-      "alt-[": "pane::ActivatePreviousItem"
+      "ctrl-j": "workspace::ActivatePaneDown"
     }
   },
   {
     "context": "Editor && vim_mode == normal",
     "bindings": {
       // Harpoon style mark jumping
-      "alt-shift-a": ["workspace::SendKeystrokes", "m shift-a"],
-      "alt-shift-e": ["workspace::SendKeystrokes", "m shift-e"],
-      "alt-shift-i": ["workspace::SendKeystrokes", "m shift-i"],
-      "alt-shift-c": ["workspace::SendKeystrokes", "m shift-c"],
-      "alt-a": ["workspace::SendKeystrokes", "` shift-a"],
-      "alt-e": ["workspace::SendKeystrokes", "` shift-e"],
-      "alt-i": ["workspace::SendKeystrokes", "` shift-i"],
-      "alt-c": ["workspace::SendKeystrokes", "` shift-c"],
+      "ctrl-shift-a": ["workspace::SendKeystrokes", "m shift-a"],
+      "ctrl-shift-e": ["workspace::SendKeystrokes", "m shift-e"],
+      "ctrl-shift-i": ["workspace::SendKeystrokes", "m shift-i"],
+      "ctrl-shift-c": ["workspace::SendKeystrokes", "m shift-c"],
+      "ctrl-a": ["workspace::SendKeystrokes", "` shift-a"],
+      "ctrl-e": ["workspace::SendKeystrokes", "` shift-e"],
+      "ctrl-i": ["workspace::SendKeystrokes", "` shift-i"],
+      "ctrl-c": ["workspace::SendKeystrokes", "` shift-c"],
 
       "s": "vim::PushSneak",
       "shift-s": "vim::PushSneakBackward"
@@ -71,6 +76,12 @@
       // why is this not a default???
       "n": "search::SelectNextMatch",
       "shift-n": "search::SelectPreviousMatch"
+    }
+  },
+  {
+    "context": "(FileFinder || FileFinder > Picker > Editor)",
+    "bindings": {
+      "ctrl-v": "pane::SplitRight"
     }
   }
 ]

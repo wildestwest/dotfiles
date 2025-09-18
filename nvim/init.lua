@@ -138,7 +138,7 @@ require("lazy").setup({
       },
     },
   },
-  {                     -- Useful plugin to show you pending keybinds.
+  {
     "folke/which-key.nvim",
     event = "VimEnter", -- Sets the loading event to 'VimEnter'
     opts = {
@@ -298,19 +298,6 @@ require("lazy").setup({
   },
 
   -- LSP Plugins
-  {
-    -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
-    -- used for completion, annotations and signatures of Neovim apis
-    "folke/lazydev.nvim",
-    ft = "lua",
-    opts = {
-      library = {
-        -- Load luvit types when the `vim.uv` word is found
-        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-        { path = "snacks.nvim",        words = { "Snacks" } },
-      },
-    },
-  },
   {
     -- Main LSP Configuration
     "neovim/nvim-lspconfig",
@@ -543,13 +530,7 @@ require("lazy").setup({
     priority = 1000, -- Make sure to load this before all the other start plugins.
     config = function()
       ---@diagnostic disable-next-line: missing-fields
-      require("tokyonight").setup({
-        transparent = true,
-        styles = {
-          comments = { italic = false }, -- Disable italics in comments
-          floats = 'transparent',
-        },
-      })
+      require("tokyonight").setup()
       vim.cmd.colorscheme("tokyonight-night")
     end,
   },
