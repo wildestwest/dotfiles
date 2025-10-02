@@ -80,6 +80,14 @@ vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete to void buff
 -- format file
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { desc = "run format on current buffer" })
 
+-- hotkeyed commands
+vim.keymap.set("n", "<leader>cpv", "<cmd>!rm -rf .venv && python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt -r requirements-testing.txt<CR>", { desc = "[C]ommand [P]ython clean [V]env and install" })
+vim.keymap.set("n", "<leader>cpt", "<cmd>!source .venv/bin/activate && python -m pytest<CR>", { desc = "[C]ommand [P]ython run [T]ests" })
+vim.keymap.set("n", "<leader>cpr", "<cmd>!source .venv/bin/activate && python %<CR>", { desc = "[C]ommand [P]ython [R]un current file" })
+vim.keymap.set("n", "<leader>cpi", "<cmd>!source .venv/bin/activate && pip install -r requirements.txt<CR>", { desc = "[C]ommand [P]ython [I]nstall requirements" })
+
+vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -155,9 +163,13 @@ require("lazy").setup({
 
       -- Document existing key chains
       spec = {
+        { "<leader>c", group = "[C]ommand" },
+        { "<leader>cp", group = "[C]ommand [P]ython" },
+        { "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
+        { "<leader>l", group = "[L]azy" },
+        { "<leader>m", group = "[M]arks (Grapple)" },
         { "<leader>s", group = "[S]earch" },
         { "<leader>t", group = "[T]oggle" },
-        { "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
       },
     },
   },
@@ -634,7 +646,25 @@ require("lazy").setup({
       { "<C-[>",     "<cmd>Grapple cycle_tags prev<cr>", desc = "Grapple cycle previous tag" },
     },
   },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' }, -- if you use the mini.nvim suite
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' }, -- if you use standalone mini plugins
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {
+      completions = {
+        -- Settings for blink.cmp completions source
+        blink = { enabled = true },
+        -- Settings for in-process language server completions
+        lsp = { enabled = true },
+    },
+    },
+  },
 })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+
