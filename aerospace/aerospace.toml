@@ -96,11 +96,10 @@ outer.right = 8
 # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
 # You can uncomment the following lines to open up terminal with alt + enter shortcut
 # (like in i3)
-# alt-enter = 'exec-and-forget open -a Ghostty'
 
 # close and fullscreen keys
 cmd-shift-c = 'close --quit-if-last-window'
-cmd-t = 'exec-and-forget open -n -a ghostty --args -e nu'
+cmd-t = 'exec-and-forget open -n -a ghostty'
 cmd-b = 'exec-and-forget open -n -a firefox --args -P'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout

@@ -1,4 +1,4 @@
-theme = "my_theme"
+theme = "tokyonight"
 
 [editor]
 line-number = "relative"
@@ -43,8 +43,6 @@ supersede-menu = true
 cursor-line = "warning" # show warnings and errors on the cursorline inline
 
 [keys.normal]
-H = ":buffer-previous"
-L = ":buffer-next"
 X = "select_line_above"
 C-h = "jump_view_left"
 C-l = "jump_view_right"

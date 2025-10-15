@@ -10,6 +10,13 @@
     "reveal_target": "center"
   },
   {
+    "label": "kube",
+    "command": "k9s",
+    "hide": "on_success",
+    "use_new_terminal": true,
+    "reveal_target": "center"
+  },
+  {
     "label": "pytest",
     "command": "source .venv/bin/activate && python -m pytest",
     "hide": "on_success",

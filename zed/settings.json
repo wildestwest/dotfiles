@@ -9,7 +9,7 @@
 {
   "ssh_connections": [
     {
-      "host": "coder.ewa",
+      "host": "coder.mcap",
       "projects": [
         {
           "paths": [
@@ -114,27 +114,6 @@
         {
           "paths": [
             "~/repos/wip_api"
-          ]
-        }
-      ]
-    },
-    {
-      "host": "coder.mcap",
-      "username": "coder",
-      "projects": [
-        {
-          "paths": [
-            "/home/coder"
-          ]
-        },
-        {
-          "paths": [
-            "/home/coder/repos/afw_ewa"
-          ]
-        },
-        {
-          "paths": [
-            "/home/coder/repos/data-ingest-mission-management"
           ]
         }
       ]
