@@ -89,12 +89,35 @@ end)
 -- Add it now if file (and not 'mini.starter') is shown after startup.
 now_if_args(function()
   add('neovim/nvim-lspconfig')
+  add('mason-org/mason.nvim')
+  add('williamboman/mason-lspconfig.nvim')
+
+  -- Setup Mason first
+  require('mason').setup()
+
+  -- List of LSP servers to automatically install and enable
+  local servers = {
+    'helm_ls',
+    'basedpyright',
+    'ansiblels',
+    'dockerls',
+    'docker_compose_language_service',
+    'marksman',
+    'rust_analyzer',
+    'ts_ls',
+    'yamlls', -- Note: yaml-language-server is installed as 'yamlls' in mason
+  }
+
+  -- Setup mason-lspconfig to automatically install servers
+  require('mason-lspconfig').setup({
+    ensure_installed = servers,
+    automatic_installation = true,
+  })
 
   -- Use `:h vim.lsp.enable()` to automatically enable language server based on
   -- the rules provided by 'nvim-lspconfig'.
   -- Use `:h vim.lsp.config()` or 'ftplugin/lsp/' directory to configure servers.
-  -- Uncomment and tweak the following `vim.lsp.enable()` call to enable servers.
-  vim.lsp.enable({'helm_ls', 'ty', 'ansiblels', 'dockerls', 'docker_compose_language_service', 'marksman', 'rust_analyzer', 'ts_ls', 'yaml_language_server'})
+  vim.lsp.enable(servers)
 end)
 
 -- Formatting =================================================================
@@ -139,11 +162,8 @@ later(function() add('rafamadriz/friendly-snippets') end)
 -- The caveat is that these programs will be set up to be mostly used inside Neovim.
 -- If you need them to work elsewhere, consider using other package managers.
 --
--- You can use it like so:
-later(function()
-  add('mason-org/mason.nvim')
-  require('mason').setup()
-end)
+-- Note: Mason and mason-lspconfig are now configured in the LSP section above
+-- to ensure proper initialization order.
 
 -- Beautiful, usable, well maintained color schemes outside of 'mini.nvim' and
 -- have full support of its highlight groups. Use if you don't like 'miniwinter'

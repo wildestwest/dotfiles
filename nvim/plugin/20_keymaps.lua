@@ -150,7 +150,7 @@ local pick_added_hunks_buf = '<Cmd>Pick git_hunks path="%" scope="staged"<CR>'
 
 nmap_leader('f/', '<Cmd>Pick history scope="/"<CR>',            '"/" history')
 nmap_leader('fk', '<Cmd>Pick keymaps<CR>',                      '"/" history')
-nmap_leader('fp', '<Cmd>Pick projects<CR>',                     'Projects') 
+nmap_leader('fp', '<Cmd>Pick projects<CR>',                     'Projects')
 nmap_leader('f:', '<Cmd>Pick history scope=":"<CR>',            '":" history')
 nmap_leader('fa', '<Cmd>Pick git_hunks scope="staged"<CR>',     'Added hunks (all)')
 nmap_leader('fA', pick_added_hunks_buf,                         'Added hunks (buf)')

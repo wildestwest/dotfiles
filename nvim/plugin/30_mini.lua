@@ -500,10 +500,15 @@ later(function() require('mini.jump').setup() end)
 --
 -- See also:
 -- - `:h MiniJump2d.gen_spotter` - list of available spotters
-later(function() require('mini.jump2d').setup({
-  labels = 'ahetiscnulod'
-}) end)
-
+later(function() 
+  local jump2d = require('mini.jump2d')
+  jump2d.setup({
+    spotter = jump2d.gen_spotter.pattern('[^%s%p]+'),
+    labels = 'ahetiscn',
+    view = { dim = true, n_steps_ahead = 2 },
+  })
+  vim.keymap.set({ 'n', 'x', 'o' }, '<BS>', function() MiniJump2d.start(MiniJump2d.builtin_opts.single_character) end)
+end)
 -- Special key mappings. Provides helpers to map:
 -- - Multi-step actions. Apply action 1 if condition is met; else apply
 --   action 2 if condition is met; etc.
