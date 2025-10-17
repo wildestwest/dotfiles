@@ -32,22 +32,22 @@ set $menu $rofi_cmd -show combi -combi-modes drun#run -modes combi
 
 smart_gaps on
 smart_borders on
-exec_always --no-startup-id workstyle &> /tmp/workstyle.log
+exec_always nm-applet
 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 # Requires: desktop-backgrounds-compat, swaybg
-output * bg /home/whulland/murky_peaks.jpg fill
-output eDP-1 pos 0,0
-output "LG Electronics LG ULTRAGEAR+ 207NTSUDZ886" pos 1920,0
-output "LG Electronics LG Ultra HD 0x00017DAC" pos 5760,-720 transform 90
+output * bg /home/mcap.adm/Downloads/mountain_jaws.jpg fill
 #
 # Example configuration:
 #
 #   output HDMI-A-1 resolution 1920x1080 position 1920,0
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
+output * scale 1.25
+
+output "GIGA-BYTE TECHNOLOGY CO., LTD. M32UP Unknown" mode 3840x2160@160Hz
 
 ### Idle configuration
 #
@@ -75,8 +75,6 @@ output "LG Electronics LG Ultra HD 0x00017DAC" pos 5760,-720 transform 90
 #
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read `man 5 sway-input` for more information about this section.
-# input "20547:21570:PloopyCo_Trackball_Mouse" scroll_factor .2
-input "20547:23623:Ploopy_Corporation_Ploopy_Adept_Trackball_Mouse" scroll_factor .07
 # Disable mouse acceleration for all pointer devices
 input "type:pointer" {
     accel_profile flat
@@ -92,17 +90,9 @@ input "type:pointer" {
 
     # Kill focused window
     bindsym $mod+q kill
-    bindsym $mod+c kill
-
-    # Open keymap helper
-    bindsym $mod+m exec imv -W 2000 -H 800 /home/whulland/Pictures/sym.png
 
     # Start your launcher
     bindsym $mod+Space exec $menu
-
-    # Pull stuff from scratchpad
-    bindsym $mod+t [app_id=org.gnome.Solanum] scratchpad show
-    bindsym $mod+n [app_id=foot] scratchpad show
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -111,10 +101,8 @@ input "type:pointer" {
     # mouse button for dragging.
     floating_modifier $mod normal
 
-    bindsym --no-warn $mod+e exec thunar
-    for_window [app_id="thunar"] floating enable
-    for_window [app_id="org.gnome.Solanum"] floating enable
-    for_window [app_id="foot"] floating enable
+    bindsym --no-warn $mod+e exec nautilus
+    for_window [app_id="org.gnome.Nautilus"] floating enable
     for_window [app_id="imv"] floating enable
 
     # Reload the configuration file
@@ -176,30 +164,9 @@ input "type:pointer" {
     bindsym $mod+Shift+0 move container to workspace number 10
     # Note: workspaces can have any name you want, not just numbers.
     # We just use 1-10 as the default.
-    workspace 1 output eDP-1 'LG Electronics LG ULTRAGEAR+ 207NTSUDZ886'
-    workspace 2 output eDP-1 'LG Electronics LG ULTRAGEAR+ 207NTSUDZ886'
-    workspace 3 output 'LG Electronics LG ULTRAGEAR+ 207NTSUDZ886'
-    workspace 4 output 'LG Electronics LG ULTRAGEAR+ 207NTSUDZ886'
-    workspace 5 output 'LG Electronics LG ULTRAGEAR+ 207NTSUDZ886'
-    workspace 6 output 'LG Electronics LG Ultra HD 0x00017DAC'
-    workspace 7 output 'LG Electronics LG Ultra HD 0x00017DAC'
-    workspace 8 output 'LG Electronics LG Ultra HD 0x00017DAC'
-    workspace 9 output 'LG Electronics LG Ultra HD 0x00017DAC'
-    workspace 10 output 'LG Electronics LG Ultra HD 0x00017DAC'
     # Make splits vertical on the vertical monitor
-    for_window [workspace="6"] split vertical
-    for_window [workspace="7"] split vertical
-    for_window [workspace="8"] split vertical
-    for_window [workspace="9"] split vertical
-    for_window [workspace="10"] split vertical
 
-    assign [app_id="mattermost"] workspace number 10
-    assign [app_id="com.github.IsmaelMartinez.teams_for_linux"] workspace number 10
-    assign [app_id="com.github.iwalton3.jellyfin-media-player"] workspace number 1
-    # assign [app_id="one.ablaze.floorp"] workspace number 10
-    assign [instance="discord"] workspace number 2
-    assign [instance="spotify"] workspace number 1
-    assign [instance="steamwebhelper"] workspace number 5
+    assign [class="Mattermost"] workspace number 10
 #
 # Layout stuff:
 #

@@ -20,6 +20,9 @@ vim.keymap.set("n", "<leader>cpi", "<cmd>!source .venv/bin/activate && pip insta
 
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 
+vim.keymap.set("n", "H", "<cmd>bprevious<CR>")
+vim.keymap.set("n", "L", "<cmd>bnext<CR>")
+
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
@@ -149,7 +152,7 @@ nmap_leader('eq', explore_quickfix,                         'Quickfix')
 local pick_added_hunks_buf = '<Cmd>Pick git_hunks path="%" scope="staged"<CR>'
 
 nmap_leader('f/', '<Cmd>Pick history scope="/"<CR>',            '"/" history')
-nmap_leader('fk', '<Cmd>Pick keymaps<CR>',                      '"/" history')
+nmap_leader('fk', '<Cmd>Pick keymaps<CR>',                      'Keymaps')
 nmap_leader('fp', '<Cmd>Pick projects<CR>',                     'Projects')
 nmap_leader('f:', '<Cmd>Pick history scope=":"<CR>',            '":" history')
 nmap_leader('fa', '<Cmd>Pick git_hunks scope="staged"<CR>',     'Added hunks (all)')

@@ -54,6 +54,23 @@ now_if_args(function()
     'lua',
     'vimdoc',
     'markdown',
+    'python',
+    'yaml',
+    'toml',
+    'typescript',
+    'sway',
+    'rust',
+    'requirements',
+    'nix',
+    'javascript',
+    'html',
+    'helm',
+    'go',
+    'fish',
+    'dockerfile',
+    'diff',
+    'css',
+    'bash',
   }
   local isnt_installed = function(lang)
     return #vim.api.nvim_get_runtime_file('parser/' .. lang .. '.*', false) == 0
@@ -98,26 +115,22 @@ now_if_args(function()
   -- List of LSP servers to automatically install and enable
   local servers = {
     'helm_ls',
-    'basedpyright',
     'ansiblels',
+    'basedpyright',
     'dockerls',
     'docker_compose_language_service',
     'marksman',
     'rust_analyzer',
     'ts_ls',
+    'lua_ls',
     'yamlls', -- Note: yaml-language-server is installed as 'yamlls' in mason
   }
 
   -- Setup mason-lspconfig to automatically install servers
   require('mason-lspconfig').setup({
     ensure_installed = servers,
-    automatic_installation = true,
   })
 
-  -- Use `:h vim.lsp.enable()` to automatically enable language server based on
-  -- the rules provided by 'nvim-lspconfig'.
-  -- Use `:h vim.lsp.config()` or 'ftplugin/lsp/' directory to configure servers.
-  vim.lsp.enable(servers)
 end)
 
 -- Formatting =================================================================
