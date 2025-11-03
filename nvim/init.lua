@@ -34,14 +34,8 @@ vim.o.undofile = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
--- Clear highlights on search when pressing <Esc> in normal mode
---  See `:help hlsearch`
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
--- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
---
---  See `:help wincmd` for a list of all window commands
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
@@ -66,7 +60,7 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("x", "<leader>p", [["_dP]], { desc = "Paste maintain buffer" })
 
 -- paste sys clipboard
-vim.keymap.set("n", "<leader>P", [["+p]], { desc = "Paste maintain buffer" })
+vim.keymap.set("n", "<leader>P", [["+p]], { desc = "Paste sys clipboard" })
 
 -- to yank into system clipboard vs vim clipboard
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "copy to sys" })
@@ -170,9 +164,6 @@ vim.keymap.set('n', '<leader>cd', dismiss_command_output, { desc = '[C]lose [D]i
 
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 
--- [[ Basic Autocommands ]]
---  See `:help lua-guide-autocommands`
-
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
@@ -221,17 +212,10 @@ require("lazy").setup({
     event = "VimEnter", -- Sets the loading event to 'VimEnter'
     opts = {
       preset = "helix",
-      -- delay between pressing a key and opening which-key (milliseconds)
-      -- this setting is independent of vim.o.timeoutlen
       delay = 200,
       icons = {
-        -- set icon mappings to true if you have a Nerd Font
         mappings = vim.g.have_nerd_font,
-        -- If you are using a Nerd Font: set icons.keys to an empty table which will use the
-        -- default which-key.nvim defined Nerd Font icons, otherwise define a string table
       },
-
-      -- Document existing key chains
       spec = {
         { "<leader>c",  group = "[C]ommand" },
         { "<leader>cp", group = "[C]ommand [P]ython" },
@@ -242,7 +226,7 @@ require("lazy").setup({
       },
     },
   },
-  { -- Fuzzy Finder (files, lsp, etc)
+  {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
@@ -261,13 +245,6 @@ require("lazy").setup({
 
     -- See `:help snacks-pickers-sources`
     keys = {
-      {
-        "<leader>lg",
-        function()
-          Snacks.lazygit()
-        end,
-        desc = "[L]azy [G]it",
-      },
       {
         "<leader>sh",
         function()
@@ -399,19 +376,12 @@ require("lazy").setup({
     },
   },
 
-  -- LSP Plugins
   {
-    -- Main LSP Configuration
     "neovim/nvim-lspconfig",
     dependencies = {
-      -- Automatically install LSPs and related tools to stdpath for Neovim
-      -- Mason must be loaded before its dependents so we need to set it up here.
-      -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
       { "mason-org/mason.nvim", opts = {} },
       "mason-org/mason-lspconfig.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
-
-      -- Allows extra capabilities provided by blink.cmp
       "saghen/blink.cmp",
     },
     config = function()
@@ -421,37 +391,14 @@ require("lazy").setup({
           local map = function(keys, func, desc, mode)
             mode = mode or "n"
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
-          end
-
-          -- Rename the variable under your cursor.
-          --  Most Language Servers support renaming across files, etc.
+         end
           map("gn", vim.lsp.buf.rename, "[R]e[n]ame")
-
-          -- Execute a code action, usually your cursor needs to be on top of an error
-          -- or a suggestion from your LSP for this to activate.
           map("ga", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
-
-          -- Find references for the word under your cursor.
           map("gr", require("snacks").picker.lsp_references, "[G]oto [R]eferences")
-
-          -- Jump to the implementation of the word under your cursor.
-          --  Useful when your language has ways of declaring types without an actual implementation.
           map("gi", require("snacks").picker.lsp_implementations, "[G]oto [I]mplementation")
-
-          -- Jump to the definition of the word under your cursor.
-          --  This is where a variable was first declared, or where a function is defined, etc.
-          --  To jump back, press <C-t>.
           map("gd", require("snacks").picker.lsp_definitions, "[G]oto [D]efinition")
-
-          -- WARN: This is not Goto Definition, this is Goto Declaration.
-          --  For example, in C this would take you to the header.
           map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-
-          -- Jump to the type of the word under your cursor.
-          --  Useful when you're not sure what type a variable is and you want to see
-          --  the definition of its *type*, not where it was *defined*.
           map("gt", require("snacks").picker.lsp_type_definitions, "[G]oto [T]ype Definition")
-
           map("<leader>th", function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
           end, "[T]oggle Inlay [H]ints")
@@ -488,14 +435,8 @@ require("lazy").setup({
         },
       })
 
-      -- LSP servers and clients are able to communicate to each other what features they support.
-      --  By default, Neovim doesn't support everything that is in the LSP specification.
-      --  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
-      --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
       local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-      -- Enable the following language servers
-      --
       --  Add any additional override configuration in the following tables. Available keys are:
       --  - cmd (table): Override the default command used to start the server
       --  - filetypes (table): Override the default list of associated filetypes for the server
@@ -531,7 +472,7 @@ require("lazy").setup({
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
       require("mason-lspconfig").setup({
-        ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+        ensure_installed = {},
         automatic_installation = false,
         handlers = {
           function(server_name)
@@ -574,23 +515,15 @@ require("lazy").setup({
     --- @type blink.cmp.Config
     opts = {
       keymap = {
-        -- 'default' (recommended) for mappings similar to built-in completions
-        --   <c-y> to accept ([y]es) the completion.
-        --    This will auto-import if your LSP supports it.
-        --    This will expand snippets if the LSP sent a snippet.
-        --
         -- <tab>/<s-tab>: move to right/left of your snippet expansion
         -- <c-space>: Open menu or open docs if already open
         -- <c-n>/<c-p> or <up>/<down>: Select next/previous item
         -- <c-e>: Hide menu
         -- <c-k>: Toggle signature help
-        --
         preset = "default",
       },
 
       appearance = {
-        -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-        -- Adjusts spacing to ensure icons are aligned
         nerd_font_variant = "mono",
       },
 
@@ -609,13 +542,6 @@ require("lazy").setup({
 
       snippets = { preset = "luasnip" },
 
-      -- Blink.cmp includes an optional, recommended rust fuzzy matcher,
-      -- which automatically downloads a prebuilt binary when enabled.
-      --
-      -- By default, we use the Lua implementation instead, but you may enable
-      -- the rust implementation via `'prefer_rust_with_warning'`
-      --
-      -- See :h blink-cmp-config-fuzzy for more information
       fuzzy = { implementation = "prefer_rust_with_warning" },
 
       -- Shows a signature help window while you type arguments for a function
@@ -631,7 +557,7 @@ require("lazy").setup({
     end,
   },
   {
-    "echasnovski/mini.nvim",
+    "nvim-mini/mini.nvim",
     config = function()
       -- Better Around/Inside textobjects
       --
@@ -641,14 +567,11 @@ require("lazy").setup({
       --  - ci'  - [C]hange [I]nside [']quote
       require("mini.ai").setup({
         n_lines = 500,
-        -- 'mini.ai' can be extended with custom textobjects
+        -- 'mini.ai' can be extended with custom textobjects from treesitter
         custom_textobjects = {
-          -- Make `aB` / `iB` act on around/inside whole *b*uffer
           F = require('mini.extra').gen_ai_spec.buffer(),
-          -- For more complicated textobjects that require structural awareness,
-          -- use tree-sitter. This example makes `aF`/`iF` mean around/inside function
-          -- definition (not call). See `:h MiniAi.gen_spec.treesitter()` for details.
           f = require('mini.ai').gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
+          h = require('mini.ai').gen_spec.treesitter({ a = '@function.call.outer', i = '@function.call.inner' }),
           C = require('mini.ai').gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }),
           L = require('mini.ai').gen_spec.treesitter({ a = '@loop.outer', i = '@loop.inner' }),
           D = require('mini.ai').gen_spec.treesitter({ a = '@conditional.outer', i = '@conditional.inner' }),
@@ -675,8 +598,7 @@ require("lazy").setup({
   { -- Highlight, edit, and navigate code
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    main = "nvim-treesitter.configs", -- Sets main module to use for opts
-    -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+    main = "nvim-treesitter.configs",
     opts = {
       ensure_installed = {
         "bash",
@@ -712,7 +634,6 @@ require("lazy").setup({
         "helm",
         "fish"
       },
-      -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
         enable = true,
@@ -723,12 +644,6 @@ require("lazy").setup({
       },
       indent = { enable = true, disable = { "ruby" } },
     },
-    -- There are additional nvim-treesitter modules that you can use to interact
-    -- with nvim-treesitter. You should go explore a few and see what interests you:
-    --
-    --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-    --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-    --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
   { "nvim-treesitter/nvim-treesitter-textobjects" },
   {
@@ -764,7 +679,38 @@ require("lazy").setup({
       end, { desc = "Treesitter incremental selection" })
     },
   },
+  {
+    "cbochs/grapple.nvim",
+    opts = {
+      scope = "git_branch",
+    },
+    event = { "BufReadPost", "BufNewFile" },
+    cmd = "Grapple",
+    keys = {
+      { "<leader>m", "<cmd>Grapple toggle<cr>",          desc = "Grapple toggle tag" },
+      { "<leader>M", "<cmd>Grapple toggle_tags<cr>",     desc = "Grapple open tags window" },
+      { "<C-a>",     "<cmd>Grapple select index=1<cr>",  desc = "Grapple Select first tag" },
+      { "<C-e>",     "<cmd>Grapple select index=2<cr>",  desc = "Grapple Select second tag" },
+      { "<C-i>",     "<cmd>Grapple select index=3<cr>",  desc = "Grapple Select third tag" },
+      { "<C-c>",     "<cmd>Grapple select index=4<cr>",  desc = "Grapple Select fourth tag" },
+      { "<C-]>",     "<cmd>Grapple cycle_tags next<cr>", desc = "Grapple cycle next tag" },
+      { "<C-[>",     "<cmd>Grapple cycle_tags prev<cr>", desc = "Grapple cycle previous tag" },
+    },
+  },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' }, -- if you use the mini.nvim suite
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {
+      completions = {
+        -- Settings for blink.cmp completions source
+        blink = { enabled = true },
+        -- Settings for in-process language server completions
+        lsp = { enabled = true },
+    },
+    },
+  },
 })
-
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
