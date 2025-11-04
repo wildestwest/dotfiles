@@ -100,6 +100,7 @@ outer.right = 8
 # close and fullscreen keys
 cmd-shift-c = 'close --quit-if-last-window'
 cmd-t = 'exec-and-forget open -n -a ghostty'
+cmd-e = 'exec-and-forget open -n -a ghostty --args -e yazi ~'
 cmd-b = 'exec-and-forget open -n -a firefox --args -P'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
