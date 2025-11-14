@@ -9,7 +9,7 @@
 {
   "ssh_connections": [
     {
-      "host": "coder.mcap",
+      "host": "coder.main",
       "projects": [
         {
           "paths": [

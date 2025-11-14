@@ -12,22 +12,27 @@
       "space space": "file_finder::Toggle",
       "space p": "projects::OpenRecent",
       "space r": "projects::OpenRemote",
-      "space /": "pane::DeploySearch",
       "space t": "task::Spawn",
-      "space e": "toolchain::Select",
+      "space v": "toolchain::Select",
+      "space e": "workspace::ToggleLeftDock",
       "space l g": [
         "task::Spawn",
         { "task_name": "lazygit", "reveal_target": "center" }
-      ]
+      ],
+      "space k": [
+        "task::Spawn",
+        { "task_name": "kube", "reveal_target": "center" }
+      ],
+      "space c p v": [
+        "task::Spawn",
+        { "task_name": "venv"}
+      ],
+      "space c p t": [
+        "task::Spawn",
+        { "task_name": "pytest"}
+      ],
     }
   },
-  {
-      "context": "(Terminal || EmptyPane || SharedScreen || (Editor && vim_mode == normal) || ProjectPanel )",
-      "bindings": {
-        // No leader key bindings in the terminal cuz it makes typing laggy
-        "ctrl-'": "workspace::ToggleLeftDock"
-      }
-    },
   {
     "context": "(Editor || Workspace)",
     "bindings": {
@@ -41,14 +46,14 @@
     "context": "Editor && vim_mode == normal",
     "bindings": {
       // Harpoon style mark jumping
-      "ctrl-shift-a": ["workspace::SendKeystrokes", "m shift-a"],
-      "ctrl-shift-e": ["workspace::SendKeystrokes", "m shift-e"],
-      "ctrl-shift-i": ["workspace::SendKeystrokes", "m shift-i"],
-      "ctrl-shift-c": ["workspace::SendKeystrokes", "m shift-c"],
-      "ctrl-a": ["workspace::SendKeystrokes", "` shift-a"],
-      "ctrl-e": ["workspace::SendKeystrokes", "` shift-e"],
-      "ctrl-i": ["workspace::SendKeystrokes", "` shift-i"],
-      "ctrl-c": ["workspace::SendKeystrokes", "` shift-c"],
+      "alt-shift-a": ["workspace::SendKeystrokes", "m shift-a"],
+      "alt-shift-e": ["workspace::SendKeystrokes", "m shift-e"],
+      "alt-shift-i": ["workspace::SendKeystrokes", "m shift-i"],
+      "alt-shift-c": ["workspace::SendKeystrokes", "m shift-c"],
+      "alt-a": ["workspace::SendKeystrokes", "` shift-a"],
+      "alt-e": ["workspace::SendKeystrokes", "` shift-e"],
+      "alt-i": ["workspace::SendKeystrokes", "` shift-i"],
+      "alt-c": ["workspace::SendKeystrokes", "` shift-c"],
 
       "s": "vim::PushSneak",
       "shift-s": "vim::PushSneakBackward"

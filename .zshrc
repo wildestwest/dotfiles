@@ -1,15 +1,13 @@
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=2000
+SAVEHIST=2000
 setopt autocd extendedglob nomatch
-bindkey -v
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
-zstyle :compinstall filename '/home/coder/.zshrc'
+zstyle :compinstall filename '/Users/whulland/.zshrc'
 
 autoload -Uz compinit
-compinit
 # End of lines added by compinstall
 
 # Enable git info in prompt
@@ -33,7 +31,11 @@ $ '
 alias l='ls'
 alias la='ls -la'
 alias v='nvim'
+alias lg='lazygit'
 
 bindkey -s '^f' "tmux-sessionizer\n"
+
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $(brew --prefix)/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 
 eval "$(zoxide init zsh --cmd c)"

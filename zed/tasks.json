@@ -7,26 +7,52 @@
     "command": "lazygit",
     "hide": "on_success",
     "use_new_terminal": true,
-    "reveal_target": "center"
+    "reveal_target": "center",
+    "shell": {
+      "with_arguments": {
+        "program": "zsh",
+        "args": ["-f"]
+      }
+    }
   },
   {
     "label": "kube",
     "command": "k9s",
     "hide": "on_success",
     "use_new_terminal": true,
-    "reveal_target": "center"
+    "reveal_target": "center",
+    "shell": {
+      "with_arguments": {
+        "program": "zsh",
+        "args": ["-f"]
+      }
+    }
   },
   {
     "label": "pytest",
     "command": "source .venv/bin/activate && python -m pytest",
     "hide": "on_success",
-    "use_new_terminal": true
+    "reveal": "no_focus",
+    "use_new_terminal": true,
+    "shell": {
+      "with_arguments": {
+        "program": "zsh",
+        "args": ["-f"]
+      }
+    }
   },
   {
     "label": "venv",
     "command": "rm -rf .venv && python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt -r requirements-testing.txt",
+    "reveal": "no_focus",
     "hide": "on_success",
-    "use_new_terminal": true
+    "use_new_terminal": true,
+    "shell": {
+      "with_arguments": {
+        "program": "zsh",
+        "args": ["-f"]
+      }
+    }
   }
   // {
   //   "label": "Example task",
