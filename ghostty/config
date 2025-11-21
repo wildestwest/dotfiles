@@ -49,3 +49,4 @@ theme = "Ayu"
 clipboard-write = "allow"
 confirm-close-surface = false
 window-decoration = "none"
+keybind = shift+enter=text:\x1b\r

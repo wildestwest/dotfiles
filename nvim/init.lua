@@ -1,5 +1,7 @@
 vim.g.mapleader = " "
+
 vim.g.maplocalleader = " "
+
 vim.g.have_nerd_font = true
 vim.o.number = true
 vim.o.relativenumber = true
@@ -552,6 +554,8 @@ require("lazy").setup({
     "rose-pine/neovim",
     priority = 1000,
     config = function()
+      -- enable builtin undotree
+      vim.cmd('packadd nvim.undotree')
       require("rose-pine").setup()
       vim.cmd.colorscheme("rose-pine-main")
     end,
@@ -663,20 +667,12 @@ require("lazy").setup({
         autojump = true,
       },
       treesitter = {
-        labels = 'hatesinclumg'
+        labels = 'hatesincludowymgp'
       }
     },
     -- stylua: ignore
     keys = {
-      { "<enter>", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-      vim.keymap.set({ "n", "x", "o" }, "<BS>", function()
-        require("flash").treesitter({
-          actions = {
-            ["<space>"] = "next",
-            ["<BS>"] = "prev"
-          }
-        })
-      end, { desc = "Treesitter incremental selection" })
+      { "<BS>", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" }
     },
   },
   {
@@ -689,12 +685,16 @@ require("lazy").setup({
     keys = {
       { "<leader>m", "<cmd>Grapple toggle<cr>",          desc = "Grapple toggle tag" },
       { "<leader>M", "<cmd>Grapple toggle_tags<cr>",     desc = "Grapple open tags window" },
-      { "<C-a>",     "<cmd>Grapple select index=1<cr>",  desc = "Grapple Select first tag" },
-      { "<C-e>",     "<cmd>Grapple select index=2<cr>",  desc = "Grapple Select second tag" },
-      { "<C-i>",     "<cmd>Grapple select index=3<cr>",  desc = "Grapple Select third tag" },
-      { "<C-c>",     "<cmd>Grapple select index=4<cr>",  desc = "Grapple Select fourth tag" },
-      { "<C-]>",     "<cmd>Grapple cycle_tags next<cr>", desc = "Grapple cycle next tag" },
-      { "<C-[>",     "<cmd>Grapple cycle_tags prev<cr>", desc = "Grapple cycle previous tag" },
+      { "<A-a>",     "<cmd>Grapple select index=1<cr>",  desc = "Grapple Select first tag" },
+      { "<A-e>",     "<cmd>Grapple select index=2<cr>",  desc = "Grapple Select second tag" },
+      { "<A-i>",     "<cmd>Grapple select index=3<cr>",  desc = "Grapple Select third tag" },
+      { "<A-c>",     "<cmd>Grapple select index=4<cr>",  desc = "Grapple Select fourth tag" },
+      { "<A-h>",     "<cmd>Grapple select index=5scr>",  desc = "Grapple Select fith tag" },
+      { "<A-t>",     "<cmd>Grapple select index=6<cr>",  desc = "Grapple Select sixth tag" },
+      { "<A-s>",     "<cmd>Grapple select index=7<cr>",  desc = "Grapple Select seventh tag" },
+      { "<A-n>",     "<cmd>Grapple select index=8<cr>",  desc = "Grapple Select eighth tag" },
+      { "<A-]>",     "<cmd>Grapple cycle_tags next<cr>", desc = "Grapple cycle next tag" },
+      { "<A-[>",     "<cmd>Grapple cycle_tags prev<cr>", desc = "Grapple cycle previous tag" },
     },
   },
   {

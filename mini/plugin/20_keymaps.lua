@@ -12,14 +12,6 @@ vim.keymap.set("n", "N", "Nzzzv")
 -- delete to void buffer
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete to void buffer" })
 
--- hotkeyed commands
-vim.keymap.set("n", "<leader>cpv", "<cmd>!rm -rf .venv && python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt -r requirements-testing.txt<CR>", { desc = "[C]ommand [P]ython clean [V]env and install" })
-vim.keymap.set("n", "<leader>cpt", "<cmd>!source .venv/bin/activate && python -m pytest<CR>", { desc = "[C]ommand [P]ython run [T]ests" })
-vim.keymap.set("n", "<leader>cpr", "<cmd>!source .venv/bin/activate && python %<CR>", { desc = "[C]ommand [P]ython [R]un current file" })
-vim.keymap.set("n", "<leader>cpi", "<cmd>!source .venv/bin/activate && pip install -r requirements.txt<CR>", { desc = "[C]ommand [P]ython [I]nstall requirements" })
-
-vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
-
 vim.keymap.set("n", "H", "<cmd>bprevious<CR>")
 vim.keymap.set("n", "L", "<cmd>bnext<CR>")
 
