@@ -500,7 +500,7 @@ later(function()
   local jump2d = require('mini.jump2d')
   jump2d.setup({
     spotter = jump2d.gen_spotter.pattern('[^%s%p]+'),
-    labels = 'ahetiscn',
+    labels = 'hatesincklmuod',
     view = { dim = true, n_steps_ahead = 2 },
   })
   vim.keymap.set({ 'n', 'x', 'o' }, '<BS>', function() MiniJump2d.start(MiniJump2d.builtin_opts.single_character) end)
