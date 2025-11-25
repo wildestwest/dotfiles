@@ -14,6 +14,9 @@ local nmap = function(lhs, rhs, desc)
 	vim.keymap.set("n", lhs, rhs, { desc = desc })
 end
 
+vim.keymap.set("n", "H", "<cmd>bprevious<CR>")
+vim.keymap.set("n", "L", "<cmd>bnext<CR>")
+
 -- Paste linewise before/after current line
 -- Usage: `yiw` to yank a word and `]p` to put it on the next line.
 nmap("[p", '<Cmd>exe "put! " . v:register<CR>', "Paste Above")
@@ -217,12 +220,12 @@ nmap_leader('oz', '<Cmd>lua MiniMisc.zoom()<CR>', 'Zoom toggle')
 -- - `<Leader>sn` - start new session
 -- - `<Leader>sr` - read previously started session
 -- - `<Leader>sd` - delete previously started session
-local session_new = 'MiniSessions.write(vim.fn.input("Session name: "))'
-
-nmap_leader('sd', '<Cmd>lua MiniSessions.select("delete")<CR>', 'Delete')
-nmap_leader('sn', '<Cmd>lua ' .. session_new .. '<CR>', 'New')
-nmap_leader('sr', '<Cmd>lua MiniSessions.select("read")<CR>', 'Read')
-nmap_leader('sw', '<Cmd>lua MiniSessions.write()<CR>', 'Write current')
+-- local session_new = 'MiniSessions.write(vim.fn.input("Session name: "))'
+--
+-- nmap_leader('sd', '<Cmd>lua MiniSessions.select("delete")<CR>', 'Delete')
+-- nmap_leader('sn', '<Cmd>lua ' .. session_new .. '<CR>', 'New')
+-- nmap_leader('sr', '<Cmd>lua MiniSessions.select("read")<CR>', 'Read')
+-- nmap_leader('sw', '<Cmd>lua MiniSessions.write()<CR>', 'Write current')
 
 -- t is for 'Terminal'
 nmap_leader('tT', '<Cmd>horizontal term<CR>', 'Terminal (horizontal)')
@@ -301,7 +304,7 @@ local toggle_right_terminal = function()
     vim.cmd('startinsert')
   end
 end
-vim.keymap.set({ "n", "t", "i" }, "<C-.>", toggle_right_terminal, { desc = "Terminal (vertical)" })
+vim.keymap.set({ "n", "t", "i" }, "<C-t>", toggle_right_terminal, { desc = "Terminal (vertical)" })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 -- hotkeyed commands
 
@@ -342,10 +345,10 @@ end
 -- specific Python venv setup command
 vim.keymap.set('n', '<leader>cpv', function()
   run_command_in_bottom_terminal(
-    'rm -rf .venv && python3 -m venv .venv && source .venv/bin/activate.fish && pip install -r requirements.txt -r requirements-testing.txt')
+    'rm -rf .venv && python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt -r requirements-testing.txt')
 end, { desc = '[C]ommand [P]ython clean [V]env and install' })
 vim.keymap.set("n", "<leader>cpt",
-  function() run_command_in_bottom_terminal("source .venv/bin/activate.fish && python -m pytest") end,
+  function() run_command_in_bottom_terminal("source .venv/bin/activate && python -m pytest") end,
   { desc = "[C]ommand [P]ython run [T]ests" })
 vim.keymap.set('n', '<leader>cd', dismiss_command_output, { desc = '[C]lose [D]ismiss command output' })
 

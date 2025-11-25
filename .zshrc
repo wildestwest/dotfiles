@@ -33,6 +33,8 @@ alias la='ls -la'
 alias v='nvim'
 alias lg='lazygit'
 
+path+=('/Users/whulland/.local/bin/')
+
 bindkey -s '^f' "tmux-sessionizer\n"
 
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh

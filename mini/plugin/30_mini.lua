@@ -34,9 +34,9 @@ local now_if_args = _G.Config.now_if_args
 -- - `:h mini.nvim-color-schemes` - list of other color schemes
 -- - `:h MiniHues-examples` - how to define highlighting with 'mini.hues'
 -- - 'plugin/40_plugins.lua' honorable mentions - other good color schemes
-now(function()
-	vim.cmd("colorscheme miniwinter")
-end)
+-- now(function()
+-- 	vim.cmd("colorscheme miniwinter")
+-- end)
 
 -- You can try these other 'mini.hues'-based color schemes (uncomment with `gcc`):
 -- now(function() vim.cmd('colorscheme minispring') end)
@@ -132,9 +132,9 @@ end)
 -- - `<Leader>sn` - start new session
 -- - `<Leader>sr` - read previously started session
 -- - `<Leader>sd` - delete previously started session
-now(function()
-	require("mini.sessions").setup()
-end)
+-- now(function()
+-- 	require("mini.sessions").setup()
+-- end)
 
 -- Start screen. This is what is shown when you open Neovim like `nvim`.
 -- Example usage:
@@ -146,7 +146,22 @@ end)
 -- - `:h MiniStarter-example-config` - non-default config examples
 -- - `:h MiniStarter-lifecycle` - how to work with Starter buffer
 now(function()
-	require("mini.starter").setup()
+	local starter = require("mini.starter")
+	starter.setup({
+		evaluate_single = true,
+		items = {
+			starter.sections.recent_files(5, true),
+			starter.sections.recent_files(5, false),
+			-- starter.sections.sessions(5, true),
+			starter.sections.pick(),
+			starter.sections.builtin_actions(),
+		},
+		-- content_hooks = {
+		-- 	starter.gen_hook.adding_bullet(),
+		-- 	starter.gen_hook.indexing("all", { "Builtin actions" }),
+		-- 	starter.gen_hook.padding(3, 2),
+		-- },
+	})
 end)
 
 -- Statusline. Sets `:h 'statusline'` to show more info in a line below window.
@@ -415,7 +430,9 @@ end)
 --
 -- It is not enabled by default because its effects are a matter of taste.
 -- Uncomment next line (use `gcc`) to enable.
--- later(function() require('mini.cursorword').setup() end)
+later(function()
+	require("mini.cursorword").setup()
+end)
 
 -- Work with diff hunks that represent the difference between the buffer text and
 -- some reference text set by a source. Default source uses text from Git index.
@@ -554,7 +571,15 @@ end)
 -- See also:
 -- - `:h MiniJump2d.gen_spotter` - list of available spotters
 later(function()
-	require("mini.jump2d").setup()
+	local jump2d = require("mini.jump2d")
+	jump2d.setup({
+		spotter = jump2d.gen_spotter.pattern("[^%s%p]+"),
+		labels = "ahetiscnludokmg",
+		view = { dim = true, n_steps_ahead = 2 },
+	})
+	vim.keymap.set({ "n", "x", "o" }, "<BS>", function()
+		MiniJump2d.start(MiniJump2d.builtin_opts.single_character)
+	end)
 end)
 
 -- Special key mappings. Provides helpers to map:

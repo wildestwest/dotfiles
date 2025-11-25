@@ -45,48 +45,43 @@ now_if_args(function()
 		-- Same logic as for 'nvim-treesitter'
 		checkout = "main",
 	})
-
-	-- Define languages which will have parsers installed and auto enabled
-	local languages = {
-		-- These are already pre-installed with Neovim. Used as an example.
-		"lua",
-		"vimdoc",
-		"markdown",
-		-- Additional languages for LSP support
-		"python",
-		"rust",
-		"go",
-		"typescript",
-		"javascript",
-		"tsx",
-		"bash",
-		"yaml",
-		"dockerfile",
-		-- Add here more languages with which you want to use tree-sitter
-		-- To see available languages:
-		-- - Execute `:=require('nvim-treesitter').get_available()`
-		-- - Visit 'SUPPORTED_LANGUAGES.md' file at
-		--   https://github.com/nvim-treesitter/nvim-treesitter/blob/main
-	}
-	local isnt_installed = function(lang)
-		return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0
-	end
-	local to_install = vim.tbl_filter(isnt_installed, languages)
-	if #to_install > 0 then
-		require("nvim-treesitter").install(to_install)
-	end
-
-	-- Enable tree-sitter after opening a file for a target language
-	local filetypes = {}
-	for _, lang in ipairs(languages) do
-		for _, ft in ipairs(vim.treesitter.language.get_filetypes(lang)) do
-			table.insert(filetypes, ft)
-		end
-	end
-	local ts_start = function(ev)
-		vim.treesitter.start(ev.buf)
-	end
-	_G.Config.new_autocmd("FileType", filetypes, ts_start, "Start tree-sitter")
+	require("nvim-treesitter").setup({
+		ensure_installed = {
+			"bash",
+			"c",
+			"diff",
+			"html",
+			"lua",
+			"luadoc",
+			"markdown",
+			"markdown_inline",
+			"query",
+			"vim",
+			"vimdoc",
+			"go",
+			"gomod",
+			"gowork",
+			"gosum",
+			"rust",
+			"ron",
+			"ninja",
+			"rst",
+			"nu",
+			"dockerfile",
+			"helm",
+			"regex",
+			"yaml",
+			"toml",
+			"typescript",
+			"sway",
+			"requirements",
+			"nix",
+			"javascript",
+			"helm",
+			"fish",
+		},
+		auto_install = true,
+	})
 end)
 
 -- Language servers ===========================================================
@@ -110,64 +105,60 @@ later(function()
 	add("williamboman/mason-lspconfig.nvim")
 	add("WhoIsSethDaniel/mason-tool-installer.nvim")
 
-	-- Setup Mason for managing LSP servers, formatters, and linters
+	-- Mason setup
 	require("mason").setup()
 
-	-- Setup mason-lspconfig to automatically install LSP servers
+	local servers = {
+		basedpyright = {},
+		ansiblels = {},
+		dockerls = {},
+		docker_compose_language_service = {},
+		helm_ls = {},
+		marksman = {},
+		rust_analyzer = { enabled = false },
+		ts_ls = {},
+		yamlls = {},
+		lua_ls = {
+			settings = {
+				Lua = {
+					completion = {
+						callSnippet = "Replace",
+					},
+				},
+			},
+		},
+	}
+
+	local ensure_installed = vim.tbl_keys(servers or {})
+	vim.list_extend(ensure_installed, {
+		"stylua",
+		-- Formatters
+		"isort",
+		"rustfmt",
+		"goimports",
+		"prettier",
+		"shfmt",
+		-- Linters
+		"flake8",
+		"golangci-lint",
+		"eslint_d",
+		"shellcheck",
+		"yamllint",
+		"hadolint",
+		"markdownlint",
+		"ansible-lint",
+	})
+	require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+
 	require("mason-lspconfig").setup({
-		-- Automatically install these language servers
-		ensure_installed = {
-			"basedpyright", -- Python
-			"rust_analyzer", -- Rust
-			"gopls", -- Go
-			"ts_ls", -- TypeScript/JavaScript
-			"bashls", -- Bash
-			"yamlls", -- YAML
-			"helm_ls", -- Helm
-			"dockerls", -- Dockerfile
-			"marksman", -- Markdown
-			"ansiblels", -- Ansible
+		ensure_installed = {},
+		automatic_installation = false,
+		handlers = {
+			function(server_name)
+				local server = servers[server_name] or {}
+				require("lspconfig")[server_name].setup(server)
+			end,
 		},
-		automatic_installation = true,
-	})
-
-	-- Automatically install formatters and linters
-	require("mason-tool-installer").setup({
-		ensure_installed = {
-			-- Formatters
-			"isort",
-			"ruff",
-			"rustfmt",
-			"goimports",
-			"prettier",
-			"shfmt",
-			-- Linters
-			"flake8",
-			"golangci-lint",
-			"eslint_d",
-			"shellcheck",
-			"yamllint",
-			"hadolint",
-			"markdownlint",
-			"ansible-lint",
-		},
-		auto_update = false,
-		run_on_start = true,
-	})
-
-	-- Enable language servers using modern Neovim LSP API
-	-- This uses the default configs provided by nvim-lspconfig
-	vim.lsp.enable({
-		"basedpyright",
-		"rust_analyzer",
-		"gopls",
-		"ts_ls",
-		"bashls",
-		"yamlls",
-		"helm_ls",
-		"dockerls",
-		"marksman",
-		"ansiblels",
 	})
 end)
 
@@ -221,7 +212,6 @@ later(function()
 		-- Map of filetype to formatters
 		-- Make sure that necessary CLI tool is available
 		formatters_by_ft = {
-			python = { "isort", "ruff" },
 			rust = { "rustfmt" },
 			go = { "goimports", "gofmt" },
 			javascript = { "prettier" },
@@ -298,17 +288,6 @@ later(function()
 	add("rafamadriz/friendly-snippets")
 end)
 
--- Honorable mentions =========================================================
-
--- Beautiful, usable, well maintained color schemes outside of 'mini.nvim' and
--- have full support of its highlight groups. Use if you don't like 'miniwinter'
--- enabled in 'plugin/30_mini.lua' or other suggested 'mini.hues' based ones.
--- MiniDeps.now(function()
---   -- Install only those that you need
---   add('sainnhe/everforest')
---   add('Shatur/neovim-ayu')
---   add('ellisonleao/gruvbox.nvim')
---
---   -- Enable only one
---   vim.cmd('color everforest')
+add("rose-pine/neovim")
+vim.cmd("color rose-pine-main")
 -- end)
