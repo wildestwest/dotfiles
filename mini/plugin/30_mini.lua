@@ -221,12 +221,12 @@ later(function()
 		n_lines = 500,
 		-- 'mini.ai' can be extended with custom textobjects from treesitter
 		custom_textobjects = {
-			F = require("mini.extra").gen_ai_spec.buffer(),
-			f = require("mini.ai").gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
+			F = require("mini.ai").gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
+			d = require("mini.ai").gen_spec.treesitter({ a = "@conditional.outer", i = "@conditional.inner" }),
 			h = require("mini.ai").gen_spec.treesitter({ a = "@function.call.outer", i = "@function.call.inner" }),
+			B = require("mini.extra").gen_ai_spec.buffer(),
 			C = require("mini.ai").gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),
 			L = require("mini.ai").gen_spec.treesitter({ a = "@loop.outer", i = "@loop.inner" }),
-			D = require("mini.ai").gen_spec.treesitter({ a = "@conditional.outer", i = "@conditional.inner" }),
 		},
 	})
 end)

@@ -31,9 +31,10 @@ local now_if_args = _G.Config.now_if_args
 now_if_args(function()
 	add({
 		source = "nvim-treesitter/nvim-treesitter",
-		-- Use `main` branch since `master` branch is frozen, yet still default
-		checkout = "main",
-		-- Update tree-sitter parser after plugin is updated
+		-- Use 'master' while monitoring updates in 'main'
+		checkout = "master",
+		monitor = "main",
+		-- Perform action after every checkout
 		hooks = {
 			post_checkout = function()
 				vim.cmd("TSUpdate")
@@ -42,10 +43,9 @@ now_if_args(function()
 	})
 	add({
 		source = "nvim-treesitter/nvim-treesitter-textobjects",
-		-- Same logic as for 'nvim-treesitter'
-		checkout = "main",
 	})
-	require("nvim-treesitter").setup({
+	-- Possible to immediately execute code which depends on the added plugin
+	require("nvim-treesitter.configs").setup({
 		ensure_installed = {
 			"bash",
 			"c",
@@ -55,6 +55,7 @@ now_if_args(function()
 			"luadoc",
 			"markdown",
 			"markdown_inline",
+			"python",
 			"query",
 			"vim",
 			"vimdoc",
@@ -81,6 +82,7 @@ now_if_args(function()
 			"fish",
 		},
 		auto_install = true,
+		highlight = { enable = true },
 	})
 end)
 
