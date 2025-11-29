@@ -33,11 +33,14 @@ alias la='ls -la'
 alias v='nvim'
 alias lg='lazygit'
 
-path+=('/Users/whulland/.local/bin/')
+# path+=('/Users/whulland/.local/bin/')
+path+=('/home/whulland/.local/bin/')
 
 bindkey -s '^f' "tmux-sessionizer\n"
 
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $(brew --prefix)/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+# source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# source $(brew --prefix)/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+source /usr/share/zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 eval "$(zoxide init zsh --cmd c)"

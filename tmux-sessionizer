@@ -1,29 +1,48 @@
 #!/usr/bin/env bash
-
 if [[ $# -eq 1 ]]; then
-    selected=$1
+  selected=$1
 else
-    selected=$(find ~/proj ~/sync ~/.config ~/dotfiles -mindepth 1 -maxdepth 1 -type d | fzf)
+  # Static directories to always include
+  static_dirs=$(find ~/proj ~/sync ~/.config ~/dotfiles -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
+
+  # Use fd to find git repositories (much faster)
+  # -H: include hidden files/directories
+  # -t d: only directories
+  # --max-depth 4: limit search depth
+  # '^\.git$': match directories named exactly .git
+  # -x dirname: execute dirname on each result to get parent directory
+  if command -v fd &>/dev/null; then
+    git_dirs=$(fd -H -t d --max-depth 4 '^\.git$' ~ -x dirname {} 2>/dev/null)
+  else
+    # Fallback to find if fd is not installed
+    echo "Note: Install 'fd' for faster directory searching" >&2
+    git_dirs=$(find ~ -maxdepth 4 -type d -name ".git" \
+      -not -path "*/.*/*" \
+      2>/dev/null | sed 's|/\.git$||')
+  fi
+
+  # Combine both lists, sort, and remove duplicates
+  selected=$(echo -e "$static_dirs\n$git_dirs" | sort -u | fzf)
 fi
 
 if [[ -z $selected ]]; then
-    exit 0
+  exit 0
 fi
 
 selected_name=$(basename "$selected" | tr . _)
 tmux_running=$(pgrep tmux)
 
 if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-    tmux new-session -s $selected_name -c $selected
-    exit 0
+  tmux new-session -s $selected_name -c $selected
+  exit 0
 fi
 
-if ! tmux has-session -t=$selected_name 2> /dev/null; then
-    tmux new-session -ds $selected_name -c $selected
+if ! tmux has-session -t=$selected_name 2>/dev/null; then
+  tmux new-session -ds $selected_name -c $selected
 fi
 
 if [[ -z $TMUX ]]; then
-    tmux attach -t $selected_name
+  tmux attach -t $selected_name
 else
-    tmux switch-client -t $selected_name
+  tmux switch-client -t $selected_name
 fi
