@@ -593,17 +593,17 @@ end)
 -- - `:h MiniKeymap-examples` - examples of common setups
 -- - `:h MiniKeymap.map_multistep()` - map multi-step action
 -- - `:h MiniKeymap.map_combo()` - map combo
-later(function()
-	require("mini.keymap").setup()
-	-- Navigate 'mini.completion' menu with `<Tab>` /  `<S-Tab>`
-	MiniKeymap.map_multistep("i", "<Tab>", { "pmenu_next" })
-	MiniKeymap.map_multistep("i", "<S-Tab>", { "pmenu_prev" })
-	-- On `<CR>` try to accept current completion item, fall back to accounting
-	-- for pairs from 'mini.pairs'
-	MiniKeymap.map_multistep("i", "<CR>", { "pmenu_accept", "minipairs_cr" })
-	-- On `<BS>` just try to account for pairs from 'mini.pairs'
-	MiniKeymap.map_multistep("i", "<BS>", { "minipairs_bs" })
-end)
+-- later(function()
+-- 	require("mini.keymap").setup()
+-- 	-- Navigate 'mini.completion' menu with `<Tab>` /  `<S-Tab>`
+-- 	MiniKeymap.map_multistep("i", "<Tab>", { "pmenu_next" })
+-- 	MiniKeymap.map_multistep("i", "<S-Tab>", { "pmenu_prev" })
+-- 	-- On `<CR>` try to accept current completion item, fall back to accounting
+-- 	-- for pairs from 'mini.pairs'
+-- 	MiniKeymap.map_multistep("i", "<CR>", { "pmenu_accept", "minipairs_cr" })
+-- 	-- On `<BS>` just try to account for pairs from 'mini.pairs'
+-- 	MiniKeymap.map_multistep("i", "<BS>", { "minipairs_bs" })
+-- end)
 
 -- Window with text overview. It is displayed on the right hand side. Can be used
 -- for quick overview and navigation. Hidden by default. Example usage:
@@ -616,28 +616,28 @@ end)
 -- - `:h MiniMap.gen_integration` - list of integrations to show in the map
 --
 -- NOTE: Might introduce lag on very big buffers (10000+ lines)
-later(function()
-	local map = require("mini.map")
-	map.setup({
-		-- Use Braille dots to encode text
-		symbols = { encode = map.gen_encode_symbols.dot("4x2") },
-		-- Show built-in search matches, 'mini.diff' hunks, and diagnostic entries
-		integrations = {
-			map.gen_integration.builtin_search(),
-			map.gen_integration.diff(),
-			map.gen_integration.diagnostic(),
-		},
-	})
-
-	-- Map built-in navigation characters to force map refresh
-	for _, key in ipairs({ "n", "N", "*", "#" }) do
-		local rhs = key
-			-- Also open enough folds when jumping to the next match
-			.. "zv"
-			.. "<Cmd>lua MiniMap.refresh({}, { lines = false, scrollbar = false })<CR>"
-		vim.keymap.set("n", key, rhs)
-	end
-end)
+-- later(function()
+-- 	local map = require("mini.map")
+-- 	map.setup({
+-- 		-- Use Braille dots to encode text
+-- 		symbols = { encode = map.gen_encode_symbols.dot("4x2") },
+-- 		-- Show built-in search matches, 'mini.diff' hunks, and diagnostic entries
+-- 		integrations = {
+-- 			map.gen_integration.builtin_search(),
+-- 			map.gen_integration.diff(),
+-- 			map.gen_integration.diagnostic(),
+-- 		},
+-- 	})
+--
+-- 	-- Map built-in navigation characters to force map refresh
+-- 	for _, key in ipairs({ "n", "N", "*", "#" }) do
+-- 		local rhs = key
+-- 			-- Also open enough folds when jumping to the next match
+-- 			.. "zv"
+-- 			.. "<Cmd>lua MiniMap.refresh({}, { lines = false, scrollbar = false })<CR>"
+-- 		vim.keymap.set("n", key, rhs)
+-- 	end
+-- end)
 
 -- Move any selection in any direction. Example usage in Normal mode:
 -- - `<M-j>`/`<M-k>` - move current line down / up
@@ -676,8 +676,8 @@ later(function()
 	-- - It overrides `:h (` and `:h )`.
 	-- Explanation: `gx`-`ia`-`gx`-`ila` <=> exchange current and last argument
 	-- Usage: when on `a` in `(aa, bb)` press `)` followed by `(`.
-	vim.keymap.set("n", "(", "gxiagxila", { remap = true, desc = "Swap arg left" })
-	vim.keymap.set("n", ")", "gxiagxina", { remap = true, desc = "Swap arg right" })
+	-- vim.keymap.set("n", "(", "gxiagxila", { remap = true, desc = "Swap arg left" })
+	-- vim.keymap.set("n", ")", "gxiagxina", { remap = true, desc = "Swap arg right" })
 end)
 
 -- Autopairs functionality. Insert pair when typing opening character and go over
