@@ -3,7 +3,7 @@ if [[ $# -eq 1 ]]; then
   selected=$1
 else
   # Static directories to always include
-  static_dirs=$(find ~/proj ~/sync ~/.config ~/dotfiles -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
+  static_dirs=$(find ~/proj ~/dotfiles -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
 
   # Use fd to find git repositories (much faster)
   # -H: include hidden files/directories
