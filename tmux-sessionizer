@@ -1,48 +1,54 @@
 #!/usr/bin/env bash
 if [[ $# -eq 1 ]]; then
-  selected=$1
+	selected=$1
 else
-  # Static directories to always include
-  static_dirs=$(find ~/proj ~/dotfiles -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
+	# Static directories to always include
+	static_dirs=$(find ~/repos ~/.config 1 -maxdepth 1 -type d 2>/dev/null)
 
-  # Use fd to find git repositories (much faster)
-  # -H: include hidden files/directories
-  # -t d: only directories
-  # --max-depth 4: limit search depth
-  # '^\.git$': match directories named exactly .git
-  # -x dirname: execute dirname on each result to get parent directory
-  if command -v fd &>/dev/null; then
-    git_dirs=$(fd -H -t d --max-depth 4 '^\.git$' ~ -x dirname {} 2>/dev/null)
-  else
-    # Fallback to find if fd is not installed
-    echo "Note: Install 'fd' for faster directory searching" >&2
-    git_dirs=$(find ~ -maxdepth 4 -type d -name ".git" \
-      -not -path "*/.*/*" \
-      2>/dev/null | sed 's|/\.git$||')
-  fi
+	# Use fd to find git repositories
+	if command -v fd &>/dev/null; then
+		git_dirs=$(fd -H -t d --max-depth 4 '^\.git$' ~ -x dirname {} 2>/dev/null)
+	else
+		echo "Note: Install 'fd' for faster directory searching" >&2
+		git_dirs=$(find ~ -maxdepth 4 -type d -name ".git" \
+			-not -path "*/.*/*" \
+			2>/dev/null | sed 's|/\.git$||')
+	fi
 
-  # Combine both lists, sort, and remove duplicates
-  selected=$(echo -e "$static_dirs\n$git_dirs" | sort -u | fzf)
+	# Get zoxide directories sorted by score (highest first)
+	if command -v zoxide &>/dev/null; then
+		# Sort by score in descending order, then extract paths
+		zoxide_dirs_sorted=$(zoxide query -l 2>/dev/null | sort -rn | awk '{print $2}')
+
+		# Combine with other directories (zoxide dirs first for priority)
+		all_other_dirs=$(echo -e "$static_dirs\n$git_dirs" | grep -v '^$' | sort -u)
+
+		# Remove duplicates while preserving zoxide priority order
+		selected=$(echo -e "$zoxide_dirs_sorted\n$all_other_dirs" | awk '!seen[$0]++' | fzf)
+	else
+		# No zoxide, just combine static and git dirs
+		selected=$(echo -e "$static_dirs\n$git_dirs" | grep -v '^$' | sort -u | fzf)
+	fi
 fi
 
 if [[ -z $selected ]]; then
-  exit 0
+	exit 0
 fi
 
 selected_name=$(basename "$selected" | tr . _)
 tmux_running=$(pgrep tmux)
 
 if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-  tmux new-session -s $selected_name -c $selected
-  exit 0
+	tmux new-session -s $selected_name -c $selected
+	exit 0
 fi
 
 if ! tmux has-session -t=$selected_name 2>/dev/null; then
-  tmux new-session -ds $selected_name -c $selected
+	tmux new-session -ds $selected_name -c $selected
 fi
 
 if [[ -z $TMUX ]]; then
-  tmux attach -t $selected_name
+	tmux attach -t $selected_name
 else
-  tmux switch-client -t $selected_name
+	tmux switch-client -t $selected_name
 fi

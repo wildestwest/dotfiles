@@ -71,9 +71,6 @@ vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "copy to vim" })
 -- delete to void buffer
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete to void buffer" })
 
--- format file
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { desc = "run format on current buffer" })
-
 vim.api.nvim_create_autocmd("TermClose", {
   callback = function()
     -- Get the buffer that triggered the event
@@ -85,7 +82,7 @@ vim.api.nvim_create_autocmd("TermClose", {
     if buf_type == "terminal" then
       vim.cmd("bdelete! " .. buf_nr)
     end
-  end
+  end,
 })
 local term_bufnr = nil
 
@@ -99,25 +96,25 @@ local toggle_right_terminal = function()
     else
       -- Terminal exists but not visible, show it
       local width = math.floor(vim.o.columns / 3)
-      vim.cmd('rightbelow vsplit')
-      vim.cmd('vertical resize ' .. width)
+      vim.cmd("rightbelow vsplit")
+      vim.cmd("vertical resize " .. width)
       vim.api.nvim_set_current_buf(term_bufnr)
-      vim.cmd('startinsert')
+      vim.cmd("startinsert")
     end
   else
     -- Create new terminal
     local width = math.floor(vim.o.columns / 3)
-    vim.cmd('rightbelow vsplit')
-    vim.cmd('vertical resize ' .. width)
-    vim.cmd('terminal')
+    vim.cmd("rightbelow vsplit")
+    vim.cmd("vertical resize " .. width)
+    vim.cmd("terminal")
     term_bufnr = vim.api.nvim_get_current_buf()
     -- Mark buffer as unlisted so it doesn't show in buffer list
     vim.bo[term_bufnr].buflisted = false
-    vim.cmd('startinsert')
+    vim.cmd("startinsert")
   end
 end
-vim.keymap.set({ "n", "t", "i" }, "<C-.>", toggle_right_terminal, { desc = "Terminal (vertical)" })
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.keymap.set({ "n", "t", "i" }, "<C-t>", toggle_right_terminal, { desc = "Terminal (vertical)" })
+vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 -- hotkeyed commands
 
 local command_output_bufnr = nil
@@ -128,11 +125,11 @@ local run_command_in_bottom_terminal = function(command)
   local current_win = vim.api.nvim_get_current_win()
 
   -- Open split at the bottom
-  vim.cmd('botright split')
-  vim.cmd('resize ' .. height)
+  vim.cmd("botright split")
+  vim.cmd("resize " .. height)
 
   -- Open terminal and run command
-  vim.cmd('terminal ' .. command)
+  vim.cmd("terminal " .. command)
 
   command_output_bufnr = vim.api.nvim_get_current_buf()
   command_output_win = vim.api.nvim_get_current_win()
@@ -141,7 +138,7 @@ local run_command_in_bottom_terminal = function(command)
   vim.bo[command_output_bufnr].buflisted = false
 
   -- Scroll to bottom once so it auto-scrolls
-  vim.cmd('normal! G')
+  vim.cmd("normal! G")
 
   -- Return focus to original window
   vim.api.nvim_set_current_win(current_win)
@@ -155,16 +152,18 @@ local dismiss_command_output = function()
 end
 
 -- specific Python venv setup command
-vim.keymap.set('n', '<leader>cpv', function()
+vim.keymap.set("n", "<leader>cpv", function()
   run_command_in_bottom_terminal(
-    'rm -rf .venv && python3 -m venv .venv && source .venv/bin/activate.fish && pip install -r requirements.txt -r requirements-testing.txt')
-end, { desc = '[C]ommand [P]ython clean [V]env and install' })
-vim.keymap.set("n", "<leader>cpt",
-  function() run_command_in_bottom_terminal("source .venv/bin/activate.fish && python -m pytest") end,
-  { desc = "[C]ommand [P]ython run [T]ests" })
-vim.keymap.set('n', '<leader>cd', dismiss_command_output, { desc = '[C]lose [D]ismiss command output' })
+    "rm -rf .venv && python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt -r requirements-testing.txt"
+  )
+end, { desc = "[C]ommand [P]ython clean [V]env and install" })
+vim.keymap.set("n", "<leader>cpt", function()
+  run_command_in_bottom_terminal("source .venv/bin/activate && python -m pytest")
+end, { desc = "[C]ommand [P]ython run [T]ests" })
+vim.keymap.set("n", "<leader>cd", dismiss_command_output, { desc = "[C]lose [D]ismiss command output" })
 
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+vim.keymap.set("n", "<leader>cr", "<cmd>LspRestart<CR>")
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
@@ -374,7 +373,7 @@ require("lazy").setup({
           Snacks.picker.man()
         end,
         desc = "Search [M]an",
-      }
+      },
     },
   },
 
@@ -393,7 +392,7 @@ require("lazy").setup({
           local map = function(keys, func, desc, mode)
             mode = mode or "n"
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
-         end
+          end
           map("gn", vim.lsp.buf.rename, "[R]e[n]ame")
           map("ga", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
           map("gr", require("snacks").picker.lsp_references, "[G]oto [R]eferences")
@@ -448,6 +447,7 @@ require("lazy").setup({
       local servers = {
         -- clangd = {},
         basedpyright = {},
+        bashls = {},
         ansiblels = {},
         dockerls = {},
         docker_compose_language_service = {},
@@ -469,7 +469,21 @@ require("lazy").setup({
 
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        "stylua", -- Used to format Lua code
+        "stylua",
+        -- Formatters
+        "isort",
+        "black",
+        "rustfmt",
+        "prettier",
+        "shfmt",
+        -- Linters
+        "flake8",
+        "eslint_d",
+        "shellcheck",
+        "yamllint",
+        "hadolint",
+        "markdownlint",
+        "ansible-lint",
       })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -503,9 +517,9 @@ require("lazy").setup({
         end)(),
         dependencies = {
           {
-            'rafamadriz/friendly-snippets',
+            "rafamadriz/friendly-snippets",
             config = function()
-              require('luasnip.loaders.from_vscode').lazy_load()
+              require("luasnip.loaders.from_vscode").lazy_load()
             end,
           },
         },
@@ -517,11 +531,6 @@ require("lazy").setup({
     --- @type blink.cmp.Config
     opts = {
       keymap = {
-        -- <tab>/<s-tab>: move to right/left of your snippet expansion
-        -- <c-space>: Open menu or open docs if already open
-        -- <c-n>/<c-p> or <up>/<down>: Select next/previous item
-        -- <c-e>: Hide menu
-        -- <c-k>: Toggle signature help
         preset = "default",
       },
 
@@ -551,11 +560,76 @@ require("lazy").setup({
     },
   },
   {
+    "stevearc/conform.nvim",
+    opts = {},
+    config = function()
+      -- See also:
+      -- - `:h Conform`
+      -- - `:h conform-options`
+      -- - `:h conform-formatters`
+      require("conform").setup({
+        -- Map of filetype to formatters
+        -- Make sure that necessary CLI tool is available
+        formatters_by_ft = {
+          rust = { "rustfmt" },
+          javascript = { "prettier" },
+          typescript = { "prettier" },
+          javascriptreact = { "prettier" },
+          typescriptreact = { "prettier" },
+          bash = { "shfmt" },
+          sh = { "shfmt" },
+          yaml = { "prettier" },
+          helm = {}, -- Helm LSP handles formatting
+          markdown = { "prettier" },
+          ansible = { "prettier" },
+          python = { "isort", "black" },
+        },
+        format_on_save = {
+          timeout_ms = 5000,
+          lsp_fallback = true,
+        },
+      })
+      vim.keymap.set("n", "<leader>f", function()
+        require("conform").format()
+      end, { desc = "run format on current buffer" })
+    end,
+  },
+  {
+    "mfussenegger/nvim-lint",
+    config = function()
+      local lint = require("lint")
+
+      -- Configure linters by filetype
+      lint.linters_by_ft = {
+        python = { "flake8" },
+        javascript = { "eslint" },
+        typescript = { "eslint" },
+        javascriptreact = { "eslint" },
+        typescriptreact = { "eslint" },
+        bash = { "shellcheck" },
+        sh = { "shellcheck" },
+        yaml = { "yamllint" },
+        dockerfile = { "hadolint" },
+        markdown = { "markdownlint" },
+        ansible = { "ansible_lint" },
+      }
+
+      -- Auto-lint on save and text change
+      local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+        group = lint_augroup,
+        callback = function()
+          lint.try_lint()
+        end,
+      })
+    end,
+  },
+  {
     "rose-pine/neovim",
     priority = 1000,
     config = function()
-      -- enable builtin undotree
-      vim.cmd('packadd nvim.undotree')
+      -- -- enable builtin undotree wait till 0.12
+      -- vim.cmd('packadd nvim.undotree')
       require("rose-pine").setup()
       vim.cmd.colorscheme("rose-pine-main")
     end,
@@ -573,14 +647,16 @@ require("lazy").setup({
         n_lines = 500,
         -- 'mini.ai' can be extended with custom textobjects from treesitter
         custom_textobjects = {
-          F = require('mini.extra').gen_ai_spec.buffer(),
-          f = require('mini.ai').gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
-          h = require('mini.ai').gen_spec.treesitter({ a = '@function.call.outer', i = '@function.call.inner' }),
-          C = require('mini.ai').gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }),
-          L = require('mini.ai').gen_spec.treesitter({ a = '@loop.outer', i = '@loop.inner' }),
-          D = require('mini.ai').gen_spec.treesitter({ a = '@conditional.outer', i = '@conditional.inner' }),
+          B = require("mini.extra").gen_ai_spec.buffer(),
+          F = require("mini.ai").gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
+          f = require("mini.ai").gen_spec.treesitter({
+            a = "@function.call.outer",
+            i = "@function.call.inner",
+          }),
+          C = require("mini.ai").gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),
+          L = require("mini.ai").gen_spec.treesitter({ a = "@loop.outer", i = "@loop.inner" }),
+          c = require("mini.ai").gen_spec.treesitter({ a = "@conditional.outer", i = "@conditional.inner" }),
         },
-
       })
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
@@ -597,6 +673,20 @@ require("lazy").setup({
       require("mini.indentscope").setup()
       require("mini.trailspace").setup()
       require("mini.diff").setup()
+      require("mini.notify").setup()
+      require("mini.misc").setup()
+      -- Change current working directory based on the current file path. It
+      -- searches up the file tree until the first root marker ('.git' or 'Makefile')
+      -- and sets their parent directory as a current directory.
+      -- This is helpful when simultaneously dealing with files from several projects.
+      MiniMisc.setup_auto_root()
+
+      -- Restore latest cursor position on file open
+      MiniMisc.setup_restore_cursor()
+
+      -- Synchronize terminal emulator background with Neovim's background to remove
+      -- possibly different color padding around Neovim instance
+      MiniMisc.setup_termbg_sync()
     end,
   },
   { -- Highlight, edit, and navigate code
@@ -636,7 +726,8 @@ require("lazy").setup({
         "nix",
         "javascript",
         "helm",
-        "fish"
+        "python",
+        "fish",
       },
       auto_install = true,
       highlight = {
@@ -654,7 +745,7 @@ require("lazy").setup({
     "folke/flash.nvim",
     event = "VeryLazy",
     opts = {
-      labels = "hatesinclumg",
+      labels = "hatesinc",
       search = {
         mode = function(str)
           return "\\<" .. str
@@ -666,9 +757,6 @@ require("lazy").setup({
       jump = {
         autojump = true,
       },
-      treesitter = {
-        labels = 'hatesincludowymgp'
-      }
     },
     -- stylua: ignore
     keys = {
@@ -685,21 +773,21 @@ require("lazy").setup({
     keys = {
       { "<leader>m", "<cmd>Grapple toggle<cr>",          desc = "Grapple toggle tag" },
       { "<leader>M", "<cmd>Grapple toggle_tags<cr>",     desc = "Grapple open tags window" },
-      { "<A-a>",     "<cmd>Grapple select index=1<cr>",  desc = "Grapple Select first tag" },
-      { "<A-e>",     "<cmd>Grapple select index=2<cr>",  desc = "Grapple Select second tag" },
-      { "<A-i>",     "<cmd>Grapple select index=3<cr>",  desc = "Grapple Select third tag" },
-      { "<A-c>",     "<cmd>Grapple select index=4<cr>",  desc = "Grapple Select fourth tag" },
-      { "<A-h>",     "<cmd>Grapple select index=5scr>",  desc = "Grapple Select fith tag" },
-      { "<A-t>",     "<cmd>Grapple select index=6<cr>",  desc = "Grapple Select sixth tag" },
-      { "<A-s>",     "<cmd>Grapple select index=7<cr>",  desc = "Grapple Select seventh tag" },
-      { "<A-n>",     "<cmd>Grapple select index=8<cr>",  desc = "Grapple Select eighth tag" },
+      { "<A-A>",     "<cmd>Grapple tag name=a<cr>",      desc = "Grapple Select first tag" },
+      { "<A-E>",     "<cmd>Grapple tag name=e<cr>",      desc = "Grapple Select second tag" },
+      { "<A-I>",     "<cmd>Grapple tag name=i<cr>",      desc = "Grapple Select third tag" },
+      { "<A-C>",     "<cmd>Grapple tag name=c<cr>",      desc = "Grapple Select fourth tag" },
+      { "<A-a>",     "<cmd>Grapple select name=a<cr>",   desc = "Grapple Select first tag" },
+      { "<A-e>",     "<cmd>Grapple select name=e<cr>",   desc = "Grapple Select second tag" },
+      { "<A-i>",     "<cmd>Grapple select name=i<cr>",   desc = "Grapple Select third tag" },
+      { "<A-c>",     "<cmd>Grapple select name=c<cr>",   desc = "Grapple Select fourth tag" },
       { "<A-]>",     "<cmd>Grapple cycle_tags next<cr>", desc = "Grapple cycle next tag" },
       { "<A-[>",     "<cmd>Grapple cycle_tags prev<cr>", desc = "Grapple cycle previous tag" },
     },
   },
   {
-    'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' }, -- if you use the mini.nvim suite
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" }, -- if you use the mini.nvim suite
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
     opts = {
@@ -708,7 +796,7 @@ require("lazy").setup({
         blink = { enabled = true },
         -- Settings for in-process language server completions
         lsp = { enabled = true },
-    },
+      },
     },
   },
 })
