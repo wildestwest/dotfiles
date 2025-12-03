@@ -745,7 +745,7 @@ require("lazy").setup({
     "folke/flash.nvim",
     event = "VeryLazy",
     opts = {
-      labels = "hatesinc",
+      labels = "hatesincludowykmgp",
       search = {
         mode = function(str)
           return "\\<" .. str
