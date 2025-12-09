@@ -23,14 +23,9 @@
         "task::Spawn",
         { "task_name": "kube", "reveal_target": "center" }
       ],
-      "space c p v": [
-        "task::Spawn",
-        { "task_name": "venv"}
-      ],
-      "space c p t": [
-        "task::Spawn",
-        { "task_name": "pytest"}
-      ],
+      "space c d": ["task::Spawn", { "task_name": "deploy" }],
+      "space c p v": ["task::Spawn", { "task_name": "venv" }],
+      "space c p t": ["task::Spawn", { "task_name": "pytest" }]
     }
   },
   {
@@ -62,9 +57,8 @@
   {
     "context": "Editor && vim_mode == visual",
     "bindings": {
-      "shift-j": "editor::MoveLineDown",
-      "shift-k": "editor::MoveLineUp",
-      "shift-x": "vim::Exchange"
+      "shift-x": "vim::Exchange",
+      "s": "vim::PushAddSurrounds"
     }
   },
   {
@@ -76,7 +70,7 @@
     }
   },
   {
-    "context": "multibuffer",
+    "context": "multibuffer && vim_mode == normal",
     "bindings": {
       // why is this not a default???
       "n": "search::SelectNextMatch",

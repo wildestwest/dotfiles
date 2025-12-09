@@ -151,6 +151,7 @@
   "cursor_blink": false,
   "vertical_scroll_margin": 8,
   "show_signature_help_after_edits": true,
+  "colorize_brackets": true,
   "active_pane_modifiers": {
     "inactive_opacity": 0.8
   },
