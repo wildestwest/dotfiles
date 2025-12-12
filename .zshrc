@@ -62,3 +62,8 @@ autoload -Uz add-zsh-hook
 add-zsh-hook chpwd auto_activate_venv
 
 eval "$(zoxide init zsh --cmd c)"
+
+# Auto-attach to tmux in Zed terminals
+if [[ -z "$TMUX" ]] && [[ -n "$TERM_PROGRAM" ]] && [[ "$TERM_PROGRAM" == "zed" ]] && [[ -t 0 ]]; then
+  exec tmux new-session -A -s "$(basename "$PWD")"
+fi

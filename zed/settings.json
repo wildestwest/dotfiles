@@ -163,8 +163,8 @@
   "use_smartcase_search": true,
   "theme": {
     "mode": "system",
-    "light": "One Light",
-    "dark": "Ayu Dark"
+    "light": "Gruvbox Light Hard",
+    "dark": "Gruvbox Dark Hard"
   },
   "indent_guides": {
     "coloring": "indent_aware"
@@ -190,13 +190,17 @@
     "copy_on_select": true,
     "toolbar": {
       "breadcrumbs": false
-    },
-    "shell": {
-        "with_arguments": {
-          "program": "/bin/zsh",
-          // create new tmux session per proj
-          "args": ["-c", "tmux new-session -A -s \"$(basename \"$PWD\")\""]
-        }
+    }
+  },
+  "languages": {
+      "Python": {
+        "language_servers": [
+          // Disable basedpyright and enable Ty, and otherwise
+          // use the default configuration.
+          "ty",
+          "!basedpyright",
+          "..."
+        ]
       }
-  }
+    }
 }
