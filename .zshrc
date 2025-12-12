@@ -33,14 +33,32 @@ alias la='ls -la'
 alias v='nvim'
 alias lg='lazygit'
 
-# path+=('/Users/whulland/.local/bin/')
-path+=('/home/whulland/.local/bin/')
+path+=('/Users/whulland/.local/bin/')
+# path+=('/home/whulland/.local/bin/')
+
+
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $(brew --prefix)/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+# source /usr/share/zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+# source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 bindkey -s '^f' "tmux-sessionizer\n"
 
-# source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-# source $(brew --prefix)/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-source /usr/share/zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+# Function to automatically activate venv
+auto_activate_venv() {
+  if [[ -f ".venv/bin/activate" ]]; then
+    source ".venv/bin/activate"
+  else
+    # Deactivate if no venv found and one is currently active
+    if [[ -n "$VIRTUAL_ENV" ]]; then
+      deactivate
+    fi
+  fi
+}
+auto_activate_venv
+
+# Use the chpwd hook to call the function on directory change
+autoload -Uz add-zsh-hook
+add-zsh-hook chpwd auto_activate_venv
 
 eval "$(zoxide init zsh --cmd c)"

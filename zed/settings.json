@@ -187,6 +187,13 @@
     "copy_on_select": true,
     "toolbar": {
       "breadcrumbs": false
-    }
+    },
+    "shell": {
+        "with_arguments": {
+          "program": "/bin/zsh",
+          // create new tmux session per proj
+          "args": ["-c", "tmux new-session -A -s \"$(basename \"$PWD\")\""]
+        }
+      }
   }
 }
