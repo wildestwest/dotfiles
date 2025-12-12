@@ -142,7 +142,8 @@
     "docker-compose": true,
     "helm": true,
     "graphql": true,
-    "ansible": true
+    "ansible": true,
+    "python-snippets": true
   },
   "disable_ai": true,
   "ui_font_size": 14,
@@ -170,10 +171,12 @@
   },
   "file_types": {
     "Helm": [
-      "**/templates/*.yaml",
-      "**/templates/*.yml",
-      "**/*values*.yaml",
-      "**/chart.yaml"
+      "**/templates/**/*.tpl",
+      "**/templates/**/*.yaml",
+      "**/templates/**/*.yml",
+      "**/helmfile.d/**/*.yaml",
+      "**/helmfile.d/**/*.yml",
+      "**/values*.yaml"
     ]
   },
   "format_on_save": "off",
