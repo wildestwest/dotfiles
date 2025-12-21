@@ -15,6 +15,7 @@
       "space t": "task::Spawn",
       "space v": "toolchain::Select",
       "space e": "workspace::ToggleLeftDock",
+      test
       "space l g": [
         "task::Spawn",
         { "task_name": "lazygit", "reveal_target": "center" }
