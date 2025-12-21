@@ -160,6 +160,11 @@ end, { desc = "[C]ommand [P]ython clean [V]env and install" })
 vim.keymap.set("n", "<leader>cpt", function()
 	run_command_in_bottom_terminal("source .venv/bin/activate && python -m pytest")
 end, { desc = "[C]ommand [P]ython run [T]ests" })
+vim.keymap.set("n", "<leader>ckd", function()
+	run_command_in_bottom_terminal(
+		"helm upgrade -i wes$(basename \"$(pwd)\" | sed 's/[-_]/ /g' | awk '{for(i=1;i<=NF;i++) printf substr($i,1,1)}') helm-charts/$(basename \"$(pwd)\" | tr '_' '-') -f intvalues.yaml --set image.tag=$(git rev-parse --abbrev-ref HEAD | tr '/' '_')"
+	)
+end, { desc = "[C]ommand [K]ubernetes [D]eploy" })
 vim.keymap.set("n", "<leader>cd", dismiss_command_output, { desc = "[C]lose [D]ismiss command output" })
 
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
@@ -443,7 +448,7 @@ require("lazy").setup({
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
 				-- clangd = {},
-				basedpyright = {},
+				ty = {},
 				bashls = {},
 				ansiblels = {},
 				dockerls = {},
@@ -690,9 +695,9 @@ require("lazy").setup({
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
-		main = "nvim-treesitter.configs",
-		opts = {
-			ensure_installed = {
+		config = function()
+			local treesitter = require("nvim-treesitter")
+			treesitter.install({
 				"bash",
 				"c",
 				"diff",
@@ -726,19 +731,17 @@ require("lazy").setup({
 				"helm",
 				"python",
 				"fish",
-			},
-			auto_install = true,
-			highlight = {
-				enable = true,
-				-- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-				--  If you are experiencing weird indenting issues, add the language to
-				--  the list of additional_vim_regex_highlighting and disabled languages for indent.
-				additional_vim_regex_highlighting = { "ruby" },
-			},
-			indent = { enable = true, disable = { "ruby" } },
-		},
+			})
+			vim.api.nvim_create_autocmd("FileType", {
+				callback = function(args)
+					if vim.list_contains(treesitter.get_installed(), vim.treesitter.language.get_lang(args.match)) then
+						vim.treesitter.start(args.buf)
+					end
+				end,
+			})
+		end,
 	},
-	{ "nvim-treesitter/nvim-treesitter-textobjects" },
+	-- { "nvim-treesitter/nvim-treesitter-textobjects", branch = "main" },
 	{
 		"folke/flash.nvim",
 		event = "VeryLazy",

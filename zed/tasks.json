@@ -6,6 +6,7 @@
     "hide": "on_success",
     "use_new_terminal": true,
     "reveal_target": "center",
+    "allow_concurrent_runs": false,
     "shell": {
       "with_arguments": {
         "program": "zsh",
@@ -19,6 +20,7 @@
     "hide": "on_success",
     "use_new_terminal": true,
     "reveal_target": "center",
+    "allow_concurrent_runs": false,
     "shell": {
       "with_arguments": {
         "program": "zsh",
@@ -32,6 +34,7 @@
     "hide": "on_success",
     "reveal": "no_focus",
     "use_new_terminal": true,
+    "allow_concurrent_runs": false,
     "shell": {
       "with_arguments": {
         "program": "zsh",
@@ -45,6 +48,7 @@
     "reveal": "no_focus",
     "hide": "on_success",
     "use_new_terminal": true,
+    "allow_concurrent_runs": false,
     "shell": {
       "with_arguments": {
         "program": "zsh",
@@ -57,7 +61,7 @@
     "command": "helm upgrade -i wes$(basename \"$ZED_WORKTREE_ROOT\" | sed 's/[-_]/ /g' | awk '{for(i=1;i<=NF;i++) printf substr($i,1,1)}') helm-charts/$(basename \"$ZED_WORKTREE_ROOT\" | tr '_' '-') -f intvalues.yaml --set image.tag=$(git rev-parse --abbrev-ref HEAD | tr '/' '_')",
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "no_focus",
-    "hide": "never",
+    "hide": "on_success",
     "use_new_terminal": true,
     "allow_concurrent_runs": false,
     "shell": {

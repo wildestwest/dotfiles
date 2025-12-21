@@ -143,7 +143,7 @@
     "helm": true,
     "graphql": true,
     "ansible": true,
-    "python-snippets": true
+    // "python-snippets": true
   },
   "disable_ai": true,
   "ui_font_size": 14,
@@ -192,15 +192,4 @@
       "breadcrumbs": false
     }
   },
-  "languages": {
-      "Python": {
-        "language_servers": [
-          // Disable basedpyright and enable Ty, and otherwise
-          // use the default configuration.
-          "ty",
-          "!basedpyright",
-          "..."
-        ]
-      }
-    }
 }

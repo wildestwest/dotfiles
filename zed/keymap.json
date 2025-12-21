@@ -11,7 +11,7 @@
     "bindings": {
       "space space": "file_finder::Toggle",
       "space p": "projects::OpenRecent",
-      "space r": "projects::OpenRemote",
+      "space r": "editor::RestartLanguageServer",
       "space t": "task::Spawn",
       "space v": "toolchain::Select",
       "space e": "workspace::ToggleLeftDock",
@@ -23,7 +23,7 @@
         "task::Spawn",
         { "task_name": "kube", "reveal_target": "center" }
       ],
-      "space c d": ["task::Spawn", { "task_name": "deploy" }],
+      "space c k d": ["task::Spawn", { "task_name": "deploy" }],
       "space c p v": ["task::Spawn", { "task_name": "venv" }],
       "space c p t": ["task::Spawn", { "task_name": "pytest" }]
     }
