@@ -448,7 +448,7 @@ require("lazy").setup({
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
 				-- clangd = {},
-				ty = {},
+				basedpyright = {},
 				bashls = {},
 				ansiblels = {},
 				dockerls = {},
@@ -695,9 +695,9 @@ require("lazy").setup({
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
-		config = function()
-			local treesitter = require("nvim-treesitter")
-			treesitter.install({
+		main = "nvim-treesitter.configs",
+		opts = {
+			ensure_installed = {
 				"bash",
 				"c",
 				"diff",
@@ -731,17 +731,19 @@ require("lazy").setup({
 				"helm",
 				"python",
 				"fish",
-			})
-			vim.api.nvim_create_autocmd("FileType", {
-				callback = function(args)
-					if vim.list_contains(treesitter.get_installed(), vim.treesitter.language.get_lang(args.match)) then
-						vim.treesitter.start(args.buf)
-					end
-				end,
-			})
-		end,
+			},
+			auto_install = true,
+			highlight = {
+				enable = true,
+				-- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
+				--  If you are experiencing weird indenting issues, add the language to
+				--  the list of additional_vim_regex_highlighting and disabled languages for indent.
+				additional_vim_regex_highlighting = { "ruby" },
+			},
+			indent = { enable = true, disable = { "ruby" } },
+		},
 	},
-	-- { "nvim-treesitter/nvim-treesitter-textobjects", branch = "main" },
+	{ "nvim-treesitter/nvim-treesitter-textobjects" },
 	{
 		"folke/flash.nvim",
 		event = "VeryLazy",
