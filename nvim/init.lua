@@ -1,5 +1,4 @@
 vim.g.mapleader = " "
-
 vim.g.maplocalleader = " "
 
 vim.g.have_nerd_font = true
@@ -19,19 +18,14 @@ vim.o.inccommand = "split"
 vim.o.cursorline = true
 vim.o.scrolloff = 15
 vim.o.confirm = true
-
 -- Get rid of swapfile warning
 vim.o.swapfile = false
-
 -- Ruler
 vim.o.colorcolumn = "90"
-
 -- Auto-reload files changed on disk
 vim.o.autoread = true
-
 -- Save undo history
 vim.o.undofile = true
-
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.o.ignorecase = true
 vim.o.smartcase = true
@@ -234,10 +228,6 @@ require("lazy").setup({
 	},
 	{
 		"ibhagwan/fzf-lua",
-		dependencies = {
-			-- Useful for getting pretty icons, but requires a Nerd Font.
-			{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
-		},
 		opts = {},
 		keys = {
 			{
@@ -651,10 +641,7 @@ require("lazy").setup({
 				custom_textobjects = {
 					B = require("mini.extra").gen_ai_spec.buffer(),
 					F = require("mini.ai").gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
-					f = require("mini.ai").gen_spec.treesitter({
-						a = "@function.call.outer",
-						i = "@function.call.inner",
-					}),
+					f = require("mini.ai").gen_spec.treesitter({ a = "@call.outer", i = "@call.inner" }),
 					C = require("mini.ai").gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),
 					L = require("mini.ai").gen_spec.treesitter({ a = "@loop.outer", i = "@loop.inner" }),
 					c = require("mini.ai").gen_spec.treesitter({ a = "@conditional.outer", i = "@conditional.inner" }),
@@ -668,7 +655,7 @@ require("lazy").setup({
 			require("mini.surround").setup()
 
 			require("mini.statusline").setup({ use_icons = vim.g.have_nerd_font })
-			require("mini.pairs").setup()
+			-- require("mini.pairs").setup()
 			require("mini.notify").setup()
 			require("mini.extra").setup()
 			require("mini.cursorword").setup()
@@ -678,11 +665,16 @@ require("lazy").setup({
 			require("mini.notify").setup()
 			require("mini.cmdline").setup()
 			require("mini.misc").setup()
+			require("mini.icons").setup()
+			require("mini.files").setup({ windows = { preview = true } })
+			vim.keymap.set("n", "<leader>e", "<Cmd>lua MiniFiles.open()<CR>", { desc = "Explore Directory" })
 			-- Change current working directory based on the current file path. It
 			-- searches up the file tree until the first root marker ('.git' or 'Makefile')
 			-- and sets their parent directory as a current directory.
 			-- This is helpful when simultaneously dealing with files from several projects.
 			MiniMisc.setup_auto_root()
+
+			MiniIcons.mock_nvim_web_devicons()
 
 			-- Restore latest cursor position on file open
 			MiniMisc.setup_restore_cursor()
@@ -695,9 +687,12 @@ require("lazy").setup({
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
-		main = "nvim-treesitter.configs",
-		opts = {
-			ensure_installed = {
+	},
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		branch = "main",
+		config = function()
+			local languages = {
 				"bash",
 				"c",
 				"diff",
@@ -731,19 +726,31 @@ require("lazy").setup({
 				"helm",
 				"python",
 				"fish",
-			},
-			auto_install = true,
-			highlight = {
-				enable = true,
-				-- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-				--  If you are experiencing weird indenting issues, add the language to
-				--  the list of additional_vim_regex_highlighting and disabled languages for indent.
-				additional_vim_regex_highlighting = { "ruby" },
-			},
-			indent = { enable = true, disable = { "ruby" } },
-		},
+			}
+			local isnt_installed = function(lang)
+				return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0
+			end
+			local to_install = vim.tbl_filter(isnt_installed, languages)
+			if #to_install > 0 then
+				require("nvim-treesitter").install(to_install)
+			end
+
+			-- Enable tree-sitter after opening a file for a target language
+			local filetypes = {}
+			for _, lang in ipairs(languages) do
+				for _, ft in ipairs(vim.treesitter.language.get_filetypes(lang)) do
+					table.insert(filetypes, ft)
+				end
+			end
+			local ts_start = function(ev)
+				vim.treesitter.start(ev.buf)
+			end
+			vim.api.nvim_create_autocmd(
+				"FileType",
+				{ pattern = filetypes, callback = ts_start, desc = "Start tree-sitter" }
+			)
+		end,
 	},
-	{ "nvim-treesitter/nvim-treesitter-textobjects" },
 	{
 		"folke/flash.nvim",
 		event = "VeryLazy",
