@@ -1,4 +1,4 @@
-theme = "tokyonight"
+theme = "rose_pine"
 
 [editor]
 line-number = "relative"
@@ -14,7 +14,9 @@ end-of-line-diagnostics = "error"
 rulers = [80, 120]
 completion-replace = true
 popup-border = "all"
-rainbow-brackets = true
+
+[editor.cursor-shape]
+insert = "bar"
 
 [editor.statusline]
 left = ["mode", "spinner", "read-only-indicator", "file-modification-indicator"]
@@ -95,3 +97,11 @@ k = [
   ":reload-all"
 ]
 
+# Python commands
+[keys.normal.backspace.p]
+v = ':sh rm -rf .venv && python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt -r requirements-testing.txt'
+t = ':sh . .venv/bin/activate && python -m pytest'
+
+# Helm/Kubernetes commands
+[keys.normal.backspace.h]
+d = ':sh helm upgrade -i wes$(basename "$(pwd)" | sed "s/[-_]/ /g" | awk "{for(i=1;i<=NF;i++) printf substr(\$i,1,1)}") helm-charts/$(basename "$(pwd)" | tr "_" "-") -f intvalues.yaml --set image.tag=$(git rev-parse --abbrev-ref HEAD | tr "/" "_")'

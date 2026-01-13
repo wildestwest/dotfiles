@@ -45,7 +45,7 @@
 font-size = 14
 background-opacity = .97
 # clipboard-read = "allow"
-theme = "Ayu"
+theme = "Rose Pine"
 clipboard-write = "allow"
 confirm-close-surface = false
 window-decoration = "none"

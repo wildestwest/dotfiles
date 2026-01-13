@@ -36,6 +36,9 @@ alias lg='lazygit'
 path+=('/Users/whulland/.local/bin/')
 # path+=('/home/whulland/.local/bin/')
 
+EDITOR=nvim
+export EDITOR
+
 
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $(brew --prefix)/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
