@@ -9,6 +9,7 @@
   {
     "context": "(EmptyPane || SharedScreen || (Editor && vim_mode == normal) || ProjectPanel )",
     "bindings": {
+      "space": null, // Disable the default action vim::WrappingRight
       "space space": "file_finder::Toggle",
       "space p": "projects::OpenRecent",
       "space r": "editor::RestartLanguageServer",
@@ -81,6 +82,12 @@
     "context": "(FileFinder || FileFinder > Picker > Editor)",
     "bindings": {
       "ctrl-v": "pane::SplitRight"
+    }
+  },
+  {
+    "context": "Dock",
+    "bindings": {
+      "ctrl-w c": "workspace::CloseActiveDock"
     }
   }
 ]

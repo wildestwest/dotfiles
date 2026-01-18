@@ -34,6 +34,11 @@
         },
         {
           "paths": [
+            "/home/coder/repos/infrastructure"
+          ]
+        },
+        {
+          "paths": [
             "/home/coder/repos/localstack-ewa"
           ]
         },
@@ -152,6 +157,9 @@
   "wrap_guides": [80, 120],
   "cursor_blink": false,
   "vertical_scroll_margin": 8,
+  "which_key": {
+    "enabled": true,
+  },
   "show_signature_help_after_edits": true,
   "colorize_brackets": true,
   "use_autoclose": false,
