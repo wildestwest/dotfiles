@@ -9,8 +9,8 @@
 -- Use this file to install and configure other such plugins.
 
 -- Make concise helpers for installing/adding plugins in two stages
-local add, later = MiniDeps.add, MiniDeps.later
-local now_if_args = _G.Config.now_if_args
+local add = vim.pack.add
+local now_if_args, later = Config.now_if_args, Config.later
 
 -- Tree-sitter ================================================================
 
@@ -22,68 +22,91 @@ local now_if_args = _G.Config.now_if_args
 -- requires two extra pieces that don't come with Neovim directly:
 -- - Language parsers: programs that convert text into trees. Some are built-in
 --   (like for Lua), 'nvim-treesitter' provides many others.
+--   NOTE: It requires third party software to build and install parsers.
+--   See the link for more info in "Requirements" section of the MiniMax README.
 -- - Query files: definitions of how to extract information from trees in
 --   a useful manner (see `:h treesitter-query`). 'nvim-treesitter' also provides
 --   these, while 'nvim-treesitter-textobjects' provides the ones for Neovim
 --   textobjects (see `:h text-objects`, `:h MiniAi.gen_spec.treesitter()`).
 --
 -- Add these plugins now if file (and not 'mini.starter') is shown after startup.
+--
+-- Troubleshooting:
+-- - Run `:checkhealth vim.treesitter nvim-treesitter` to see potential issues.
+-- - In case of errors related to queries for Neovim bundled parsers (like `lua`,
+--   `vimdoc`, `markdown`, etc.), manually install them via 'nvim-treesitter'
+--   with `:TSInstall <language>`. Be sure to have necessary system dependencies
+--   (see MiniMax README section for software requirements).
 now_if_args(function()
+	-- Define hook to update tree-sitter parsers after plugin is updated
+	local ts_update = function()
+		vim.cmd("TSUpdate")
+	end
+	Config.on_packchanged("nvim-treesitter", { "update" }, ts_update, ":TSUpdate")
+
 	add({
-		source = "nvim-treesitter/nvim-treesitter",
-		-- Use 'master' while monitoring updates in 'main'
-		checkout = "master",
-		monitor = "main",
-		-- Perform action after every checkout
-		hooks = {
-			post_checkout = function()
-				vim.cmd("TSUpdate")
-			end,
-		},
+		"https://github.com/nvim-treesitter/nvim-treesitter",
+		"https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
 	})
-	add({
-		source = "nvim-treesitter/nvim-treesitter-textobjects",
-	})
-	-- Possible to immediately execute code which depends on the added plugin
-	require("nvim-treesitter.configs").setup({
-		ensure_installed = {
-			"bash",
-			"c",
-			"diff",
-			"html",
-			"lua",
-			"luadoc",
-			"markdown",
-			"markdown_inline",
-			"python",
-			"query",
-			"vim",
-			"vimdoc",
-			"go",
-			"gomod",
-			"gowork",
-			"gosum",
-			"rust",
-			"ron",
-			"ninja",
-			"rst",
-			"nu",
-			"dockerfile",
-			"helm",
-			"regex",
-			"yaml",
-			"toml",
-			"typescript",
-			"sway",
-			"requirements",
-			"nix",
-			"javascript",
-			"helm",
-			"fish",
-		},
-		auto_install = true,
-		highlight = { enable = true },
-	})
+
+	-- Define languages which will have parsers installed and auto enabled
+	-- After changing this, restart Neovim once to install necessary parsers. Wait
+	-- for the installation to finish before opening a file for added language(s).
+	local languages = {
+		"bash",
+		"c",
+		"cpp",
+		"diff",
+		"html",
+		"lua",
+		"luadoc",
+		"markdown",
+		"markdown_inline",
+		"python",
+		"query",
+		"vim",
+		"vimdoc",
+		"go",
+		"gomod",
+		"gowork",
+		"gosum",
+		"rust",
+		"ron",
+		"ninja",
+		"rst",
+		"nu",
+		"dockerfile",
+		"helm",
+		"regex",
+		"yaml",
+		"toml",
+		"typescript",
+		"sway",
+		"requirements",
+		"nix",
+		"javascript",
+		"helm",
+		"fish",
+	}
+	local isnt_installed = function(lang)
+		return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0
+	end
+	local to_install = vim.tbl_filter(isnt_installed, languages)
+	if #to_install > 0 then
+		require("nvim-treesitter").install(to_install)
+	end
+
+	-- Enable tree-sitter after opening a file for a target language
+	local filetypes = {}
+	for _, lang in ipairs(languages) do
+		for _, ft in ipairs(vim.treesitter.language.get_filetypes(lang)) do
+			table.insert(filetypes, ft)
+		end
+	end
+	local ts_start = function(ev)
+		vim.treesitter.start(ev.buf)
+	end
+	Config.new_autocmd("FileType", filetypes, ts_start, "Start tree-sitter")
 end)
 
 -- Language servers ===========================================================
@@ -102,16 +125,16 @@ end)
 --
 -- Add it now if file (and not 'mini.starter') is shown after startup.
 later(function()
-	add("neovim/nvim-lspconfig")
-	add("williamboman/mason.nvim")
-	add("williamboman/mason-lspconfig.nvim")
-	add("WhoIsSethDaniel/mason-tool-installer.nvim")
+	add({ "https://github.com/neovim/nvim-lspconfig" })
+	add({ "https://github.com/williamboman/mason.nvim" })
+	add({ "https://github.com/williamboman/mason-lspconfig.nvim" })
 
 	-- Mason setup
 	require("mason").setup()
 
 	local servers = {
 		basedpyright = {},
+		clangd = {},
 		ansiblels = {},
 		dockerls = {},
 		docker_compose_language_service = {},
@@ -131,11 +154,22 @@ later(function()
 		},
 	}
 
-	local ensure_installed = vim.tbl_keys(servers or {})
-	vim.list_extend(ensure_installed, {
-		"stylua",
+	-- Mason package names (these differ from lspconfig server names)
+	local ensure_installed = {
+		-- LSP servers
+		"basedpyright",
+		"clangd",
+		"ansible-language-server",
+		"dockerfile-language-server",
+		"docker-compose-language-service",
+		"helm-ls",
+		"marksman",
+		"rust-analyzer",
+		"typescript-language-server",
+		"yaml-language-server",
+		"lua-language-server",
 		-- Formatters
-		"isort",
+		"stylua",
 		"rustfmt",
 		"goimports",
 		"prettier",
@@ -145,12 +179,19 @@ later(function()
 		"golangci-lint",
 		"eslint_d",
 		"shellcheck",
-		"yamllint",
 		"hadolint",
 		"markdownlint",
-		"ansible-lint",
-	})
-	require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+	}
+	local registry = require("mason-registry")
+	registry.refresh(function()
+		for _, tool_name in ipairs(ensure_installed) do
+			local ok, pkg = pcall(registry.get_package, tool_name)
+			if ok and not pkg:is_installed() then
+				vim.notify("[mason] installing " .. tool_name)
+				pkg:install()
+			end
+		end
+	end)
 
 	require("mason-lspconfig").setup({
 		ensure_installed = {},
@@ -163,38 +204,6 @@ later(function()
 		},
 	})
 end)
-
-now_if_args(function()
-	-- Configure Helm file detection
-	-- Detect Helm chart files and set filetype to 'helm' instead of 'yaml'
-	vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-		pattern = {
-			"*/templates/*.yaml",
-			"*/templates/*.tpl",
-			"*/templates/*.yml",
-			"**/templates/*.yaml",
-			"**/templates/*.tpl",
-			"**/templates/*.yml",
-		},
-		callback = function()
-			vim.bo.filetype = "helm"
-		end,
-		desc = "Set filetype to helm for Helm chart templates",
-	})
-
-	-- Also detect by checking for Chart.yaml in parent directories
-	vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-		pattern = { "*.yaml", "*.yml" },
-		callback = function()
-			local path = vim.fn.expand("%:p")
-			if path:match("/templates/") and vim.fn.findfile("Chart.yaml", vim.fn.expand("%:p:h") .. ";") ~= "" then
-				vim.bo.filetype = "helm"
-			end
-		end,
-		desc = "Detect Helm charts by Chart.yaml presence",
-	})
-end)
-
 -- Formatting =================================================================
 
 -- Programs dedicated to text formatting (a.k.a. formatters) are very useful.
@@ -204,13 +213,17 @@ end)
 -- The 'stevearc/conform.nvim' plugin is a good and maintained solution for easier
 -- formatting setup.
 later(function()
-	add("stevearc/conform.nvim")
+	add({ "https://github.com/stevearc/conform.nvim" })
 
 	-- See also:
 	-- - `:h Conform`
 	-- - `:h conform-options`
 	-- - `:h conform-formatters`
 	require("conform").setup({
+		default_format_opts = {
+			-- Allow formatting from LSP server if no dedicated formatter is available
+			lsp_format = "fallback",
+		},
 		-- Map of filetype to formatters
 		-- Make sure that necessary CLI tool is available
 		formatters_by_ft = {
@@ -236,47 +249,11 @@ later(function()
 end)
 
 later(function()
-	add("MeanderingProgrammer/render-markdown.nvim")
+	add({ "https://github.com/MeanderingProgrammer/render-markdown.nvim" })
 	require("render-markdown").setup({
 		lsp = { enabled = true },
 	})
 end)
-
--- Linting ====================================================================
-
--- Linters analyze code for potential errors and style issues.
--- The 'mfussenegger/nvim-lint' plugin provides easy linter integration.
-later(function()
-	add("mfussenegger/nvim-lint")
-
-	local lint = require("lint")
-
-	-- Configure linters by filetype
-	lint.linters_by_ft = {
-		python = { "flake8" },
-		go = { "golangcilint" },
-		javascript = { "eslint" },
-		typescript = { "eslint" },
-		javascriptreact = { "eslint" },
-		typescriptreact = { "eslint" },
-		bash = { "shellcheck" },
-		sh = { "shellcheck" },
-		yaml = { "yamllint" },
-		dockerfile = { "hadolint" },
-		markdown = { "markdownlint" },
-		ansible = { "ansible_lint" },
-	}
-
-	-- Auto-lint on save and text change
-	local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
-	vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
-		group = lint_augroup,
-		callback = function()
-			lint.try_lint()
-		end,
-	})
-end)
-
 -- Snippets ===================================================================
 
 -- Although 'mini.snippets' provides functionality to manage snippet files, it
@@ -287,9 +264,37 @@ end)
 -- 'mini.snippets' is designed to work with it as seamlessly as possible.
 -- See `:h MiniSnippets.gen_loader.from_lang()`.
 later(function()
-	add("rafamadriz/friendly-snippets")
+	add({ "https://github.com/rafamadriz/friendly-snippets" })
 end)
 
-add("rose-pine/neovim")
+-- Honorable mentions =========================================================
+
+-- 'mason-org/mason.nvim' (a.k.a. "Mason") is a great tool (package manager) for
+-- installing external language servers, formatters, and linters. It provides
+-- a unified interface for installing, updating, and deleting such programs.
+--
+-- The caveat is that these programs will be set up to be mostly used inside Neovim.
+-- If you need them to work elsewhere, consider using other package managers.
+--
+-- You can use it like so:
+-- now_if_args(function()
+--   add({ 'https://github.com/mason-org/mason.nvim' })
+--   require('mason').setup()
+-- end)
+
+-- Beautiful, usable, well maintained color schemes outside of 'mini.nvim' and
+-- have full support of its highlight groups. Use if you don't like 'miniwinter'
+-- enabled in 'plugin/30_mini.lua' or other suggested 'mini.hues' based ones.
+-- Config.now(function()
+--  -- Install only those that you need
+--  add({
+--    'https://github.com/sainnhe/everforest',
+--    'https://github.com/Shatur/neovim-ayu',
+--    'https://github.com/ellisonleao/gruvbox.nvim',
+--  })
+--
+--   -- Enable only one
+--   vim.cmd('color everforest')
+add({ "https://github.com/rose-pine/neovim" })
 vim.cmd("color rose-pine-main")
 -- end)

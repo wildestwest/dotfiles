@@ -65,3 +65,5 @@ autoload -Uz add-zsh-hook
 add-zsh-hook chpwd auto_activate_venv
 
 eval "$(zoxide init zsh --cmd c)"
+
+. "$HOME/.local/bin/env"

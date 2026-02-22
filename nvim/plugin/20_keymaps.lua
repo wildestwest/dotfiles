@@ -14,13 +14,10 @@ local nmap = function(lhs, rhs, desc)
 	vim.keymap.set("n", lhs, rhs, { desc = desc })
 end
 
-vim.keymap.set("n", "H", "<cmd>bprevious<CR>")
-vim.keymap.set("n", "L", "<cmd>bnext<CR>")
-
 -- Paste linewise before/after current line
 -- Usage: `yiw` to yank a word and `]p` to put it on the next line.
-nmap("[p", '<Cmd>exe "put! " . v:register<CR>', "Paste Above")
-nmap("]p", '<Cmd>exe "put "  . v:register<CR>', "Paste Below")
+nmap("[p", '<Cmd>exe "iput! " . v:register<CR>', "Paste Above")
+nmap("]p", '<Cmd>exe "iput "  . v:register<CR>', "Paste Below")
 
 -- Many general mappings are created by 'mini.basics'. See 'plugin/30_mini.lua'
 
@@ -52,7 +49,7 @@ nmap("]p", '<Cmd>exe "put "  . v:register<CR>', "Paste Below")
 -- Create a global table with information about Leader groups in certain modes.
 -- This is used to provide 'mini.clue' with extra clues.
 -- Add an entry if you create a new group.
-_G.Config.leader_group_clues = {
+Config.leader_group_clues = {
   { mode = 'n', keys = '<Leader>b', desc = '+Buffer' },
   { mode = 'n', keys = '<Leader>e', desc = '+Explore/Edit' },
   { mode = 'n', keys = '<Leader>f', desc = '+Find' },
@@ -105,10 +102,10 @@ local edit_plugin_file = function(filename)
 end
 local explore_at_file = '<Cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>'
 local explore_quickfix = function()
-  for _, win_id in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-    if vim.fn.getwininfo(win_id)[1].quickfix == 1 then return vim.cmd('cclose') end
-  end
-  vim.cmd('copen')
+  vim.cmd(vim.fn.getqflist({ winid = true }).winid ~= 0 and 'cclose' or 'copen')
+end
+local explore_locations = function()
+  vim.cmd(vim.fn.getloclist(0, { winid = true }).winid ~= 0 and 'lclose' or 'lopen')
 end
 
 nmap_leader('ed', '<Cmd>lua MiniFiles.open()<CR>', 'Directory')
@@ -119,7 +116,8 @@ nmap_leader('em', edit_plugin_file('30_mini.lua'), 'MINI config')
 nmap_leader('en', '<Cmd>lua MiniNotify.show_history()<CR>', 'Notifications')
 nmap_leader('eo', edit_plugin_file('10_options.lua'), 'Options config')
 nmap_leader('ep', edit_plugin_file('40_plugins.lua'), 'Plugins config')
-nmap_leader('eq', explore_quickfix, 'Quickfix')
+nmap_leader('eq', explore_quickfix, 'Quickfix list')
+nmap_leader('eQ', explore_locations, 'Location list')
 
 -- f is for 'Fuzzy Find'. Common usage:
 -- - `<Leader>ff` - find files; for best performance requires `ripgrep`
@@ -130,6 +128,7 @@ nmap_leader('eq', explore_quickfix, 'Quickfix')
 --
 -- All these use 'mini.pick'. See `:h MiniPick-overview` for an overview.
 local pick_added_hunks_buf = '<Cmd>Pick git_hunks path="%" scope="staged"<CR>'
+local pick_workspace_symbols_live = '<Cmd>Pick lsp scope="workspace_symbol_live"<CR>'
 
 nmap_leader('f/', '<Cmd>Pick history scope="/"<CR>', '"/" history')
 nmap_leader('f:', '<Cmd>Pick history scope=":"<CR>', '":" history')
@@ -152,9 +151,8 @@ nmap_leader('fm', '<Cmd>Pick git_hunks<CR>', 'Modified hunks (all)')
 nmap_leader('fM', '<Cmd>Pick git_hunks path="%"<CR>', 'Modified hunks (buf)')
 nmap_leader('fr', '<Cmd>Pick resume<CR>', 'Resume')
 nmap_leader('fR', '<Cmd>Pick lsp scope="references"<CR>', 'References (LSP)')
-nmap_leader('fs', '<Cmd>Pick lsp scope="workspace_symbol"<CR>', 'Symbols workspace')
+nmap_leader('fs', pick_workspace_symbols_live, 'Symbols workspace (live)')
 nmap_leader('fS', '<Cmd>Pick lsp scope="document_symbol"<CR>', 'Symbols document')
-nmap_leader('fu', '<Cmd>Pick undo<CR>', 'Undo history')
 nmap_leader('fv', '<Cmd>Pick visit_paths cwd=""<CR>', 'Visit paths (all)')
 nmap_leader('fV', '<Cmd>Pick visit_paths<CR>', 'Visit paths (cwd)')
 
@@ -187,11 +185,9 @@ xmap_leader('gs', '<Cmd>lua MiniGit.show_at_cursor()<CR>', 'Show at selection')
 -- NOTE: most LSP mappings represent a more structured way of replacing built-in
 -- LSP mappings (like `:h gra` and others). This is needed because `gr` is mapped
 -- by an "replace" operator in 'mini.operators' (which is more commonly used).
-local formatting_cmd = '<Cmd>lua require("conform").format({lsp_fallback=true})<CR>'
-
 nmap_leader('la', '<Cmd>lua vim.lsp.buf.code_action()<CR>', 'Actions')
 nmap_leader('ld', '<Cmd>lua vim.diagnostic.open_float()<CR>', 'Diagnostic popup')
-nmap_leader('lf', formatting_cmd, 'Format')
+nmap_leader('lf', '<Cmd>lua require("conform").format()<CR>', 'Format')
 nmap_leader('li', '<Cmd>lua vim.lsp.buf.implementation()<CR>', 'Implementation')
 nmap_leader('lh', '<Cmd>lua vim.lsp.buf.hover()<CR>', 'Hover')
 nmap_leader('lr', '<Cmd>lua vim.lsp.buf.rename()<CR>', 'Rename')
@@ -199,7 +195,7 @@ nmap_leader('lR', '<Cmd>lua vim.lsp.buf.references()<CR>', 'References')
 nmap_leader('ls', '<Cmd>lua vim.lsp.buf.definition()<CR>', 'Source definition')
 nmap_leader('lt', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', 'Type definition')
 
-xmap_leader('lf', formatting_cmd, 'Format selection')
+xmap_leader('lf', '<Cmd>lua require("conform").format()<CR>', 'Format selection')
 
 -- m is for 'Map'. Common usage:
 -- - `<Leader>mt` - toggle map from 'mini.map' (closed by default)
@@ -220,12 +216,12 @@ nmap_leader('oz', '<Cmd>lua MiniMisc.zoom()<CR>', 'Zoom toggle')
 -- - `<Leader>sn` - start new session
 -- - `<Leader>sr` - read previously started session
 -- - `<Leader>sd` - delete previously started session
--- local session_new = 'MiniSessions.write(vim.fn.input("Session name: "))'
---
--- nmap_leader('sd', '<Cmd>lua MiniSessions.select("delete")<CR>', 'Delete')
--- nmap_leader('sn', '<Cmd>lua ' .. session_new .. '<CR>', 'New')
--- nmap_leader('sr', '<Cmd>lua MiniSessions.select("read")<CR>', 'Read')
--- nmap_leader('sw', '<Cmd>lua MiniSessions.write()<CR>', 'Write current')
+local session_new = 'MiniSessions.write(vim.fn.input("Session name: "))'
+
+nmap_leader('sd', '<Cmd>lua MiniSessions.select("delete")<CR>', 'Delete')
+nmap_leader('sn', '<Cmd>lua ' .. session_new .. '<CR>', 'New')
+nmap_leader('sr', '<Cmd>lua MiniSessions.select("read")<CR>', 'Read')
+nmap_leader('sw', '<Cmd>lua MiniSessions.write()<CR>', 'Write current')
 
 -- t is for 'Terminal'
 nmap_leader('tT', '<Cmd>horizontal term<CR>', 'Terminal (horizontal)')
@@ -249,63 +245,32 @@ nmap_leader('vv', '<Cmd>lua MiniVisits.add_label("core")<CR>', 'Add "core" label
 nmap_leader('vV', '<Cmd>lua MiniVisits.remove_label("core")<CR>', 'Remove "core" label')
 nmap_leader('vl', '<Cmd>lua MiniVisits.add_label()<CR>', 'Add label')
 nmap_leader('vL', '<Cmd>lua MiniVisits.remove_label()<CR>', 'Remove label')
--- Iterate based on recency
 
--- my keymaps
+-- custom
 
+nmap("H", "<cmd>bprevious<CR>", "previous buff")
+nmap("L", "<cmd>bnext<CR>", "next buff")
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("n", "J", "mzJ`z")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
+vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
+-- Keep current paste buffer
+vim.keymap.set("x", "<leader>p", [["_dP]], { desc = "Paste maintain buffer" })
+
+-- paste sys clipboard
+vim.keymap.set("n", "<leader>P", [["+p]], { desc = "Paste sys clipboard" })
+
+-- to yank into system clipboard vs vim clipboard
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "copy to sys" })
+vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "copy to vim" })
+
+-- delete to void buffer
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete to void buffer" })
 
-
-vim.api.nvim_create_autocmd("TermClose", {
-  callback = function()
-    -- Get the buffer that triggered the event
-    local buf_nr = vim.api.nvim_get_current_buf()
-    -- Get the type of buffer (e.g., 'terminal', 'help')
-    local buf_type = vim.api.nvim_buf_get_option(buf_nr, "buftype")
-
-    -- Check if it's a terminal buffer before deleting
-    if buf_type == "terminal" then
-      vim.cmd("bdelete! " .. buf_nr)
-    end
-  end
-})
-local term_bufnr = nil
-
-local toggle_right_terminal = function()
-  -- Check if terminal buffer exists and is valid
-  if term_bufnr and vim.api.nvim_buf_is_valid(term_bufnr) then
-    local term_win = vim.fn.bufwinid(term_bufnr)
-    if term_win ~= -1 then
-      -- Terminal is visible, close it
-      vim.api.nvim_win_close(term_win, false)
-    else
-      -- Terminal exists but not visible, show it
-      local width = math.floor(vim.o.columns / 3)
-      vim.cmd('rightbelow vsplit')
-      vim.cmd('vertical resize ' .. width)
-      vim.api.nvim_set_current_buf(term_bufnr)
-      vim.cmd('startinsert')
-    end
-  else
-    -- Create new terminal
-    local width = math.floor(vim.o.columns / 3)
-    vim.cmd('rightbelow vsplit')
-    vim.cmd('vertical resize ' .. width)
-    vim.cmd('terminal')
-    term_bufnr = vim.api.nvim_get_current_buf()
-    -- Mark buffer as unlisted so it doesn't show in buffer list
-    vim.bo[term_bufnr].buflisted = false
-    vim.cmd('startinsert')
-  end
-end
-vim.keymap.set({ "n", "t", "i" }, "<C-t>", toggle_right_terminal, { desc = "Terminal (vertical)" })
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 -- hotkeyed commands
 
 local command_output_bufnr = nil
@@ -316,11 +281,11 @@ local run_command_in_bottom_terminal = function(command)
   local current_win = vim.api.nvim_get_current_win()
 
   -- Open split at the bottom
-  vim.cmd('botright split')
-  vim.cmd('resize ' .. height)
+  vim.cmd("botright split")
+  vim.cmd("resize " .. height)
 
   -- Open terminal and run command
-  vim.cmd('terminal ' .. command)
+  vim.cmd("terminal " .. command)
 
   command_output_bufnr = vim.api.nvim_get_current_buf()
   command_output_win = vim.api.nvim_get_current_win()
@@ -329,7 +294,7 @@ local run_command_in_bottom_terminal = function(command)
   vim.bo[command_output_bufnr].buflisted = false
 
   -- Scroll to bottom once so it auto-scrolls
-  vim.cmd('normal! G')
+  vim.cmd("normal! G")
 
   -- Return focus to original window
   vim.api.nvim_set_current_win(current_win)
@@ -343,14 +308,68 @@ local dismiss_command_output = function()
 end
 
 -- specific Python venv setup command
-vim.keymap.set('n', '<leader>cpv', function()
+vim.keymap.set("n", "<leader>cpv", function()
   run_command_in_bottom_terminal(
-    'rm -rf .venv && python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt -r requirements-testing.txt')
-end, { desc = '[C]ommand [P]ython clean [V]env and install' })
-vim.keymap.set("n", "<leader>cpt",
-  function() run_command_in_bottom_terminal("source .venv/bin/activate && python -m pytest") end,
-  { desc = "[C]ommand [P]ython run [T]ests" })
-vim.keymap.set('n', '<leader>cd', dismiss_command_output, { desc = '[C]lose [D]ismiss command output' })
+    "rm -rf .venv && python3 -m venv .venv && source .venv/bin/activate.fish && pip install -r requirements.txt -r requirements-testing.txt"
+  )
+end, { desc = "[C]ommand [P]ython clean [V]env and install" })
+vim.keymap.set("n", "<leader>cpt", function()
+  run_command_in_bottom_terminal("source .venv/bin/activate.fish && python -m pytest")
+end, { desc = "[C]ommand [P]ython run [T]ests" })
+vim.keymap.set("n", "<leader>ckd", function()
+  run_command_in_bottom_terminal(
+    "helm upgrade -i wes$(basename \"$(pwd)\" | sed 's/[-_]/ /g' | awk '{for(i=1;i<=NF;i++) printf substr($i,1,1)}') helm-charts/$(basename \"$(pwd)\" | tr '_' '-') -f intvalues.yaml --set image.tag=$(git rev-parse --abbrev-ref HEAD | tr '/' '_')"
+  )
+end, { desc = "[C]ommand [K]ubernetes [D]eploy" })
+vim.keymap.set("n", "<leader>cd", dismiss_command_output, { desc = "[C]lose [D]ismiss command output" })
 
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+vim.keymap.set("n", "<leader>cr", "<cmd>LspRestart<CR>")
+
+--term
+vim.api.nvim_create_autocmd("TermClose", {
+  callback = function()
+    -- Get the buffer that triggered the event
+    local buf_nr = vim.api.nvim_get_current_buf()
+    -- Get the type of buffer (e.g., 'terminal', 'help')
+    local buf_type = vim.api.nvim_buf_get_option(buf_nr, "buftype")
+
+    -- Check if it's a terminal buffer before deleting
+    if buf_type == "terminal" then
+      vim.cmd("bdelete! " .. buf_nr)
+    end
+  end,
+})
+local term_bufnr = nil
+
+local toggle_right_terminal = function()
+  -- Check if terminal buffer exists and is valid
+  if term_bufnr and vim.api.nvim_buf_is_valid(term_bufnr) then
+    local term_win = vim.fn.bufwinid(term_bufnr)
+    if term_win ~= -1 then
+      -- Terminal is visible, close it
+      vim.api.nvim_win_close(term_win, false)
+    else
+      -- Terminal exists but not visible, show it
+      local width = math.floor(vim.o.columns / 3)
+      vim.cmd("rightbelow vsplit")
+      vim.cmd("vertical resize " .. width)
+      vim.api.nvim_set_current_buf(term_bufnr)
+      vim.cmd("startinsert")
+    end
+  else
+    -- Create new terminal
+    local width = math.floor(vim.o.columns / 3)
+    vim.cmd("rightbelow vsplit")
+    vim.cmd("vertical resize " .. width)
+    vim.cmd("terminal")
+    term_bufnr = vim.api.nvim_get_current_buf()
+    -- Mark buffer as unlisted so it doesn't show in buffer list
+    vim.bo[term_bufnr].buflisted = false
+    vim.cmd("startinsert")
+  end
+end
+vim.keymap.set({ "n", "t", "i" }, "<C-t>", toggle_right_terminal, { desc = "Terminal (vertical)" })
+vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
 -- stylua: ignore end
