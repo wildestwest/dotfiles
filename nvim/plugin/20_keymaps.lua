@@ -10,8 +10,8 @@
 
 -- An example helper to create a Normal mode mapping
 local nmap = function(lhs, rhs, desc)
-	-- See `:h vim.keymap.set()`
-	vim.keymap.set("n", lhs, rhs, { desc = desc })
+  -- See `:h vim.keymap.set()`
+  vim.keymap.set("n", lhs, rhs, { desc = desc })
 end
 
 -- Paste linewise before/after current line
@@ -149,6 +149,10 @@ nmap_leader('fl', '<Cmd>Pick buf_lines scope="all"<CR>', 'Lines (all)')
 nmap_leader('fL', '<Cmd>Pick buf_lines scope="current"<CR>', 'Lines (buf)')
 nmap_leader('fm', '<Cmd>Pick git_hunks<CR>', 'Modified hunks (all)')
 nmap_leader('fM', '<Cmd>Pick git_hunks path="%"<CR>', 'Modified hunks (buf)')
+nmap_leader('fq', function()
+  MiniPick.builtin.grep_live({ globs = { 'quickref.txt' } },
+    { source = { name = 'Quick Reference', cwd = vim.env.VIMRUNTIME .. '/doc' } })
+end, 'Quick Reference')
 nmap_leader('fr', '<Cmd>Pick resume<CR>', 'Resume')
 nmap_leader('fR', '<Cmd>Pick lsp scope="references"<CR>', 'References (LSP)')
 nmap_leader('fs', pick_workspace_symbols_live, 'Symbols workspace (live)')
@@ -324,7 +328,7 @@ end, { desc = "[C]ommand [K]ubernetes [D]eploy" })
 vim.keymap.set("n", "<leader>cd", dismiss_command_output, { desc = "[C]lose [D]ismiss command output" })
 
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
-vim.keymap.set("n", "<leader>cr", "<cmd>LspRestart<CR>")
+vim.keymap.set("n", "<leader>cr", "<cmd>lsp restart<CR>")
 
 --term
 vim.api.nvim_create_autocmd("TermClose", {
