@@ -159,7 +159,6 @@ later(function()
 		-- LSP servers
 		"basedpyright",
 		"clangd",
-		"ansible-language-server",
 		"dockerfile-language-server",
 		"docker-compose-language-service",
 		"helm-ls",
@@ -171,12 +170,10 @@ later(function()
 		-- Formatters
 		"stylua",
 		"rustfmt",
-		"goimports",
 		"prettier",
 		"shfmt",
 		-- Linters
-		"flake8",
-		"golangci-lint",
+		-- "flake8",
 		"eslint_d",
 		"shellcheck",
 		"hadolint",
@@ -212,41 +209,40 @@ end)
 --
 -- The 'stevearc/conform.nvim' plugin is a good and maintained solution for easier
 -- formatting setup.
-later(function()
-	add({ "https://github.com/stevearc/conform.nvim" })
-
-	-- See also:
-	-- - `:h Conform`
-	-- - `:h conform-options`
-	-- - `:h conform-formatters`
-	require("conform").setup({
-		default_format_opts = {
-			-- Allow formatting from LSP server if no dedicated formatter is available
-			lsp_format = "fallback",
-		},
-		-- Map of filetype to formatters
-		-- Make sure that necessary CLI tool is available
-		formatters_by_ft = {
-			rust = { "rustfmt" },
-			go = { "goimports", "gofmt" },
-			javascript = { "prettier" },
-			typescript = { "prettier" },
-			javascriptreact = { "prettier" },
-			typescriptreact = { "prettier" },
-			bash = { "shfmt" },
-			sh = { "shfmt" },
-			yaml = { "prettier" },
-			helm = {}, -- Helm LSP handles formatting
-			markdown = { "prettier" },
-			ansible = { "prettier" },
-		},
-		-- Format on save (optional, remove if you prefer manual formatting)
-		format_on_save = {
-			timeout_ms = 500,
-			lsp_fallback = true,
-		},
-	})
-end)
+-- later(function()
+-- 	add({ "https://github.com/stevearc/conform.nvim" })
+--
+-- 	-- See also:
+-- 	-- - `:h Conform`
+-- 	-- - `:h conform-options`
+-- 	-- - `:h conform-formatters`
+-- 	require("conform").setup({
+-- 		default_format_opts = {
+-- 			-- Allow formatting from LSP server if no dedicated formatter is available
+-- 			lsp_format = "fallback",
+-- 		},
+-- 		-- Map of filetype to formatters
+-- 		-- Make sure that necessary CLI tool is available
+-- 		formatters_by_ft = {
+-- 			rust = { "rustfmt" },
+-- 			javascript = { "prettier" },
+-- 			typescript = { "prettier" },
+-- 			javascriptreact = { "prettier" },
+-- 			typescriptreact = { "prettier" },
+-- 			bash = { "shfmt" },
+-- 			sh = { "shfmt" },
+-- 			yaml = { "prettier" },
+-- 			helm = {}, -- Helm LSP handles formatting
+-- 			markdown = { "prettier" },
+-- 			ansible = { "prettier" },
+-- 		},
+-- 		-- Format on save (optional, remove if you prefer manual formatting)
+-- 		format_on_save = {
+-- 			timeout_ms = 500,
+-- 			lsp_fallback = true,
+-- 		},
+-- 	})
+-- end)
 
 later(function()
 	add({ "https://github.com/MeanderingProgrammer/render-markdown.nvim" })
