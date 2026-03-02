@@ -252,8 +252,19 @@ nmap_leader('vL', '<Cmd>lua MiniVisits.remove_label()<CR>', 'Remove label')
 
 -- custom
 
-nmap("H", "<cmd>bprevious<CR>", "previous buff")
-nmap("L", "<cmd>bnext<CR>", "next buff")
+-- Iterate based on recency
+local sort_latest = require('mini.visits').gen_sort.default({ recency_weight = 1 })
+local map_iterate_core = function(lhs, direction, desc)
+  local opts = { filter = 'core', sort = sort_latest, wrap = true }
+  local rhs = function()
+    require('mini.visits').iterate_paths(direction, vim.fn.getcwd(), opts)
+  end
+  vim.keymap.set('n', lhs, rhs, { desc = desc })
+end
+
+map_iterate_core('L', 'forward',  'Core label (earlier)')
+map_iterate_core('H', 'backward', 'Core label (later)')
+
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("n", "J", "mzJ`z")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
