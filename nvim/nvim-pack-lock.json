@@ -31,10 +31,6 @@
     "nvim-treesitter-textobjects": {
       "rev": "a0e182ae21fda68c59d1f36c9ed45600aef50311",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects"
-    },
-    "render-markdown.nvim": {
-      "rev": "48b4175dbca8439d30c1f52231cbe5a712c8f9d9",
-      "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     }
   }
 }

@@ -244,12 +244,6 @@ end)
 -- 	})
 -- end)
 
-later(function()
-	add({ "https://github.com/MeanderingProgrammer/render-markdown.nvim" })
-	require("render-markdown").setup({
-		lsp = { enabled = true },
-	})
-end)
 -- Snippets ===================================================================
 
 -- Although 'mini.snippets' provides functionality to manage snippet files, it
