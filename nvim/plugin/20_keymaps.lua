@@ -252,6 +252,8 @@ nmap_leader('vL', '<Cmd>lua MiniVisits.remove_label()<CR>', 'Remove label')
 
 -- custom
 
+nmap_leader('tr', '<Cmd>lua MiniMisc.setup_auto_root({"rootfile"}, nil)<CR>', 'Toggle manual auto_root')
+
 -- Iterate based on recency
 local sort_latest = require('mini.visits').gen_sort.default({ recency_weight = 1 })
 local map_iterate_core = function(lhs, direction, desc)

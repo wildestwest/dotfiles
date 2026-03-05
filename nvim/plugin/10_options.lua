@@ -129,6 +129,7 @@ vim.o.mousescroll = 'ver:10,hor:6' -- Customize mouse scroll
 vim.o.autoread    = true
 vim.o.swapfile    = false
 vim.o.colorcolumn = "90"
+vim.o.scrolloff   = 10
 vim.filetype.add({
   pattern = {
     [".*/templates/.*%.tpl"] = "helm",

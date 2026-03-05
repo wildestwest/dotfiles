@@ -13,171 +13,130 @@
       "args": [],
       "projects": [
         {
-          "paths": [
-            "/home/coder"
-          ]
+          "paths": ["/home/coder"],
         },
         {
-          "paths": [
-            "/home/coder/repos"
-          ]
+          "paths": ["/home/coder/repos"],
         },
         {
-          "paths": [
-            "/home/coder/repos/automation"
-          ]
+          "paths": ["/home/coder/repos/automation"],
         },
         {
-          "paths": [
-            "/home/coder/repos/base-dev-image"
-          ]
+          "paths": ["/home/coder/repos/base-dev-image"],
         },
         {
-          "paths": [
-            "/home/coder/repos/infrastructure"
-          ]
+          "paths": ["/home/coder/repos/infrastructure"],
         },
         {
-          "paths": [
-            "/home/coder/repos/localstack-ewa"
-          ]
+          "paths": ["/home/coder/repos/localstack-ewa"],
         },
         {
-          "paths": [
-            "~/.config"
-          ]
+          "paths": ["~/.config"],
         },
         {
-          "paths": [
-            "~/repos/afw_ewa"
-          ]
+          "paths": ["~/repos/afw_ewa"],
         },
         {
-          "paths": [
-            "~/repos/auto_wwa_api"
-          ]
+          "paths": ["~/repos/auto_wwa_api"],
         },
         {
-          "paths": [
-            "~/repos/auto_wwa_event"
-          ]
+          "paths": ["~/repos/auto_wwa_event"],
         },
         {
-          "paths": [
-            "~/repos/data-ingest-mission-management"
-          ]
+          "paths": ["~/repos/data-ingest-mission-management"],
         },
         {
-          "paths": [
-            "~/repos/data-ingest-wwa"
-          ]
+          "paths": ["~/repos/data-ingest-wwa"],
         },
         {
-          "paths": [
-            "~/repos/dev-base-image"
-          ]
+          "paths": ["~/repos/dev-base-image"],
         },
         {
-          "paths": [
-            "~/repos/ewa-scripts"
-          ]
+          "paths": ["~/repos/ewa-scripts"],
         },
         {
-          "paths": [
-            "~/repos/incident-archive-api"
-          ]
+          "paths": ["~/repos/incident-archive-api"],
         },
         {
-          "paths": [
-            "~/repos/infrastructure"
-          ]
+          "paths": ["~/repos/infrastructure"],
         },
         {
-          "paths": [
-            "~/repos/jwt_server"
-          ]
+          "paths": ["~/repos/jwt_server"],
         },
         {
-          "paths": [
-            "~/repos/mission_briefing_event"
-          ]
+          "paths": ["~/repos/mission_briefing_event"],
         },
         {
-          "paths": [
-            "~/repos/mongodb"
-          ]
+          "paths": ["~/repos/mongodb"],
         },
         {
-          "paths": [
-            "~/repos/sca_simulator"
-          ]
+          "paths": ["~/repos/sca_simulator"],
         },
         {
-          "paths": [
-            "~/repos/spire-api"
-          ]
+          "paths": ["~/repos/spire-api"],
         },
         {
-          "paths": [
-            "~/repos/spire-gui"
-          ]
+          "paths": ["~/repos/spire-gui"],
         },
         {
-          "paths": [
-            "~/repos/tc_tap_api"
-          ]
+          "paths": ["~/repos/tc_tap_api"],
         },
         {
-          "paths": [
-            "~/repos/wip_api"
-          ]
-        }
-      ]
-    }
+          "paths": ["~/repos/wip_api"],
+        },
+      ],
+    },
   ],
   "vim_mode": true,
   "vim": {
     "use_system_clipboard": "on_yank",
     "use_smartcase_find": true,
     "toggle_relative_line_numbers": true,
-    "highlight_on_yank_duration": 400
+    "highlight_on_yank_duration": 400,
   },
   "auto_install_extensions": {
     "dockerfile": true,
-    "docker-compose": true,
+    "fastapi-snippets": true,
+    "markdown-snippets": true,
     "helm": true,
     "graphql": true,
     "ansible": true,
     "python-snippets": true,
-    "rose-pine-theme": true
+    "rose-pine-theme": true,
   },
   "disable_ai": true,
   "ui_font_size": 14,
-  "buffer_font_size": 14,
+  "document_symbols": "on",
+  "buffer_font_size": 16,
   "wrap_guides": [80, 120],
   "cursor_blink": false,
+  "buffer_font_family": "Iosevka Term",
   "vertical_scroll_margin": 8,
   "which_key": {
     "enabled": true,
   },
   "show_signature_help_after_edits": true,
+  "auto_signature_help": true,
   "colorize_brackets": true,
+  "inlay_hints": {
+    "enabled": true,
+  },
   "use_autoclose": false,
   "active_pane_modifiers": {
-    "inactive_opacity": 0.8
+    "inactive_opacity": 0.8,
   },
   "file_finder": {
-    "modal_max_width": "medium"
+    "modal_max_width": "medium",
   },
   "restore_on_startup": "last_workspace",
   "use_smartcase_search": true,
   "theme": {
     "mode": "system",
-    "light": "Gruvbox Light Hard",
-    "dark": "Rosé Pine"
+    "light": "Rosé Pine Moon",
+    "dark": "Rosé Pine",
   },
   "indent_guides": {
-    "coloring": "indent_aware"
+    "coloring": "indent_aware",
   },
   "file_types": {
     "Helm": [
@@ -186,20 +145,25 @@
       "**/templates/**/*.yml",
       "**/helmfile.d/**/*.yaml",
       "**/helmfile.d/**/*.yml",
-      "**/values*.yaml"
-    ]
+      "**/values*.yaml",
+    ],
   },
   "format_on_save": "off",
   "telemetry": {
     "diagnostics": false,
-    "metrics": false
+    "metrics": false,
   },
   "terminal": {
     "dock": "right",
     "cursor_shape": "block",
     "copy_on_select": true,
     "toolbar": {
-      "breadcrumbs": false
-    }
+      "breadcrumbs": false,
+    },
+  },
+  "languages": {
+    "YAML": {
+      "language_servers": ["!yaml-language-server", "..."],
+    },
   },
 }

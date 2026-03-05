@@ -42,7 +42,8 @@
 # # Just for example:
 # resize-overlay-duration = 4s 200ms
 
-font-size = 14
+font-size = 16
+font-family = "Iosevka Term"
 background-opacity = .97
 # clipboard-read = "allow"
 theme = "Rose Pine"
