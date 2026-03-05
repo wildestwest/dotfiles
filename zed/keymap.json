@@ -32,6 +32,7 @@
   {
     "context": "(Editor || Workspace)",
     "bindings": {
+      "ctrl-v": "terminal::ToggleViMode",
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
