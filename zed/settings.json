@@ -13,86 +13,154 @@
       "args": [],
       "projects": [
         {
-          "paths": ["/home/coder"],
+          "paths": [
+            "/home/coder"
+          ]
         },
         {
-          "paths": ["/home/coder/repos"],
+          "paths": [
+            "/home/coder/repos"
+          ]
         },
         {
-          "paths": ["/home/coder/repos/automation"],
+          "paths": [
+            "/home/coder/repos/automation"
+          ]
         },
         {
-          "paths": ["/home/coder/repos/base-dev-image"],
+          "paths": [
+            "/home/coder/repos/base-dev-image"
+          ]
         },
         {
-          "paths": ["/home/coder/repos/infrastructure"],
+          "paths": [
+            "/home/coder/repos/developer-support"
+          ]
         },
         {
-          "paths": ["/home/coder/repos/localstack-ewa"],
+          "paths": [
+            "/home/coder/repos/infrastructure"
+          ]
         },
         {
-          "paths": ["~/.config"],
+          "paths": [
+            "/home/coder/repos/localstack-ewa"
+          ]
         },
         {
-          "paths": ["~/repos/afw_ewa"],
+          "paths": [
+            "/home/coder/repos/trans/./"
+          ]
         },
         {
-          "paths": ["~/repos/auto_wwa_api"],
+          "paths": [
+            "/home/coder/repos/trans/infrastructure/./"
+          ]
         },
         {
-          "paths": ["~/repos/auto_wwa_event"],
+          "paths": [
+            "/home/coder/repos/trans/spire-gui"
+          ]
         },
         {
-          "paths": ["~/repos/data-ingest-mission-management"],
+          "paths": [
+            "~/.config"
+          ]
         },
         {
-          "paths": ["~/repos/data-ingest-wwa"],
+          "paths": [
+            "~/repos/afw_ewa"
+          ]
         },
         {
-          "paths": ["~/repos/dev-base-image"],
+          "paths": [
+            "~/repos/auto_wwa_api"
+          ]
         },
         {
-          "paths": ["~/repos/ewa-scripts"],
+          "paths": [
+            "~/repos/auto_wwa_event"
+          ]
         },
         {
-          "paths": ["~/repos/incident-archive-api"],
+          "paths": [
+            "~/repos/data-ingest-mission-management"
+          ]
         },
         {
-          "paths": ["~/repos/infrastructure"],
+          "paths": [
+            "~/repos/data-ingest-wwa"
+          ]
         },
         {
-          "paths": ["~/repos/jwt_server"],
+          "paths": [
+            "~/repos/dev-base-image"
+          ]
         },
         {
-          "paths": ["~/repos/mission_briefing_event"],
+          "paths": [
+            "~/repos/ewa-scripts"
+          ]
         },
         {
-          "paths": ["~/repos/mongodb"],
+          "paths": [
+            "~/repos/incident-archive-api"
+          ]
         },
         {
-          "paths": ["~/repos/sca_simulator"],
+          "paths": [
+            "~/repos/infrastructure"
+          ]
         },
         {
-          "paths": ["~/repos/spire-api"],
+          "paths": [
+            "~/repos/jwt_server"
+          ]
         },
         {
-          "paths": ["~/repos/spire-gui"],
+          "paths": [
+            "~/repos/mission_briefing_event"
+          ]
         },
         {
-          "paths": ["~/repos/tc_tap_api"],
+          "paths": [
+            "~/repos/mongodb"
+          ]
         },
         {
-          "paths": ["~/repos/wip_api"],
+          "paths": [
+            "~/repos/sca_simulator"
+          ]
         },
-      ],
-    },
+        {
+          "paths": [
+            "~/repos/spire-api"
+          ]
+        },
+        {
+          "paths": [
+            "~/repos/spire-gui"
+          ]
+        },
+        {
+          "paths": [
+            "~/repos/tc_tap_api"
+          ]
+        },
+        {
+          "paths": [
+            "~/repos/wip_api"
+          ]
+        }
+      ]
+    }
   ],
   "vim_mode": true,
   "vim": {
     "use_system_clipboard": "on_yank",
     "use_smartcase_find": true,
     "toggle_relative_line_numbers": true,
-    "highlight_on_yank_duration": 400,
+    "highlight_on_yank_duration": 600,
   },
   "auto_install_extensions": {
     "dockerfile": true,
@@ -105,9 +173,7 @@
     "rose-pine-theme": true,
   },
   "disable_ai": true,
-  "ui_font_size": 14,
-  "document_symbols": "on",
-  "buffer_font_size": 16,
+  // "document_symbols": "on", want to use this eventually, but tree-sitter and lsp suck for python
   "wrap_guides": [80, 120],
   "cursor_blink": false,
   "buffer_font_family": "Iosevka Term",
@@ -115,21 +181,15 @@
   "which_key": {
     "enabled": true,
   },
-  "show_signature_help_after_edits": true,
-  "auto_signature_help": true,
   "colorize_brackets": true,
   "inlay_hints": {
     "enabled": true,
   },
   "use_autoclose": false,
   "active_pane_modifiers": {
-    "inactive_opacity": 0.8,
-  },
-  "file_finder": {
-    "modal_max_width": "medium",
+    "inactive_opacity": 0.6,
   },
   "restore_on_startup": "last_workspace",
-  "use_smartcase_search": true,
   "theme": {
     "mode": "system",
     "light": "Rosé Pine Moon",
@@ -153,8 +213,14 @@
     "diagnostics": false,
     "metrics": false,
   },
-  "terminal": {
+  "outline_panel": {
     "dock": "right",
+  },
+  "terminal": {
+    "shell": {
+      "program": "zsh",
+    },
+    "dock": "bottom",
     "cursor_shape": "block",
     "copy_on_select": true,
     "toolbar": {
@@ -163,6 +229,7 @@
   },
   "languages": {
     "YAML": {
+      // yaml ls messes with helm charts
       "language_servers": ["!yaml-language-server", "..."],
     },
   },

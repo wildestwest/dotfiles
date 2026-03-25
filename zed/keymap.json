@@ -7,7 +7,7 @@
 // from the command palette.
 [
   {
-    "context": "(EmptyPane || SharedScreen || (Editor && vim_mode == normal) || ProjectPanel )",
+    "context": "(EmptyPane || (Editor && vim_mode == normal) || ProjectPanel || OutlinePanel)",
     "bindings": {
       "space": null, // Disable the default action vim::WrappingRight
       "space space": "file_finder::Toggle",
@@ -15,36 +15,34 @@
       "space r": "editor::RestartLanguageServer",
       "space t": "task::Spawn",
       "space v": "toolchain::Select",
-      "space e": "workspace::ToggleLeftDock",
       "space l g": [
         "task::Spawn",
-        { "task_name": "lazygit", "reveal_target": "center" }
+        { "task_name": "lazygit", "reveal_target": "center" },
       ],
       "space k": [
         "task::Spawn",
-        { "task_name": "kube", "reveal_target": "center" }
+        { "task_name": "kube", "reveal_target": "center" },
       ],
       "space c k d": ["task::Spawn", { "task_name": "deploy" }],
       "space c p v": ["task::Spawn", { "task_name": "venv" }],
-      "space c p t": ["task::Spawn", { "task_name": "pytest" }]
-    }
+      "space c p t": ["task::Spawn", { "task_name": "pytest" }],
+    },
   },
   {
     "context": "(Editor || Workspace)",
     "bindings": {
+      "ctrl-shift-l": "workspace::ToggleRightDock",
+      "ctrl-shift-h": "workspace::ToggleLeftDock",
+      "ctrl-shift-j": "workspace::ToggleBottomDock",
       "ctrl-v": "terminal::ToggleViMode",
       "ctrl-h": "workspace::ActivatePaneLeft",
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
       "ctrl-j": "workspace::ActivatePaneDown",
-      "ctrl-left": "workspace::ActivatePaneLeft",
-      "ctrl-right": "workspace::ActivatePaneRight",
-      "ctrl-up": "workspace::ActivatePaneUp",
-      "ctrl-down": "workspace::ActivatePaneDown"
-    }
+    },
   },
   {
-    "context": "Editor && vim_mode == normal",
+    "context": "Editor && (vim_mode == normal || vim_mod == visual)",
     "bindings": {
       // Harpoon style mark jumping
       "alt-shift-a": ["workspace::SendKeystrokes", "m shift-a"],
@@ -56,43 +54,40 @@
       "alt-i": ["workspace::SendKeystrokes", "` shift-i"],
       "alt-c": ["workspace::SendKeystrokes", "` shift-c"],
 
+      "shift-h": "pane::ActivatePreviousItem",
+      "shift-l": "pane::ActivateNextItem",
+
       "s": "vim::PushSneak",
-      "shift-s": "vim::PushSneakBackward"
-    }
+      "shift-s": "vim::PushSneakBackward",
+    },
   },
   {
     "context": "Editor && vim_mode == visual",
     "bindings": {
       "shift-x": "vim::Exchange",
-      "s": "vim::PushAddSurrounds"
-    }
+      "shift-s": "vim::PushAddSurrounds",
+    },
   },
   {
     "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
     "bindings": {
       // mini.ai plugin behavior
       "q": "vim::MiniQuotes",
-      "b": "vim::MiniBrackets"
-    }
+      "b": "vim::MiniBrackets",
+    },
   },
   {
-    "context": "multibuffer && vim_mode == normal",
+    "context": "Editor",
     "bindings": {
-      // why is this not a default???
-      "n": "search::SelectNextMatch",
-      "shift-n": "search::SelectPreviousMatch"
-    }
-  },
-  {
-    "context": "(FileFinder || FileFinder > Picker > Editor)",
-    "bindings": {
-      "ctrl-v": "pane::SplitRight"
-    }
+      "ctrl-alt-w": "pane::CloseActiveItem",
+      "ctrl-alt-h": "pane::CloseItemsToTheLeft",
+      "ctrl-alt-l": "pane::CloseItemsToTheRight",
+    },
   },
   {
     "context": "Dock",
     "bindings": {
-      "ctrl-w c": "workspace::CloseActiveDock"
-    }
-  }
+      "ctrl-alt-w": "workspace::CloseActiveDock",
+    },
+  },
 ]
