@@ -20,11 +20,8 @@ vim.o.scrolloff = 15
 vim.o.confirm = true
 -- Get rid of swapfile warning
 vim.o.swapfile = false
--- Ruler
 vim.o.colorcolumn = "90"
--- Auto-reload files changed on disk
 vim.o.autoread = true
--- Save undo history
 vim.o.undofile = true
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.o.ignorecase = true
@@ -32,7 +29,6 @@ vim.o.smartcase = true
 
 -- Keymaps =====================================================================
 
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("n", "H", "<cmd>bprev<CR>")
 vim.keymap.set("n", "L", "<cmd>bnext<CR>")
 
@@ -64,7 +60,7 @@ vim.keymap.set("n", "<leader>P", [["+p]], { desc = "Paste sys clipboard" })
 
 -- to yank into system clipboard vs vim clipboard
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "copy to sys" })
-vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "copy to vim" })
+vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Yank line to sys clipboard" })
 
 -- delete to void buffer
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete to void buffer" })
@@ -136,6 +132,7 @@ vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" }
 local command_output_win = nil
 
 local run_command_in_bottom_terminal = function(command)
+	dismiss_command_output()
 	local height = math.floor(vim.o.lines / 4)
 	local current_win = vim.api.nvim_get_current_win()
 
@@ -201,6 +198,9 @@ local function build_blink_cmp()
 	local paths = vim.api.nvim_get_runtime_file("lua/blink/cmp/init.lua", false)
 	if #paths == 0 then return end
 	local root = vim.fn.fnamemodify(paths[1], ":h:h:h:h")
+	local lib = root .. "/target/release/libblink_cmp_fuzzy."
+		.. (jit.os == "OSX" and "dylib" or "so")
+	if vim.fn.filereadable(lib) == 1 then return end
 	vim.notify("[blink.cmp] building fuzzy matcher (requires cargo)...")
 	vim.system({ "cargo", "build", "--release" }, { cwd = root }, function(result)
 		vim.schedule(function()
@@ -212,23 +212,12 @@ local function build_blink_cmp()
 		end)
 	end)
 end
-
-do
-	local paths = vim.api.nvim_get_runtime_file("lua/blink/cmp/init.lua", false)
-	if #paths > 0 then
-		local root = vim.fn.fnamemodify(paths[1], ":h:h:h:h")
-		local lib = root .. "/target/release/libblink_cmp_fuzzy."
-			.. (jit.os == "OSX" and "dylib" or "so")
-		if vim.fn.filereadable(lib) == 0 then
-			build_blink_cmp()
-		end
-	end
-end
+build_blink_cmp()
 
 vim.api.nvim_create_autocmd("User", {
 	pattern = "PackChanged",
 	callback = function(ev)
-		if ev.data.spec.name == "blink.cmp" and ev.data.kind == "update" then
+		if ev.data and ev.data.spec and ev.data.spec.name == "blink.cmp" and ev.data.kind == "update" then
 			build_blink_cmp()
 		end
 	end,
@@ -237,6 +226,8 @@ vim.api.nvim_create_autocmd("User", {
 vim.pack.add({ "https://github.com/L3MON4D3/LuaSnip" })
 vim.pack.add({ "https://github.com/rafamadriz/friendly-snippets" })
 vim.pack.add({ "https://github.com/folke/flash.nvim" })
+vim.pack.add({ "https://github.com/jake-stewart/multicursor.nvim" })
+vim.pack.add({ "https://github.com/stevearc/quicker.nvim" })
 
 -- Colorscheme =================================================================
 
@@ -248,15 +239,14 @@ vim.cmd.colorscheme("rose-pine-main")
 require("mini.extra").setup()
 
 require("mini.ai").setup({
-		n_lines = 500,
-		-- 'mini.ai' can be extended with custom textobjects from treesitter
-		custom_textobjects = {
-			F = require("mini.ai").gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
-			D = require("mini.ai").gen_spec.treesitter({ a = "@conditional.outer", i = "@conditional.inner" }),
-			B = require("mini.extra").gen_ai_spec.buffer(),
-			C = require("mini.ai").gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),
-			L = require("mini.ai").gen_spec.treesitter({ a = "@loop.outer", i = "@loop.inner" }),
-		},
+	n_lines = 500,
+	custom_textobjects = {
+		F = require("mini.ai").gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
+		D = require("mini.ai").gen_spec.treesitter({ a = "@conditional.outer", i = "@conditional.inner" }),
+		B = require("mini.extra").gen_ai_spec.buffer(),
+		C = require("mini.ai").gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),
+		L = require("mini.ai").gen_spec.treesitter({ a = "@loop.outer", i = "@loop.inner" }),
+	},
 })
 
 require("mini.surround").setup()
@@ -286,6 +276,7 @@ miniclue.setup({
 		{ mode = "n", keys = "<Leader>cp", desc = "+Command Python" },
 		{ mode = "n", keys = "<Leader>ck", desc = "+Command Kubernetes" },
 		{ mode = { "n", "v" }, keys = "<Leader>h", desc = "+Git Hunk" },
+		{ mode = { "n", "v" }, keys = "<Leader>m", desc = "+Multicursor" },
 		{ mode = "n", keys = "<Leader>s", desc = "+Search" },
 		{ mode = "n", keys = "<Leader>sg", desc = "+Search Git" },
 		{ mode = "n", keys = "<Leader>t", desc = "+Toggle" },
@@ -366,6 +357,7 @@ vim.keymap.set("n", "<leader>su", function() Snacks.picker.undo() end, { desc = 
 vim.keymap.set("n", "<leader>sgd", function() Snacks.picker.git_status() end, { desc = "Search [G]it [D]iff" })
 vim.keymap.set("n", "<leader>sgl", function() Snacks.picker.git_log() end, { desc = "Search [G]it [L]og" })
 vim.keymap.set("n", "<leader>sm", function() Snacks.picker.man() end, { desc = "Search [M]an" })
+vim.keymap.set("n", "<leader>sz", function() Snacks.picker.zoxide() end, { desc = "Search [Z]oxide" })
 
 -- Treesitter ==================================================================
 
@@ -444,15 +436,25 @@ local ensure_installed = {
 	"lua-language-server",
 }
 local registry = require("mason-registry")
-registry.refresh(function()
-	for _, name in ipairs(ensure_installed) do
-		local ok, pkg = pcall(registry.get_package, name)
-		if ok and not pkg:is_installed() then
-			vim.notify("[mason] installing " .. name)
-			pkg:install()
-		end
+local needs_install = false
+for _, name in ipairs(ensure_installed) do
+	local ok, pkg = pcall(registry.get_package, name)
+	if not ok or not pkg:is_installed() then
+		needs_install = true
+		break
 	end
-end)
+end
+if needs_install then
+	registry.refresh(function()
+		for _, name in ipairs(ensure_installed) do
+			local ok, pkg = pcall(registry.get_package, name)
+			if ok and not pkg:is_installed() then
+				vim.notify("[mason] installing " .. name)
+				pkg:install()
+			end
+		end
+	end)
+end
 
 -- Remove Neovim's default global LSP keymaps that conflict with ours
 for _, key in ipairs({ "grr", "grn", "gri", "grt", "grx" }) do
@@ -485,7 +487,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 vim.diagnostic.config({
 	severity_sort = true,
-	float = { border = "rounded", source = "if_many" },
+	float = { border = "rounded", source = true },
 	underline = { severity = vim.diagnostic.severity.ERROR },
 	signs = vim.g.have_nerd_font and {
 		text = {
@@ -496,12 +498,9 @@ vim.diagnostic.config({
 		},
 	} or {},
 	virtual_text = {
-		source = "if_many",
+		source = true,
 		severity = vim.diagnostic.severity.ERROR,
 		spacing = 2,
-		format = function(diagnostic)
-			return diagnostic.message
-		end,
 	},
 })
 
@@ -625,6 +624,57 @@ require("flash").setup({
 vim.keymap.set({ "n", "x", "o" }, "<BS>", function()
 	require("flash").jump()
 end, { desc = "Flash" })
+
+-- Quicker (editable quickfix list) ============================================
+
+require("quicker").setup()
+vim.keymap.set("n", "<leader>q", function() require("quicker").toggle() end, { desc = "Toggle quickfix" })
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "qf",
+	callback = function()
+		MiniClue.ensure_buf_triggers()
+	end,
+	desc = "Enable mini.clue triggers in quickfix buffer",
+})
+
+-- Multicursor =================================================================
+
+local mc = require("multicursor-nvim")
+mc.setup()
+
+-- Add cursors at all matches of word under cursor
+vim.keymap.set({ "n", "v" }, "<leader>ma", mc.matchAllAddCursors, { desc = "[M]ulticursor [A]ll matches" })
+
+-- Add cursor at next/previous match of word under cursor
+vim.keymap.set({ "n", "v" }, "<leader>mn", function() mc.matchAddCursor(1) end, { desc = "[M]ulticursor [N]ext match" })
+vim.keymap.set({ "n", "v" }, "<leader>mN", function() mc.matchAddCursor(-1) end, { desc = "[M]ulticursor prev match" })
+
+-- Skip next/previous match
+vim.keymap.set({ "n", "v" }, "<leader>ms", function() mc.matchSkipCursor(1) end, { desc = "[M]ulticursor [S]kip next" })
+vim.keymap.set({ "n", "v" }, "<leader>mS", function() mc.matchSkipCursor(-1) end, { desc = "[M]ulticursor skip prev" })
+
+-- Add cursor to line below/above at same column
+vim.keymap.set({ "n", "v" }, "<leader>mj", function() mc.lineAddCursor(1) end, { desc = "[M]ulticursor line below" })
+vim.keymap.set({ "n", "v" }, "<leader>mk", function() mc.lineAddCursor(-1) end, { desc = "[M]ulticursor line above" })
+
+-- Skip line below/above
+vim.keymap.set({ "n", "v" }, "<leader>mJ", function() mc.lineSkipCursor(1) end, { desc = "[M]ulticursor skip line below" })
+vim.keymap.set({ "n", "v" }, "<leader>mK", function() mc.lineSkipCursor(-1) end, { desc = "[M]ulticursor skip line above" })
+
+-- Mouse support: ctrl+click to add/remove cursors
+vim.keymap.set("n", "<C-LeftMouse>", mc.handleMouse, { desc = "Multicursor mouse add" })
+vim.keymap.set("n", "<C-LeftDrag>", mc.handleMouseDrag, { desc = "Multicursor mouse drag" })
+vim.keymap.set("n", "<C-LeftRelease>", mc.handleMouseRelease, { desc = "Multicursor mouse release" })
+
+-- Clear all cursors with Escape
+vim.keymap.set("n", "<Esc>", function()
+	if mc.hasCursors() then
+		mc.clearCursors()
+	else
+		vim.cmd("nohlsearch")
+	end
+end)
 
 -- VimEnter ====================================================================
 
