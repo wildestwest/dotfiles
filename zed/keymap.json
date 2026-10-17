@@ -11,10 +11,10 @@
     "bindings": {
       "space": null, // Disable the default action vim::WrappingRight
       "space space": "file_finder::Toggle",
-      "space p": "projects::OpenRecent",
-      "space r": "editor::RestartLanguageServer",
       "space t": "task::Spawn",
       "space v": "toolchain::Select",
+      "space /": "text_finder::Toggle",
+      "space r": "workspace::ReopenLastPicker",
       "space l g": [
         "task::Spawn",
         { "task_name": "lazygit", "reveal_target": "center" },
@@ -39,6 +39,8 @@
       "ctrl-l": "workspace::ActivatePaneRight",
       "ctrl-k": "workspace::ActivatePaneUp",
       "ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-f": "projects::OpenRecent",
+      "ctrl-?": "agent::Toggle",
     },
   },
   {
@@ -57,8 +59,7 @@
       "shift-h": "pane::ActivatePreviousItem",
       "shift-l": "pane::ActivateNextItem",
 
-      "s": "vim::PushSneak",
-      "shift-s": "vim::PushSneakBackward",
+      "s": "vim::HelixJumpToWord",
     },
   },
   {
@@ -74,20 +75,6 @@
       // mini.ai plugin behavior
       "q": "vim::MiniQuotes",
       "b": "vim::MiniBrackets",
-    },
-  },
-  {
-    "context": "Editor",
-    "bindings": {
-      "ctrl-alt-w": "pane::CloseActiveItem",
-      "ctrl-alt-h": "pane::CloseItemsToTheLeft",
-      "ctrl-alt-l": "pane::CloseItemsToTheRight",
-    },
-  },
-  {
-    "context": "Dock",
-    "bindings": {
-      "ctrl-alt-w": "workspace::CloseActiveDock",
     },
   },
 ]
