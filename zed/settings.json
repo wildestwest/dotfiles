@@ -7,155 +7,91 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "ssh_connections": [
-    {
-      "host": "coder.main",
-      "args": [],
-      "projects": [
-        {
-          "paths": [
-            "/home/coder"
+  "diff_view_style": "unified",
+  "show_edit_predictions": false,
+  "show_signature_help_after_edits": true,
+  "ui_font_size": 16.0,
+  "ui_font_family": "Iosevka Term",
+  "lsp_results_location": "picker",
+  "autoscroll_on_clicks": true,
+  "auto_signature_help": true,
+  "project_panel": {
+    "dock": "left",
+  },
+  "agent": {
+    "tool_permissions": {
+      "tools": {
+        "fetch": {
+          "default": "allow",
+          "always_allow": [
+            {
+              "pattern": "^https?://raw\\.githubusercontent\\.com"
+            }
           ]
         },
-        {
-          "paths": [
-            "/home/coder/repos"
-          ]
+        "search_web": {
+          "default": "allow"
         },
-        {
-          "paths": [
-            "/home/coder/repos/automation"
-          ]
-        },
-        {
-          "paths": [
-            "/home/coder/repos/base-dev-image"
-          ]
-        },
-        {
-          "paths": [
-            "/home/coder/repos/developer-support"
-          ]
-        },
-        {
-          "paths": [
-            "/home/coder/repos/infrastructure"
-          ]
-        },
-        {
-          "paths": [
-            "/home/coder/repos/localstack-ewa"
-          ]
-        },
-        {
-          "paths": [
-            "/home/coder/repos/trans/./"
-          ]
-        },
-        {
-          "paths": [
-            "/home/coder/repos/trans/infrastructure/./"
-          ]
-        },
-        {
-          "paths": [
-            "/home/coder/repos/trans/spire-gui"
-          ]
-        },
-        {
-          "paths": [
-            "~/.config"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/afw_ewa"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/auto_wwa_api"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/auto_wwa_event"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/data-ingest-mission-management"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/data-ingest-wwa"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/dev-base-image"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/ewa-scripts"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/incident-archive-api"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/infrastructure"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/jwt_server"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/mission_briefing_event"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/mongodb"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/sca_simulator"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/spire-api"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/spire-gui"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/tc_tap_api"
-          ]
-        },
-        {
-          "paths": [
-            "~/repos/wip_api"
+        "terminal": {
+          "default": "allow",
+          "always_allow": [
+            {
+              "pattern": "^head\\b"
+            },
+            {
+              "pattern": "^find\\s+/(\\s|$)"
+            },
+            {
+              "pattern": "^pip\\s+show(\\s|$)"
+            },
+            {
+              "pattern": "^grep\\b"
+            },
+            {
+              "pattern": "^pip\\s+index(\\s|$)"
+            },
+            {
+              "pattern": "^ls\\b"
+            },
+            {
+              "pattern": "^sed\\b"
+            },
+            {
+              "pattern": "^source\\s+\\.venv/bin/activate(\\s|$)"
+            },
+            {
+              "pattern": "^python\\b"
+            }
           ]
         }
-      ]
-    }
-  ],
+      }
+    },
+    "default_model": {
+      "effort": "medium",
+      "provider": "zed.dev",
+      "model": "claude-opus-5-5",
+      "enable_thinking": true
+    },
+    "dock": "right",
+    "favorite_models": [],
+    "model_parameters": [],
+  },
+  "git_panel": {
+    "dock": "left",
+  },
   "vim_mode": true,
+  "use_smartcase_search": true,
+  "title_bar": {
+    "show_branch_status_icon": false,
+    "show_branch_name": true,
+    "show_project_items": true,
+    "show_onboarding_banner": false,
+    "show_user_picture": false,
+    "show_user_menu": false,
+    "show_sign_in": false,
+    "show_menus": false,
+    "button_layout": "platform_default",
+  },
   "vim": {
     "use_system_clipboard": "on_yank",
     "use_smartcase_find": true,
@@ -164,19 +100,20 @@
   },
   "auto_install_extensions": {
     "dockerfile": true,
+    "python-requirements": true,
     "fastapi-snippets": true,
     "markdown-snippets": true,
     "helm": true,
-    "graphql": true,
     "ansible": true,
     "python-snippets": true,
     "rose-pine-theme": true,
   },
-  "disable_ai": true,
-  // "document_symbols": "on", want to use this eventually, but tree-sitter and lsp suck for python
+  // "disable_ai": true,
+  "document_symbols": "on",
   "wrap_guides": [80, 120],
   "cursor_blink": false,
   "buffer_font_family": "Iosevka Term",
+  "buffer_font_size": 16,
   "vertical_scroll_margin": 8,
   "which_key": {
     "enabled": true,
@@ -213,14 +150,26 @@
     "diagnostics": false,
     "metrics": false,
   },
+  "tab_bar": {
+    "show_nav_history_buttons": false,
+    "show_tab_bar_buttons": false,
+  },
+  "status_bar": {
+    "experimental.show": false,
+  },
+  "toolbar": {
+    "breadcrumbs": false,
+    "quick_actions": false,
+    "selections_menu": false,
+    "agent_review": false,
+    "code_actions": false,
+  },
   "outline_panel": {
     "dock": "right",
   },
   "terminal": {
-    "shell": {
-      "program": "zsh",
-    },
-    "dock": "bottom",
+    "dock": "right",
+    "default_width": 300,
     "cursor_shape": "block",
     "copy_on_select": true,
     "toolbar": {
@@ -228,9 +177,28 @@
     },
   },
   "languages": {
+    "Python": {
+      "language_servers": [
+        // Enable ty, disable basedpyright, and enable all
+        // other registered language servers (ruff, pylsp, pyright).
+        "ty",
+        "!basedpyright",
+        "..."
+      ]
+    },
     "YAML": {
       // yaml ls messes with helm charts
       "language_servers": ["!yaml-language-server", "..."],
     },
   },
+  "lsp": {
+    "ty": {
+      "settings": {
+        "completions":{
+          "completeFunctionParentheses": true
+        }
+      }
+    }
+  }
 }
+
